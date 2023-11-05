@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+}
+html::-webkit-scrollbar{
+  display: none;
+}
+.lazy-loading{
+  opacity: 1;
+  visibility: visible;
+  transition: all linear 0.3s
+}
+.lazy-loading1{
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity linear 0.3s
+}
+.swiper-button-prev, 
+.swiper-button-next {
+  text-align: center;
+  width: 44px !important;
+  height: 44px !important;
+  color: #ffff !important;
+  background-color: rgba(156, 156, 156, 0.3);
+  border-radius: 999px !important;
+  padding: 26px !important;
+}
+.swiper-button-prev::after, 
+.swiper-button-next::after {
+  font-size: 30px !important;
+}
+.swiper-pagination{
+}
+.swiper-pagination-bullet{
+  background-color: #ffff !important;
+}
+@keyframes load {
+  from {
+    transform: translateY(100px);
+  }
+  to {
+    transform: translateY(0px);
+  }
+}
+#progress{
+  position: relative;
+  -webkit-appearance: none;
+  height: 3px;
+  border-radius: 12px;
+  background: #757575;
+  outline: none;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+.control:hover #progress {
+  height: 5px;
+}
+.after-line{
+  transform: translateY(-50%);
+  display: none;
+}
+.control:hover .after-line {
+  display: block;
+}
+/* #progress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  transition: all linear 0.5s;
+  background-color: #ffffff;
+  cursor: pointer;
+  z-index: 10;
+} */
+/* #progress:hover ~ #progress::-webkit-slider-thumb{
+  background-color: red;
+} */
+.text-stroke-0{
+  color: hsla(0,0%,100%,0.5);
+  white-space: nowrap;
+  font-size: 14px;
+  width: 83px
+}
+.text-stroke-1{
+  color: rgba(74,144,226,0);
+  -webkit-text-stroke: 1px #4a90e2;
+  opacity: 0.9;
+}
+.text-stroke-2{
+  color: rgba(74,144,226,0);
+  -webkit-text-stroke: 1px #50e3c2;
+  opacity: 0.9;
+
+}
+.text-stroke-3{
+  color: transparent;
+  -webkit-text-stroke: 1px #e35050;
+  opacity: 0.9;
+
+}
+.text-stroke-any{
+  color: rgba(74,144,226,0);
+  -webkit-text-stroke: 1px #fff;
+  opacity: 0.85;
+
+}
+.overflow-scrollbar::-webkit-scrollbar{
+  display: none;
+}
+.dark{
+  background-color: black;
+  color: white;
+}
+.light{
+  background-color: white;
+  color: black;
+}
+.yellow{
+  background-color: yellow;
+   
+}
+
+
+
