@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/zing-mp3/static/css/main.fb2ca9e1.css",
+    "main.js": "/zing-mp3/static/js/main.05d7f03d.js",
+    "index.html": "/zing-mp3/index.html",
+    "main.fb2ca9e1.css.map": "/zing-mp3/static/css/main.fb2ca9e1.css.map",
+    "main.05d7f03d.js.map": "/zing-mp3/static/js/main.05d7f03d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fb2ca9e1.css",
+    "static/js/main.05d7f03d.js"
+  ]
+}
