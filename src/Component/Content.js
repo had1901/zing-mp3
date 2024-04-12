@@ -25,7 +25,6 @@ function Content({ children, classNameParent, classNameChild, classNameMore, cla
         else {
           lazyImg.classList.add('lazy-loading1')  
           lazyImg.src = ''
-
           lazyImg.classList.remove('lazy-loading')                                        
         }
       })

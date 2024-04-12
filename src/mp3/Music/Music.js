@@ -10,7 +10,7 @@ export const Musics = [
     thumb: 'imgMusic/life-goes-on.png',
     premium: 'premium',
     date: 'Hôm nay',
-    timeTotal: '240 ',
+    timeTotal: '2400',
     timeString: '02:40'
   },
   {
@@ -24,7 +24,7 @@ export const Musics = [
     thumb: 'imgMusic/attention.png',
     premium: '',
     date: '2 ngày trước',
-    timeTotal: '360 ',
+    timeTotal: '3600',
     timeString: '02:40'
   }, 
   {
@@ -38,7 +38,7 @@ export const Musics = [
     thumb: 'imgMusic/despacito.png',
     premium: '',
     date: '3 ngày trước',
-    timeTotal: '326 ',
+    timeTotal: '3260',
     timeString: '02:40'
   }, 
   {
@@ -52,7 +52,7 @@ export const Musics = [
     thumb: 'imgMusic/dna.png',
     premium: '',
     date: 'Hôm qua',
-    timeTotal: ' 410',
+    timeTotal: '4100',
     timeString: '02:40'
   }, 
   {
@@ -66,7 +66,7 @@ export const Musics = [
     thumb: 'imgMusic/hoa-co-lau.png',
     premium: '',
     date: '3 ngày trước',
-    timeTotal: '234 ',
+    timeTotal: '2340',
     timeString: '02:40'
   }, 
   {
@@ -80,7 +80,7 @@ export const Musics = [
     thumb: 'imgMusic/how-you-like-that.png',
     premium: '',
     date: 'Hôm nay',
-    timeTotal: '310',
+    timeTotal: '3100',
     timeString: '02:40'
   }, 
   {
@@ -94,7 +94,7 @@ export const Musics = [
     thumb: 'imgMusic/dreamers.png',
     premium: '',
     date: 'Hôm nay',
-    timeTotal: '344',
+    timeTotal: '3440',
     timeString: '02:40'
   }, 
   {
@@ -122,7 +122,7 @@ export const Musics = [
     thumb: 'imgMusic/some.png',
     premium: 'premium',
     date: '2 ngày trước',
-    timeTotal: '286',
+    timeTotal: '2860',
     timeString: '02:40'
   }, 
   {
@@ -136,7 +136,7 @@ export const Musics = [
     thumb: 'imgMusic/we-dont-talk-anymore.jpg',
     premium: '',
     date: '1 ngày trước',
-    timeTotal: '520',
+    timeTotal: '5200',
     timeString: '02:40'
   },   
   {
@@ -150,7 +150,7 @@ export const Musics = [
     thumb: 'imgMusic/how-you-like-that.png',
     premium: '',
     date: 'Hôm nay',
-    timeTotal: '368',
+    timeTotal: '3680',
     timeString: '02:40'
   },  
   {
@@ -164,7 +164,7 @@ export const Musics = [
     thumb: 'imgMusic/life-goes-on.png',
     premium: 'premium',
     date: 'Hôm nay',
-    timeTotal: '240 ',
+    timeTotal: '2400',
     timeString: '02:40'
   },
   {
@@ -178,7 +178,7 @@ export const Musics = [
     thumb: 'imgMusic/attention.png',
     premium: '',
     date: '2 ngày trước',
-    timeTotal: '360 ',
+    timeTotal: '3600',
     timeString: '02:40'
   }, 
   {
@@ -192,7 +192,7 @@ export const Musics = [
     thumb: 'imgMusic/despacito.png',
     premium: '',
     date: '3 ngày trước',
-    timeTotal: '326 ',
+    timeTotal: '3260',
     timeString: '02:40'
   }, 
   {
@@ -206,7 +206,7 @@ export const Musics = [
     thumb: 'imgMusic/dna.png',
     premium: '',
     date: 'Hôm qua',
-    timeTotal: ' 410',
+    timeTotal: '4100',
     timeString: '02:40'
   }, 
   {
@@ -220,7 +220,7 @@ export const Musics = [
     thumb: 'imgMusic/hoa-co-lau.png',
     premium: '',
     date: '3 ngày trước',
-    timeTotal: '234 ',
+    timeTotal: '2340',
     timeString: '02:40'
   }, 
   {
@@ -234,7 +234,7 @@ export const Musics = [
     thumb: 'imgMusic/how-you-like-that.png',
     premium: '',
     date: 'Hôm nay',
-    timeTotal: '310',
+    timeTotal: '3100',
     timeString: '02:40'
   }, 
   {
@@ -248,7 +248,7 @@ export const Musics = [
     thumb: 'imgMusic/dreamers.png',
     premium: '',
     date: 'Hôm nay',
-    timeTotal: '344',
+    timeTotal: '3440',
     timeString: '02:40'
   }, 
   {
@@ -276,7 +276,7 @@ export const Musics = [
     thumb: 'imgMusic/some.png',
     premium: 'premium',
     date: '2 ngày trước',
-    timeTotal: '286',
+    timeTotal: '2860',
     timeString: '02:40'
   }, 
   {
@@ -290,7 +290,7 @@ export const Musics = [
     thumb: 'imgMusic/we-dont-talk-anymore.jpg',
     premium: '',
     date: '1 ngày trước',
-    timeTotal: '520',
+    timeTotal: '5200',
     timeString: '02:40'
   },   
   {
@@ -304,7 +304,7 @@ export const Musics = [
     thumb: 'imgMusic/how-you-like-that.png',
     premium: '',
     date: 'Hôm nay',
-    timeTotal: '368',
+    timeTotal: '3680',
     timeString: '02:40'
   },  
 ]

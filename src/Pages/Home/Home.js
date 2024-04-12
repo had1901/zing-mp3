@@ -19,18 +19,23 @@ import SlideImage from '../../Component/SlideImage';
 
 import { Context } from '../../ContextGlobal/ContextGlobal';
 import Particle from '../../Component/Particle';
+import Description from './../../Component/Description';
+import { FaDivide } from 'react-icons/fa';
+import { GoChevronRight } from 'react-icons/go';
 
 
 function Home() {
   const [active, setActive] = useState('Tất cả')
   const bgHome = useContext(Context)
  
-  const handleBtnActive = (title) => {
-    setActive(title)
+  const tabTitles = ['Tất cả', 'V-pop', 'K-pop', 'Quốc tế']
+
+  const handleBtnActive = (tabTitle) => {
+    setActive(tabTitle)
   }
+  
   return (
-    <div> 
-        
+    <div>      
         <div className='w-full'>  
         {/* <Particle />  */}
 
@@ -67,27 +72,12 @@ function Home() {
               </div>  
               <Title title='Mới Phát Hành' classNameParent='mt-11 my-5 text-xl'/>       
               <Content classNameParent=''>
-                <div className='flex gap-3 '>
-                  <Button 
-                    title='Tất cả' 
-                    onClick={() => handleBtnActive('Tất cả')} 
-                    className={`rounded-2xl select-none ${active === 'Tất cả' ? 'bg-violet border-b-violet border-none' : ''} text-sm min-w-107 h-6 border  `}>
-                  </Button>
-                  <Button 
-                    title='V-pop' 
-                    onClick={() => handleBtnActive('V-pop')} 
-                    className={`rounded-2xl select-none ${active === 'V-pop' ? 'bg-violet border-b-violet border-none' : ''} text-sm min-w-107 h-6 border  `}>
-                  </Button>
-                  <Button 
-                    title='K-pop' 
-                    onClick={() => handleBtnActive('K-pop')} 
-                    className={`rounded-2xl select-none ${active === 'K-pop' ? 'bg-violet border-b-violet border-none' : ''} text-sm min-w-107 h-6 border  `}>
-                  </Button>
-                  <Button 
-                    title='Quốc tế' 
-                    onClick={() => handleBtnActive('Quốc tế')} 
-                    className={`rounded-2xl select-none ${active === 'Quốc tế' ? 'bg-violet border-b-violet border-none' : ''} text-sm min-w-107 h-6 border  `}>
-                  </Button>
+                <div className='flex gap-3 '> 
+                    {
+                      tabTitles.map((tabTitle, index) => (
+                        <Button key={tabTitle} title={tabTitle} onClick={() => handleBtnActive(tabTitle)} className={`rounded-2xl select-none ${active === tabTitle ? 'bg-violet border-b-violet border-none' : ''} text-sm min-w-107 h-6 border  `} />                  
+                      ))
+                    }
                 </div>
                 <div className='flex flex-wrap mt-4'>
                   {
@@ -127,14 +117,43 @@ function Home() {
                           {
                             item.card.map((cardItem, index) => (                 
                               <Content key={index} description={cardItem.desc} thumb='' dataThumb={cardItem.thumb && cardItem.thumb} classTitle='line-clamp-2' classNameChild='lazy-load' classNameParent='w-1/5 mt-0' classWrapImg='px-3'/>
-                            ))
-                           
+                            ))          
                           }
                       </div>
                     </div>
                   ))
                 }
               </Content>
+              <div className='flex justify-between my-5'>
+                <Title title="BXH Nhạc Mới" classNameParent='text-xl'/>
+                <div className='flex items-center'>
+                  <Title title="TẤT CẢ" classNameParent='text-sm'/>
+                  <GoChevronRight className='text-white text-md ml-1'/>
+                </div>   
+              </div>
+              <div className='flex items-center gap-x-4 overflow-hidden mt-3'> 
+                {
+                  ImgBackGround.map((img, index) => (
+                    <div key={index} className='w-1/3 flex items-center flex-shrink-0 h-150 bg-sidebarRose rounded-md px-4'>
+                      <Content classNameParent="flex w-full">
+                        <a href='#' className='block '>
+                          <img src={img.src} alt={img.title} className='w-120 h-120 object-cover rounded-md' />
+                        </a>    
+                        <div className='ml-3 flex flex-col flex-1 justify-between'>
+                          <div>
+                            <Title title={img.desc}/>
+                            <Description desc={img.desc.repeat(3)} />
+                          </div>  
+                          <div className='flex justify-between items-end'>
+                            <Title title='#1' classNameParent='text-40px leading-none opacity-95' />
+                            <Description desc="29.2.2024" classNameMore='text-sm text-white' className='text-4 ' />
+                          </div>
+                        </div>
+                      </Content>
+                    </div>
+                  ))
+                }
+              </div>
             </div>
           </div>
         </div>

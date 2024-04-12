@@ -29,7 +29,7 @@ export const Images = [
   },
   {
     title:'lisa',
-    link: 'slider-9.jpeg'
+    link: 'slider-9.jpg'
   },
   {
     title:'rose',
@@ -45,7 +45,7 @@ export const Images = [
   },
   {
     title:'rose',
-    link: 'slider-13.jpg'
+    link: 'slider-9.jpg'
   },
 ]
 
@@ -113,3 +113,7 @@ export const ImgBackGround = [
 
   },
 ]
+
+export const ZingThumbnail = {
+  src: './zingmp3-thumbnail.png',
+}

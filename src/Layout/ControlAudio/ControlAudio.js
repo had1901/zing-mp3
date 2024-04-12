@@ -16,6 +16,8 @@ import { Context } from '../../ContextGlobal/ContextGlobal';
 import { IoIosMusicalNote, IoIosMusicalNotes, IoMdMusicalNote } from 'react-icons/io';
 import { PiMusicNoteSimpleFill } from 'react-icons/pi';
 
+import { ZingThumbnail } from '../../images/images';
+
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
@@ -31,6 +33,8 @@ function ControlAudio() {
   const [isLoop, setIsLoop] = useState(false)
   const [curTime, setCurTime] = useState(0)
   const [totalTime, setTotalTime] = useState(0)
+
+  console.log(valueAudio)
   
   const audio = useRef()
   const contextAudio = useContext(Context)
@@ -38,25 +42,16 @@ function ControlAudio() {
   useEffect(() => {
     if(isPlaying) {
       audio.current.play()
+      onPlay()
       console.log("Playing...")
       if(isPlaying && audio.current.play) {
         setActiveAudio(true)
-      }
-      audio.current.addEventListener('ended', () => {
-        setIsPlaying(false)
-        setCurTime(0)
-        setActiveAudio(false)
-        console.log('Ended');
-        console.log('Play', isPlaying);
-        console.log('Active', activeAudio);
-      })
-      
+      }    
     } else {
       audio.current.pause()
       console.log("Pause")
     }
-  
-  }, [isPlaying, activeAudio])
+  },[isPlaying])
 
   const handleAudio = () => {
     setActiveAudio(!activeAudio)
@@ -64,13 +59,29 @@ function ControlAudio() {
   }
 
   const onPlay = () => {
-    const duration = audio.current.duration
-    const currentTime = audio.current.currentTime
+    const duration = audio.current.duration // Lấy ra tổng thời gian của bài hát
+    const currentTime = audio.current.currentTime // Lấy ra thời gian hiện tại của bài hát ( đang phát )
     setCurTime(currentTime / duration * 100) 
-    convertSecondsToTime(Math.floor(duration))
+    convertSecondsToTime(Math.floor(duration))    
+    convertSecondsToCurrentTime(Math.floor(currentTime))
   }
   
   function convertSecondsToTime(seconds) {
+    // Chia số giây thành phần phút và phần giây
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    // Định dạng phần phút và phần giây thành chuỗi với đủ số chữ số
+    const minutesString = String(minutes).padStart(2, '0');
+    const secondsString = String(remainingSeconds).padStart(2, '0');
+
+    // Kết hợp thành biểu thức thời gian dạng "00:00 phút"
+    const timeExpression = `${minutesString}:${secondsString}`;
+    
+    return setTotalTime(timeExpression);
+  }
+
+  function convertSecondsToCurrentTime(seconds) {
     // Chia số giây thành phần phút và phần giây
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -82,9 +93,10 @@ function ControlAudio() {
     // Kết hợp thành biểu thức thời gian dạng "00:00 phút"
     const timeExpression = `${minutesString}:${secondsString}`;
     
-    return setTotalTime(timeExpression);
+    return setCurTime(timeExpression);
   }
    
+
   const handleHeart = () => {
     setActiveHeart(!activeHeart)
   }
@@ -102,16 +114,16 @@ function ControlAudio() {
               <img 
                 src=
                 { 
-                  contextAudio.infoMusic 
+                  contextAudio.infoMusic.thumb
                   ?
                   `./mp3/${contextAudio.infoMusic.thumb}`
                   :
-                   'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM='
+                   `${ZingThumbnail.src}`
                 }
                 alt='img'
                 className={`w-16 h-16 block object-cover rounded-full ${isPlaying && 'animate-spin-rotate'}`}
               />         
-              <div className='absolute left-0 bottom-0 w-14 h-14 bg-transparent rounded-full'>
+              {/* <div className='absolute left-0 bottom-0 w-14 h-14 bg-transparent rounded-full'>
                 <IoMdMusicalNote className='absolute -bottom-2 left-2/4 -translate-x-2/4 animate-m1-animate' />
                 <IoMdMusicalNote className='absolute -bottom-2 text-xl left-2/4 animate-m2-animate' />
                 <PiMusicNoteSimpleFill className='absolute text-sm -bottom-2 left-2/4 animate-m3-animate' />
@@ -119,7 +131,7 @@ function ControlAudio() {
                 <IoIosMusicalNote className='absolute -bottom-3 left-2/4 animate-m5-animate' /> 
                 <IoIosMusicalNote className='absolute -bottom-3 left-1/3 animate-m1-animate' />
                 <IoIosMusicalNotes className='absolute -bottom-3 left-2/4 animate-m6-animate' />
-              </div>
+              </div> */}
             </div>
             <div className='mx-3 flex flex-col '>
               <h3 className='text-sm font-semibold line-clamp-2'>{contextAudio.infoMusic ? contextAudio.infoMusic.name : 'Not found' || 'Name Song'}</h3>
@@ -128,7 +140,7 @@ function ControlAudio() {
           </div>
           <div className='flex items-center mx-4 gap-1 text-white'> 
 
-          <audio ref={audio} src={`../../mp3/Music/${contextAudio.path}`} autoPlay hidden controls onTimeUpdate={onPlay}></audio>      
+          <audio ref={audio} src={`../../mp3/Music/${contextAudio.path}`} autoPlay loop={activeLoop ? true : false} hidden controls onTimeUpdate={onPlay}></audio>      
 
             <BtnRadius onClick={handleHeart}>
               {
@@ -149,9 +161,9 @@ function ControlAudio() {
               <RxTrackPrevious />
             </BtnRadius>
             <BtnRadius props='hover:bg-transparent' onClick={handleAudio}>
-              <div class>
+              <div>
                 {
-                  activeAudio 
+                  activeAudio && audio.current.duration 
                   ?
                     (<PiPauseCircleLight className='text-5xl' />)
                   :
@@ -176,14 +188,11 @@ function ControlAudio() {
             </BtnRadius>
           </div>
           <div className='flex items-center justify-center gap-2 h-6'>
-            <span id='time-line' className='text-sm font-medium text-zinc-500 shrink-0 select-none'>{curTime ? Math.floor(curTime) : '00:00'}</span>
+            <span id='time-line' className='px-1 text-sm font-medium text-zinc-400 shrink-0 select-none'>{curTime ? curTime : '--:--'}</span>
             <div className='control flex items-center cursor-pointer group/parent w-3/4 py-1 '>
-              <InputRange curTime={curTime} valueAudio={valueAudio} min={min} max={max} onChange={(e) => setValueAudio(max)} />   
-              {/* <audio controls id='audio' src={`${Musics[0].path}`} >
-                <source  type='audio/mpeg'></source>
-              </audio> */}
+              <InputRange curTime={audio.current ? parseFloat((audio.current.currentTime / audio.current.duration) * 100) : null } valueAudio={valueAudio} min={min} max={max} onChange={(e) => setValueAudio(max)} />   
             </div>
-            <span id='time-total' className='text-sm font-medium shrink-0 select-none'>{totalTime ? totalTime : '00:00'}</span>
+            <span id='time-total' className='px-1 text-sm text-zinc-200 font-medium shrink-0 select-none'>{totalTime ? totalTime : '--:--'}</span>
           </div>
           <div>
             
@@ -219,5 +228,4 @@ function ControlAudio() {
     </div>
   )
 }
-
 export default ControlAudio
