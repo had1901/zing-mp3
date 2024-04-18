@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { Context } from '../ContextGlobal/ContextGlobal'
 import BtnRadius from './BtnRadius'
 import { BsArrowLeft, BsArrowRight, BsPatchCheckFill, BsSearch } from 'react-icons/bs'
@@ -45,7 +45,7 @@ function SearchBar() {
           </span>
       </Modal>
 
-      <div className={`fixed ${bgSearch.searchBar} pl-3%3 pr-2%9 flex justify-between gap-x-4 xl:left-60 md:left-0 sm:left-0 right-0 z-30 items-center text-white select-none`}>       
+      <div className={`fixed ${bgSearch.searchBar} pl-3%3 pr-2%9 flex justify-between gap-x-4 xl:left-60 xs:left-0 right-0 z-30 items-center text-white select-none`}>       
               <BtnRadius props='xl:hidden sm:block flex items-center justify-center hover:bg-transparent' onClick={() => bgSearch.handleActiveSidebar()}>
                 <SlSettings className={`${bgSearch.iconSetting} m-auto w-4 min-h-32 object-cover`}/>
               </BtnRadius>
@@ -61,7 +61,7 @@ function SearchBar() {
                   </div>
                   <div className='flex items-center '>
                     <div className='flex items-center justify-center gap-1 relative '>
-                      <InputSearch className={`${bgSearch.search} outline-none rounded-full h-10 lg:w-440 sm:w-240 pl-11 pr-5 leading-10 ${bgSearch.inputPlaceHolder} text-white text-sm`}/>
+                      <InputSearch className={`${bgSearch.search} outline-none rounded-full h-10 lg:w-440 sm:w-240 xs:w-120 pl-11 xs: pr-5 leading-10 ${bgSearch.inputPlaceHolder} text-white text-sm`}/>
                       <BtnRadius props={`${bgSearch.iconArrow} absolute left-0 top-2/4 px-3 -translate-y-2/4 hover:bg-transparent text-xl flex items-center`}>
                         <BsSearch className={`${bgSearch.iconArrow}`}/>
                       </BtnRadius>
@@ -69,10 +69,10 @@ function SearchBar() {
                   </div>
                 </div>
                 <div className='flex items-center gap-3'>
-                  <div className='flex items-center justify-center gap-1 xl:min-w-190 sm:max-w-190'>
+                  <div className='flex items-center justify-center gap-1 xl:min-w-190 sm:max-w-190 xs:hidden'>
                     <BtnRadius ref={bgSearch.buttonDownLoadRef} datatype='buttonDownLoad' props={`${bgSearch.btnDownLoad} flex min-h-40 items-center gap-2 px-5 text-sm text-zinc-400 hover:text-white`}>
                       <FiDownload className={`${bgSearch.iconDownLoad}`} datatype='buttonDownLoad' />
-                      <span className={`lg:block sm:hidden ${bgSearch.iconDownLoad}`}>Tải bản Windows</span>
+                      <span className={`lg:block xs:hidden ${bgSearch.iconDownLoad}`}>Tải bản Windows</span>
                     </BtnRadius>
                   </div>
                   <div className='relative group/popup flex items-center justify-center gap-1'>

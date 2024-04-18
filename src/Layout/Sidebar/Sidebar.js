@@ -95,7 +95,7 @@ function Sidebar() {
 
 
   return (
-    <section ref={bgSidebar.sidebarRef} datatype='sidebar' className={`h-90 xl:translate-x-0 ${bgSidebar.isActiveSidebar === true ? 'sm:translate-x-0 sm:bg-smSidebarScreen shadow-sidebarShadow' : 'sm:-translate-x-full'}  transition-all fixed z-50 text-white ${bgSidebar.sideBar}`}>
+    <section ref={bgSidebar.sidebarRef} datatype='sidebar' className={`h-90 xl:translate-x-0 ${bgSidebar.isActiveSidebar === true ? 'sm:translate-x-0 xs:bg-smSidebarScreen shadow-sidebarShadow' : 'xs:-translate-x-full'}  transition-all fixed z-50 text-white ${bgSidebar.sideBar}`}>
       <BsArrowLeft className={`${bgSidebar.iconArrow} absolute right-5 top-6 text-xl`} onClick={() => bgSidebar.handleActiveSidebar() }/>
       <div className='w-60 flex flex-col h-full'>
         <div className='flex-1'>

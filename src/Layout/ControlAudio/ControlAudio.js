@@ -211,7 +211,7 @@ function ControlAudio() {
           </span>
         </div>
       </div>
-      <div className={`absolute bottom-full left-0 w-240 flex items-center xl:translate-x-0 ${contextAudio.isActiveSidebar === true ? 'sm:translate-x-0' : 'sm:-translate-x-full'} transition-all flex-shrink-0 z-10 mt-auto px-6 gap-2 text-colo bg-sidebarRose font-semibold h-12 cursor-pointer border-solid hover:text-white border-t-1 border-zinc-700`}>
+      <div className={`absolute bottom-full left-0 w-240 flex items-center xl:translate-x-0 ${contextAudio.isActiveSidebar === true ? 'sm:translate-x-0' : 'xs:-translate-x-full'} transition-all flex-shrink-0 z-10 mt-auto px-6 gap-2 text-colo bg-sidebarRose font-semibold h-12 cursor-pointer border-solid hover:text-white border-t-1 border-zinc-700`}>
           <BiPlus/> 
           <span className='flex-1'>Tạo playlist mới</span>
       </div>              
