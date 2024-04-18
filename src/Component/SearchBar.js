@@ -49,7 +49,7 @@ function SearchBar() {
               <BtnRadius props='xl:hidden sm:block flex items-center justify-center hover:bg-transparent' onClick={() => bgSearch.handleActiveSidebar()}>
                 <SlSettings className={`${bgSearch.iconSetting} m-auto w-4 min-h-32 object-cover`}/>
               </BtnRadius>
-              <div className=' flex justify-between w-full'>
+              <div className=' flex sm:justify-between w-full xs:gap-x-2'>
                 <div className='flex items-center gap-4'>
                   <div className='flex gap-1 my-4 text-xl text-current '>
                     <BtnRadius props='flex items-center justify-center hover:bg-transparent'>
