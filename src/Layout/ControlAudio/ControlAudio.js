@@ -13,13 +13,11 @@ import BtnRadius from '../../Component/BtnRadius';
 import InputRange from '../../Component/InputRange';
 import { Context } from '../../ContextGlobal/ContextGlobal';
 
-import { IoIosMusicalNote, IoIosMusicalNotes, IoMdMusicalNote } from 'react-icons/io';
-import { PiMusicNoteSimpleFill } from 'react-icons/pi';
-
 import { ZingThumbnail } from '../../images/images';
 
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import { BiPlus } from 'react-icons/bi';
 
 function ControlAudio() {
   const min = 0
@@ -34,8 +32,6 @@ function ControlAudio() {
   const [curTime, setCurTime] = useState(0)
   const [totalTime, setTotalTime] = useState(0)
 
-  console.log(valueAudio)
-  
   const audio = useRef()
   const contextAudio = useContext(Context)
 
@@ -77,7 +73,6 @@ function ControlAudio() {
 
     // Kết hợp thành biểu thức thời gian dạng "00:00 phút"
     const timeExpression = `${minutesString}:${secondsString}`;
-    
     return setTotalTime(timeExpression);
   }
 
@@ -123,15 +118,6 @@ function ControlAudio() {
                 alt='img'
                 className={`w-16 h-16 block object-cover rounded-full ${isPlaying && 'animate-spin-rotate'}`}
               />         
-              {/* <div className='absolute left-0 bottom-0 w-14 h-14 bg-transparent rounded-full'>
-                <IoMdMusicalNote className='absolute -bottom-2 left-2/4 -translate-x-2/4 animate-m1-animate' />
-                <IoMdMusicalNote className='absolute -bottom-2 text-xl left-2/4 animate-m2-animate' />
-                <PiMusicNoteSimpleFill className='absolute text-sm -bottom-2 left-2/4 animate-m3-animate' />
-                <PiMusicNoteSimpleFill className='absolute -bottom-2  left-1/3 animate-m4-animate' />
-                <IoIosMusicalNote className='absolute -bottom-3 left-2/4 animate-m5-animate' /> 
-                <IoIosMusicalNote className='absolute -bottom-3 left-1/3 animate-m1-animate' />
-                <IoIosMusicalNotes className='absolute -bottom-3 left-2/4 animate-m6-animate' />
-              </div> */}
             </div>
             <div className='mx-3 flex flex-col '>
               <h3 className='text-sm font-semibold line-clamp-2'>{contextAudio.infoMusic ? contextAudio.infoMusic.name : 'Not found' || 'Name Song'}</h3>
@@ -225,6 +211,10 @@ function ControlAudio() {
           </span>
         </div>
       </div>
+      <div className={`absolute bottom-full left-0 w-240 flex items-center xl:translate-x-0 ${contextAudio.isActiveSidebar === true ? 'sm:translate-x-0' : 'sm:-translate-x-full'} transition-all flex-shrink-0 z-10 mt-auto px-6 gap-2 text-colo bg-sidebarRose font-semibold h-12 cursor-pointer border-solid hover:text-white border-t-1 border-zinc-700`}>
+          <BiPlus/> 
+          <span className='flex-1'>Tạo playlist mới</span>
+      </div>              
     </div>
   )
 }

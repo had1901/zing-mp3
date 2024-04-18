@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { BiDisc, BiBone, BiPlus } from "react-icons/bi";
+import { BiDisc, BiBone } from "react-icons/bi";
 import { AiOutlinePieChart, AiOutlineStar } from "react-icons/ai";
 import { SiYoutubemusic } from "react-icons/si";
 import { RiFolderMusicLine } from "react-icons/ri";
@@ -8,6 +8,7 @@ import { PiMusicNotesPlusDuotone } from "react-icons/pi";
 import SidebarItem from '../../Component/Home/SidebarItem';
 import Button from '../../Component/Button';
 import { Context } from '../../ContextGlobal/ContextGlobal';
+import { BsArrowLeft } from 'react-icons/bs';
 
 
 const menuSidebar1 = [
@@ -92,12 +93,12 @@ function Sidebar() {
     }
   },[activeItem])
 
-  
 
   return (
-    <section ref={bgSidebar.sidebarRef} datatype='sidebar' className={`h-90 fixed z-50 text-white ${bgSidebar.sideBar}`}>
-      <div className='w-60 flex flex-col justify-between h-full'>
-        <div>
+    <section ref={bgSidebar.sidebarRef} datatype='sidebar' className={`h-90 xl:translate-x-0 ${bgSidebar.isActiveSidebar === true ? 'sm:translate-x-0 sm:bg-smSidebarScreen shadow-sidebarShadow' : 'sm:-translate-x-full'}  transition-all fixed z-50 text-white ${bgSidebar.sideBar}`}>
+      <BsArrowLeft className={`${bgSidebar.iconArrow} absolute right-5 top-6 text-xl`} onClick={() => bgSidebar.handleActiveSidebar() }/>
+      <div className='w-60 flex flex-col h-full'>
+        <div className='flex-1'>
           <div className='w-full h-70 px-7'>
             <div className='h-full py-3'>
               <img 
@@ -108,7 +109,7 @@ function Sidebar() {
             </div>
           </div>
           <div className='flex flex-col justify-between'>
-            <div className='h-full flex flex-col justify-between'>
+            <div className=' flex flex-col justify-between'>
               <div>
                 <ul>
                   {
@@ -137,11 +138,7 @@ function Sidebar() {
             </div>
           </div>
         </div>
-        <div className='flex items-center px-6 gap-2 text-colo font-semibold py-3 cursor-pointer border-solid hover:text-white border-t-1 border-zinc-700'>
-            <BiPlus/> 
-            <span>Tạo playlist mới</span>
-        </div>              
-        </div> 
+      </div> 
     </section>
   )
 }

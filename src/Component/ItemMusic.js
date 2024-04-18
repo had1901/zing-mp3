@@ -9,7 +9,7 @@ import BtnRadius from './BtnRadius';
 import { GoHeart, GoHeartFill } from 'react-icons/go';
 import { AiOutlineMinus } from 'react-icons/ai';
 
-function ItemMusic({ item, className, classWrap, classNameMore, classTitle, classSinger, classIcon, number, onClick, children, isIcon, isDate, isTimeString, isNumberRank }) {
+function ItemMusic({ onClick, ...props }) {
   const [activeHeart, setActiveHeart] = useState(false)
   const [textstroke, setTextstroke] = useState('text-stroke-any')
   const iconRef = useRef(null)
@@ -19,7 +19,7 @@ function ItemMusic({ item, className, classWrap, classNameMore, classTitle, clas
     setActiveHeart(!activeHeart)
   }
   useEffect(() => {
-    switch (number) {
+    switch (props.number) {
       case 0:
         setTextstroke('text-stroke-0')
         break
@@ -38,27 +38,27 @@ function ItemMusic({ item, className, classWrap, classNameMore, classTitle, clas
   },[])
   
   return (
-        <section className={classWrap}>
+        <section className={props.classWrap}>
           {
-            isNumberRank 
+            props.isNumberRank 
             &&
             <div className='flex items-center justify-between min-w-60px gap-x-2 pl-3'>
-              <div className={`w-60px text-center text-2rem font-black ${textstroke}`}>{number === 0 ? (<p>Gợi ý</p>) : number}</div>
-              {number !== 0  && <AiOutlineMinus className='mx-1' />}
+              <div className={`w-60px text-center text-2rem font-black ${textstroke}`}>{props.number === 0 ? (<p>Gợi ý</p>) : props.number}</div>
+              {props.number !== 0  && <AiOutlineMinus className='mx-1' />}
             </div>
           }
           <div 
-                className={`flex items-center w-32 p-2 gap-x-4 group/item ${className}`}
+                className={`flex items-center w-32 p-2 gap-x-4 group/item ${props.className}`}
                 onClick={onClick}
               >
-                <div className={`relative group/parent cursor-pointer ${classNameMore}`} onClick={() => contextMusic.handleGetInfoMusic(item)}>
+                <div className={`relative group/parent cursor-pointer ${props.classNameMore}`} onClick={() => contextMusic.handleGetInfoMusic(props.item)}>
                   <img 
-                    src={`/mp3/${item.thumb}`} 
-                    alt={item.name} 
+                    src={`/mp3/${props.item.thumb}`} 
+                    alt={props.item.name} 
                     className='w-full h-full group-hover/item:bg-black group-hover/item:opacity-50 block rounded-lg object-cover border-black'                
                   />
                   {
-                    contextMusic.infoMusic === item 
+                    contextMusic.infoMusic === props.item 
                     ?
                       <div className='w-full h-full flex items-center justify-center text-center absolute z-10 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-musicBgColor shadow-musicShadow rounded-md'>                      
                           <img src='./mp3/gifWaveMusic/icon-playing.gif' alt='gif' className='w-1/3 inline-block ' />                      
@@ -70,18 +70,18 @@ function ItemMusic({ item, className, classWrap, classNameMore, classTitle, clas
                 </div>
                 <div className='flex flex-col justify-center leading-none flex-2 font-semibold'>
                   <div className='flex items-center capitalize text-white text-sm '>
-                    <h4 className={classTitle}>{item.name}</h4> 
-                    <Label title={item.premium} />                
+                    <h4 className={props.classTitle}>{props.item.name}</h4> 
+                    <Label title={props.item.premium} />                
                   </div>
                   <div>
-                    <Link to='./zingchart' className={`text-textZingchart inline hover:underline hover:text-violet ${classSinger}`}>{item.singer}</Link>
+                    <Link to='./zingchart' className={`text-textZingchart inline hover:underline hover:text-violet ${props.classSinger}`}>{props.item.singer}</Link>
                   </div>
-                  {isDate && <span className='text-xs text-textZingchart'>{item.date}</span>}
+                  {props.isDate && <span className='text-xs text-textZingchart'>{props.item.date}</span>}
                 </div>
-                {children}
-                <div className={classIcon}>
+                {props.children}
+                <div className={props.classIcon}>
                   {
-                    isIcon && 
+                    props.isIcon && 
                     <div ref={iconRef} className='flex items-center hidden gap-2 group-hover/item:flex'>
                       <BtnRadius>
                         <LiaMicrophoneAltSolid />
@@ -96,9 +96,9 @@ function ItemMusic({ item, className, classWrap, classNameMore, classTitle, clas
                   }
                   <IoIosMore className='mr-2 hover:bg-searchRose text-gray-400 hover:text-white hidden w-4 h-4 box-content p-2 cursor-pointer rounded-full font-bold group-hover/item:block' />
                   {
-                    isTimeString 
+                    props.isTimeString 
                     &&
-                    <span className='text-xs text-textZingchart font-normal group-hover/item:hidden'>{item.timeString}</span>
+                    <span className='text-xs text-textZingchart font-normal group-hover/item:hidden'>{props.item.timeString}</span>
                   }
                 </div>
           </div>

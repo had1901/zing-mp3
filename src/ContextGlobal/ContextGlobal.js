@@ -35,6 +35,8 @@ function ContextProvider({ children }) {
   const [isActive, setIsActive] = useState(false)
   const [path, setPath] = useState('')
   const [gifplay, setGifplay] = useState(false)
+  const [isActiveSidebar, setIsActiveSidebar] = useState(false)
+
 
 
 
@@ -97,12 +99,11 @@ function ContextProvider({ children }) {
       setButtonDownLoadComponent(buttonDownLoadRef.current.getAttribute('datatype'))
     }
     
-  }, deps)
+  }, [deps])
 
   const onClose = () => {
     setIsActive(false)
   }
-  console.log(isActive)
   const handleChangeThumb = () => {
     setIsActive(!isActive)
   }
@@ -118,6 +119,17 @@ function ContextProvider({ children }) {
       setGifplay(true)
     }
   }  
+
+  const handleActiveSidebar = () => {
+    if(isActiveSidebar === true) {
+      setIsActiveSidebar(false)
+      console.log('day la dong',isActiveSidebar)
+    } else {
+      setIsActiveSidebar(true)
+      console.log('day la mo',isActiveSidebar)
+    }
+  }
+
   const handleBackGround = async (item) => {
     setThumbSetting(item.src)
     setThumb(item.link)
@@ -319,6 +331,7 @@ function ContextProvider({ children }) {
     path,
     gifplay,
     isActive,
+    isActiveSidebar,
 
     colorBgSearch,
     colorBgSidebar,
@@ -365,6 +378,7 @@ function ContextProvider({ children }) {
     handleGetInfoMusic,
     handleBackGround,
     handleChangeThumb,
+    handleActiveSidebar,
   }
   return (
     <Context.Provider value={value}>

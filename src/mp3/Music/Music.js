@@ -11,7 +11,8 @@ export const Musics = [
     premium: 'premium',
     date: 'Hôm nay',
     timeTotal: '2400',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   },
   {
     name: 'Attention',
@@ -25,7 +26,8 @@ export const Musics = [
     premium: '',
     date: '2 ngày trước',
     timeTotal: '3600',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Despacito',
@@ -39,7 +41,8 @@ export const Musics = [
     premium: '',
     date: '3 ngày trước',
     timeTotal: '3260',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'DNA',
@@ -53,7 +56,8 @@ export const Musics = [
     premium: '',
     date: 'Hôm qua',
     timeTotal: '4100',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Hoa-Co-Lau-(TikTok-Speed-Up-Version)',
@@ -67,7 +71,8 @@ export const Musics = [
     premium: '',
     date: '3 ngày trước',
     timeTotal: '2340',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'How You Like That',
@@ -81,7 +86,8 @@ export const Musics = [
     premium: '',
     date: 'Hôm nay',
     timeTotal: '3100',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Dreamers',
@@ -95,7 +101,8 @@ export const Musics = [
     premium: '',
     date: 'Hôm nay',
     timeTotal: '3440',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Some',
@@ -109,7 +116,8 @@ export const Musics = [
     premium: '',
     date: 'Hôm qua',
     timeTotal: '3500',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Từ em mà ra',
@@ -123,7 +131,8 @@ export const Musics = [
     premium: 'premium',
     date: '2 ngày trước',
     timeTotal: '2860',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'We don\'t talk anymore',
@@ -137,7 +146,8 @@ export const Musics = [
     premium: '',
     date: '1 ngày trước',
     timeTotal: '5200',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   },   
   {
     name: 'As If Its Your Last',
@@ -151,7 +161,8 @@ export const Musics = [
     premium: '',
     date: 'Hôm nay',
     timeTotal: '3680',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   },  
   {
     name: 'Life Go On',
@@ -165,7 +176,8 @@ export const Musics = [
     premium: 'premium',
     date: 'Hôm nay',
     timeTotal: '2400',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   },
   {
     name: 'Attention',
@@ -179,7 +191,8 @@ export const Musics = [
     premium: '',
     date: '2 ngày trước',
     timeTotal: '3600',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Despacito',
@@ -193,7 +206,8 @@ export const Musics = [
     premium: '',
     date: '3 ngày trước',
     timeTotal: '3260',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'DNA',
@@ -207,7 +221,8 @@ export const Musics = [
     premium: '',
     date: 'Hôm qua',
     timeTotal: '4100',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Hoa-Co-Lau-(TikTok-Speed-Up-Version)',
@@ -221,7 +236,8 @@ export const Musics = [
     premium: '',
     date: '3 ngày trước',
     timeTotal: '2340',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'How You Like That',
@@ -235,7 +251,8 @@ export const Musics = [
     premium: '',
     date: 'Hôm nay',
     timeTotal: '3100',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Dreamers',
@@ -249,7 +266,8 @@ export const Musics = [
     premium: '',
     date: 'Hôm nay',
     timeTotal: '3440',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Some',
@@ -263,7 +281,8 @@ export const Musics = [
     premium: '',
     date: 'Hôm qua',
     timeTotal: '3500',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Từ em mà ra',
@@ -277,7 +296,8 @@ export const Musics = [
     premium: 'premium',
     date: '2 ngày trước',
     timeTotal: '2860',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'We don\'t talk anymore',
@@ -291,7 +311,8 @@ export const Musics = [
     premium: '',
     date: '1 ngày trước',
     timeTotal: '5200',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   },   
   {
     name: 'As If Its Your Last',
@@ -305,7 +326,8 @@ export const Musics = [
     premium: '',
     date: 'Hôm nay',
     timeTotal: '3680',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   },  
 ]
 
@@ -322,7 +344,8 @@ export const MusicsVN = [
     premium: 'premium',
     date: 'Hôm nay',
     timeTotal: '2400 ',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   },
   {
     name: 'See Tình',
@@ -336,7 +359,8 @@ export const MusicsVN = [
     premium: '',
     date: '2 ngày trước',
     timeTotal: '2400 ',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Hai phút hơn',
@@ -350,7 +374,8 @@ export const MusicsVN = [
     premium: '',
     date: '3 ngày trước',
     timeTotal: '2400 ',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Bống bống bang bang',
@@ -364,7 +389,8 @@ export const MusicsVN = [
     premium: '',
     date: 'Hôm qua',
     timeTotal: '2400 ',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Hoa-Co-Lau-(TikTok-Speed-Up-Version)',
@@ -378,7 +404,8 @@ export const MusicsVN = [
     premium: '',
     date: '3 ngày trước',
     timeTotal: '2400 ',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Thương em',
@@ -392,7 +419,8 @@ export const MusicsVN = [
     premium: '',
     date: 'Hôm nay',
     timeTotal: '2400 ',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Chỉ là bạn',
@@ -406,7 +434,8 @@ export const MusicsVN = [
     premium: '',
     date: 'Hôm nay',
     timeTotal: '2400 ',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Ngày ấy bạn và tôi',
@@ -420,7 +449,8 @@ export const MusicsVN = [
     premium: '',
     date: 'Hôm qua',
     timeTotal: '2400 ',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Từ em mà ra',
@@ -434,7 +464,8 @@ export const MusicsVN = [
     premium: 'premium',
     date: '2 ngày trước',
     timeTotal: '2400 ',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Lạc trôi',
@@ -448,7 +479,8 @@ export const MusicsVN = [
     premium: '',
     date: '1 ngày trước',
     timeTotal: '2400 ',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   }, 
   {
     name: 'Anh đâu định khóc',
@@ -462,7 +494,8 @@ export const MusicsVN = [
     premium: '',
     date: '1 ngày trước',
     timeTotal: '2400 ',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   },  
   {
     name: 'Hơn cả yêu',
@@ -476,7 +509,8 @@ export const MusicsVN = [
     premium: '',
     date: 'Hôm nay',
     timeTotal: '2400 ',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
   },   
 ]
 
@@ -493,7 +527,8 @@ export const MusicsWorld = [
     premium: 'premium',
     date: 'Hôm nay',
     timeTotal: '2400 ',
-    timeString: '02:40'
+    timeString: '02:40',
+    listening: 50,
     
   },
   {

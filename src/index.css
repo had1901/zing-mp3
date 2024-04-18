@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body{
-  height: 100%;
+  background: hsl(264,40%,10%);
   font-family: 'Inter', sans-serif;
 }
 html::-webkit-scrollbar{
@@ -124,6 +124,52 @@ html::-webkit-scrollbar{
   background-color: yellow;
    
 }
+.new-song::-webkit-scrollbar{
+  width: 5px;
+  height: 5px;
+}
+.new-song::-webkit-scrollbar-thumb{
+  background-image: linear-gradient(-45deg, #6a5af9, #d66efd);
+  border-radius: 50px;
+}
+.dots{
+  align-items:center;
+  background-color:#ffffff;
+  border-radius:50%;
+  box-shadow:#000000 0px 2px 4px 0px;
+  color:#ffffff;
+  display:flex;
+  font-size:14px;
+  grid-area:auto;
+  justify-content:center;
+  text-align:center;
+}
+.slick-prev, .slick-next{
+  z-index: 11;
+}
+.slick-prev:before, .slick-next:before {
+  position: absolute;
+  top: -5px !important;
+  font-family: 'slick';
+  font-size: 44px !important;
+  color: hsla(0, 0%, 100%, 0.367) !important;
+  z-index: 99 !important; 
+}
+.slick-next:before{
+  right: 8px !important;
+}
+.slick-prev:before{
+  left: 8px !important;
+}
 
+.slick-slide > div {
+  margin: 0 10px !important;
+}
 
-
+/* Text */
+.zing-chart-text{
+  background: radial-gradient(50% 124.93% at 95.86% -10%, #3efad9 0, hsla(0, 0%, 100%, 0) 100%), linear-gradient(91.56deg, #ff9357 1.54%, #9100ff 98.71%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

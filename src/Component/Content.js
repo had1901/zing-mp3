@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import img from '../mp3/imgTop100/img-prev.jpg'
 import { GoHeart, GoHeartFill } from 'react-icons/go'
-import { PiPauseCircleLight, PiPlayCircleLight } from 'react-icons/pi'
+import { PiPlayCircleLight } from 'react-icons/pi'
 import { IoIosMore } from 'react-icons/io'
 import BtnRadius from './BtnRadius'
 
-function Content({ children, classNameParent, classNameChild, classNameMore, classWrapImg, dataThumb, description, thumb, onClick }) {
+function Content({ onClick, ...props }) {
   const [isLove, setIsLove] = useState(false)
 
   useEffect(() => {
@@ -43,29 +42,24 @@ function Content({ children, classNameParent, classNameChild, classNameMore, cla
 
     return () => observer.disconnect();
   }, [])
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setIsLoading(false)
-  //   }, 2000)
-  // }, [isLoading])
   const handleBtnLove = () => {
     setIsLove(!isLove)
   }
   return (
     <SkeletonTheme baseColor="#a6a6a6" highlightColor="#56595b">
-      <div className={`text-white ${classNameParent}`}>
-        {children ? children : 
-          <div className={`w-full ${classWrapImg}`}>
+      <div className={`text-white ${props.classNameParent}`}>
+        {props.children ? props.children : 
+          <div className={`w-full ${props.classWrapImg}`}>
               {
                 <div className='cursor-pointer relative rounded-xl overflow-hidden group/parent'>
                   <img 
-                    data={dataThumb}
-                    src={`./mp3/${thumb}`} 
+                    data={props.dataThumb}
+                    src={`./mp3/${props.thumb}`} 
                     alt='img' 
-                    className={`w-full object-cover block rounded-xl group-hover/parent:scale-105 select-none ${classNameChild}`}   
+                    className={`w-full object-cover block rounded-xl group-hover/parent:scale-110 select-none ${props.classNameChild}`}   
                     onClick={onClick}
                   /> 
-                  <div className='hidden flex items-center text-xl absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 justify-center gap-4 group-hover/parent:flex'>
+                  <div className='hidden items-center text-xl absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 justify-center gap-4 group-hover/parent:flex'>
                     <BtnRadius props='p-3 hover:bg-bgOpacity' onClick={handleBtnLove}>
                       {
                         isLove ? (<GoHeartFill />) : (<GoHeart />)
@@ -85,7 +79,7 @@ function Content({ children, classNameParent, classNameChild, classNameMore, cla
               ?
               : 
             } */}
-            <p className={`my-2 text-sm text-gray-400 font-medium ${classNameMore}`}>{description || <Skeleton />}</p>
+            <p className={`my-2 text-sm text-gray-400 font-medium ${props.classNameMore}`}>{props.description || <Skeleton />}</p>
           </div>
         }
       </div>

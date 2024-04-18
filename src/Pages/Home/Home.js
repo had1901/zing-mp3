@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import '../../../src/index.css';
 
-import axios from 'axios';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -18,60 +17,91 @@ import Title from './../../Component/Title';
 import SlideImage from '../../Component/SlideImage';
 
 import { Context } from '../../ContextGlobal/ContextGlobal';
-import Particle from '../../Component/Particle';
 import Description from './../../Component/Description';
-import { FaDivide } from 'react-icons/fa';
 import { GoChevronRight } from 'react-icons/go';
 
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import ItemImage from './../../Component/ItemImage';
+import { zingchartList } from '../../images/imgZingchart/zingchart';
+import ContainerMain from '../../Component/ContainerMain';
 
 function Home() {
   const [active, setActive] = useState('Tất cả')
+  const [itemSlideScreen, setItemSlideScreen] = useState(4)
   const bgHome = useContext(Context)
- 
+
   const tabTitles = ['Tất cả', 'V-pop', 'K-pop', 'Quốc tế']
+
+  useEffect(() => {
+    const handleToShowSlide = () => {
+      const windowWidth = window.innerWidth
+        if(windowWidth >= 1340) {
+          setItemSlideScreen(4)
+        } else if(windowWidth >= 1024) {
+          setItemSlideScreen(3)
+        } else if(windowWidth >= 768) {
+          setItemSlideScreen(2)
+        } else {
+          setItemSlideScreen(1)
+        }
+      }
+    window.addEventListener('resize', handleToShowSlide)
+    handleToShowSlide()
+    return () => window.removeEventListener('resize', handleToShowSlide)
+  },[])
+  
 
   const handleBtnActive = (tabTitle) => {
     setActive(tabTitle)
   }
   
-  return (
-    <div>      
-        <div className='w-full'>  
-        {/* <Particle />  */}
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+    // autoplay: true,
+    // autoplaySpeed: 2000,
+    // cssEase: "linear",
+  };
 
-          <div className='w-full pt-1 h-full'>
-            <div className={`ml-60 h-full px-14 pb-24 mt-20 overflow-scrollbar ${bgHome.thumb ? '' : 'bg-primary'}`}>        
+  return (
+    <ContainerMain>    
+        {/* <Particle />  */}
+        <div className={`${bgHome.thumb ? '' : 'bg-primary'}`}>        
               <Swiper
                 spaceBetween={20}
-                slidesPerView={4}
+                slidesPerView={itemSlideScreen}
                 loop={true}
                 speed={1000}
                 modules={[Autoplay, Navigation, Pagination]}
                 navigation
                 pagination={{ clickable: true }}
                 autoplay={{delay: 3000, disableOnInteraction: false }}
-                className='w-full ml-60 xl:h-64 lg:h-64 select-none mt-9 '
+                className='w-full xl:h-fit lg:h-fit select-none'
               >
-              {
-                Images.map((item, index) => (
-                  <SwiperSlide key={index} >
-                    <SlideImage item={item}/>
-                  </SwiperSlide>
-                ))
-              }
+                  {
+                    Images.map((item, index) => (
+                      <SwiperSlide key={index} className='h-fit' >
+                        <SlideImage item={item}/>
+                      </SwiperSlide>
+                    ))
+                  }
               </Swiper>  
 
-              <Title title='Gần đây' classNameMore='mt-12 my-5 text-xl'/>   
+              <Title title='Gần đây' classNameMore='mt-12 mb-5 mt-10 text-xl'/>   
               <div className='flex flex-wrap -mx-3' >
-                {
-                  Chills.map((item, index) => (
-                      <Content key={index} description={item.card[0].desc} thumb='' dataThumb={item.card[0].thumb} classNameChild=' lazy-load' classNameParent='max-w-1/44' classNameMore='line-clamp-2' classWrapImg='px-3'/>  
-                      
-                    ))     
-                }
+                  {
+                    Chills.map((item, index) => (
+                        <Content key={index} description={item.card[0].desc} dataThumb={item.card[0].thumb} classNameChild='lazy-load' classNameParent='w-1/44 shrink-0' classNameMore='line-clamp-2' classWrapImg='px-3'/>                
+                      ))     
+                  }
               </div>  
-              <Title title='Mới Phát Hành' classNameParent='mt-11 my-5 text-xl'/>       
-              <Content classNameParent=''>
+              <Title title='Mới Phát Hành' classNameParent='mt-11 mb-5 mt-10 text-xl'/>       
+              <Content>
                 <div className='flex gap-3 '> 
                     {
                       tabTitles.map((tabTitle, index) => (
@@ -79,7 +109,7 @@ function Home() {
                       ))
                     }
                 </div>
-                <div className='flex flex-wrap mt-4'>
+                <section className='grid xl:grid-cols-3 lg:grid-cols-2 sm:grid-cols-1 mt-4'>
                   {
                     (
                       function() {
@@ -101,22 +131,22 @@ function Home() {
                             musicArray = []
                         }
                         return musicArray.map((item, index) => (
-                          <ItemMusic key={index} item={item} isDate className='w-full rounded-lg hover:bg-searchRose' classWrap='flex justify-between w-33 ' classSinger='text-sm' classNameMore='w-16 h-16' />
+                          <ItemMusic key={index} item={item} isDate className='w-full rounded-lg hover:bg-searchRose' classWrap='flex justify-between' classSinger='text-sm' classNameMore='w-16 h-16' />
                         ))
                       }
                     )()
                   }
-                </div>
+                </section>
               </Content>
               <Content>
                 {
                   Chills.map((item, index) => (
                     <div key={index}>
-                      <Title title={item.title} classNameMore='text-xl my-5'/>
-                      <div className='flex flex-wrap -mx-3'>   
+                      <Title title={item.title} classNameMore='text-xl mb-5 mt-10'/>
+                      <div className='grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 -mx-3'>   
                           {
                             item.card.map((cardItem, index) => (                 
-                              <Content key={index} description={cardItem.desc} thumb='' dataThumb={cardItem.thumb && cardItem.thumb} classTitle='line-clamp-2' classNameChild='lazy-load' classNameParent='w-1/5 mt-0' classWrapImg='px-3'/>
+                              <Content key={index} description={cardItem.desc} thumb='' dataThumb={cardItem.thumb && cardItem.thumb} classTitle='line-clamp-2' classNameChild='lazy-load' classNameParent='mt-0' classWrapImg='px-3'/>
                             ))          
                           }
                       </div>
@@ -124,40 +154,70 @@ function Home() {
                   ))
                 }
               </Content>
-              <div className='flex justify-between my-5'>
+              <div className='flex justify-between mb-5 mt-10'>
                 <Title title="BXH Nhạc Mới" classNameParent='text-xl'/>
                 <div className='flex items-center'>
                   <Title title="TẤT CẢ" classNameParent='text-sm'/>
                   <GoChevronRight className='text-white text-md ml-1'/>
                 </div>   
               </div>
-              <div className='flex items-center gap-x-4 overflow-hidden mt-3'> 
-                {
-                  ImgBackGround.map((img, index) => (
-                    <div key={index} className='w-1/3 flex items-center flex-shrink-0 h-150 bg-sidebarRose rounded-md px-4'>
-                      <Content classNameParent="flex w-full">
-                        <a href='#' className='block '>
-                          <img src={img.src} alt={img.title} className='w-120 h-120 object-cover rounded-md' />
-                        </a>    
-                        <div className='ml-3 flex flex-col flex-1 justify-between'>
-                          <div>
-                            <Title title={img.desc}/>
-                            <Description desc={img.desc.repeat(3)} />
-                          </div>  
-                          <div className='flex justify-between items-end'>
-                            <Title title='#1' classNameParent='text-40px leading-none opacity-95' />
-                            <Description desc="29.2.2024" classNameMore='text-sm text-white' className='text-4 ' />
+
+              {/* Slider show */}
+              <div className="slider-container">
+                <Slider {...settings} className='new-song snap-x mt-3'>
+                  {
+                    ImgBackGround.map((img, index) => (
+                      <div key={index} className='w-[calc((100%_/_3)_-_11px)] flex items-center snap-center flex-shrink-0 h-150 bg-sidebarRose rounded-md p-4'>
+                        <Content classNameParent="flex w-full">
+                          <a href='#!' className='block'>
+                            <img src={img.src} alt={img.title} className='w-120 h-120 object-cover rounded-md' />
+                          </a>    
+                          <div className='ml-3 flex flex-col flex-1 justify-between'>
+                            <div>
+                              <Title title={img.desc}/>
+                              <Description desc={img.desc.repeat(3)} />
+                            </div>  
+                            <div className='flex justify-between items-end'>
+                              <Title title='#1' classNameParent='text-40px leading-none opacity-95' />
+                              <Description desc="29.2.2024" classNameMore='text-sm text-white' className='text-4 ' />
+                            </div>
                           </div>
-                        </div>
-                      </Content>
+                        </Content>
+                      </div>
+                    ))
+                  }
+                </Slider>
+              </div>
+
+              {/* ZingChart img */}
+              <section className='grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-7 mt-7'>
+                {
+                  zingchartList.map((item,index) => (
+                    <ItemImage key={index} >
+                      <img src={`../images/imgZingchart/${item}`} alt='zingchart' className='w-full rounded-md' />
+                    </ItemImage>
+                  ))
+                }
+              </section>
+
+              <Content>
+                {
+                  Chills.slice(0, 2).map((item, index) => (
+                    <div key={index}>
+                      <Title title={item.title} classNameMore='text-xl mb-5 mt-10'/>
+                      <div className='grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 -mx-3'>   
+                          {
+                            item.card.map((cardItem, index) => (                 
+                              <Content key={index} description={cardItem.desc} thumb='' dataThumb={cardItem.thumb && cardItem.thumb} classTitle='line-clamp-2' classNameChild='lazy-load' classNameParent='mt-0' classWrapImg='px-3'/>
+                            ))          
+                          }
+                      </div>
                     </div>
                   ))
                 }
-              </div>
-            </div>
-          </div>
-        </div>
-    </div>
+              </Content>
+        </div> 
+    </ContainerMain>
   )
 }
 

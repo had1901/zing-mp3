@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
 import ItemMusic from '../ItemMusic'
-import BtnRadius from '../BtnRadius'
-import { GoHeart, GoHeartFill } from 'react-icons/go'
-import { LiaMicrophoneAltSolid } from 'react-icons/lia'
 import Description from '../Description'
 import { Musics } from '../../mp3/Music/Music'
 import Button from '../Button'
 
-function   ListMucsic({ className }) {
+function   ListMusic({ className }) {
   const [itemShow, setItemShow] = useState(10)
 
   const showItem = () => {
@@ -50,4 +47,4 @@ function   ListMucsic({ className }) {
   )
 }
 
-export default ListMucsic
+export default ListMusic

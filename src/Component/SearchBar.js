@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Context } from '../ContextGlobal/ContextGlobal'
 import BtnRadius from './BtnRadius'
-import { BsArrowLeft, BsArrowRight, BsPatchCheck, BsPatchCheckFill, BsSearch } from 'react-icons/bs'
+import { BsArrowLeft, BsArrowRight, BsPatchCheckFill, BsSearch } from 'react-icons/bs'
 import InputSearch from './InputSearch'
 import { FiDownload } from 'react-icons/fi'
 import TogglePopup from './TogglePopup'
@@ -10,11 +10,12 @@ import Modal from './Modal'
 import Title from './Title'
 import { ImgBackGround } from '../images/images'
 import ItemImage from './ItemImage'
-import { useState } from 'react'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 
 function SearchBar() {
   const bgSearch = useContext(Context)
+
+  
   
   
   return (
@@ -42,51 +43,55 @@ function SearchBar() {
           <span>
             <AiOutlineCloseCircle className='absolute top-3 right-3 text-white text-3xl cursor-pointer' onClick={bgSearch.onClose}/>
           </span>
-        </Modal>
-      <div className={`fixed ${bgSearch.searchBar} flex justify-between left-60 right-0 z-30 items-center text-white select-none`}>
-                <div className='px-14 flex justify-between w-full'>
-                  <div className='flex items-center gap-4'>
-                    <div className='flex gap-1 my-4 text-xl text-current '>
-                      <BtnRadius props='flex items-center justify-center hover:bg-transparent'>
-                        <BsArrowLeft className={`${bgSearch.iconArrow}`}/>
+      </Modal>
+
+      <div className={`fixed ${bgSearch.searchBar} pl-3%3 pr-2%9 flex justify-between gap-x-4 xl:left-60 md:left-0 sm:left-0 right-0 z-30 items-center text-white select-none`}>       
+              <BtnRadius props='xl:hidden sm:block flex items-center justify-center hover:bg-transparent' onClick={() => bgSearch.handleActiveSidebar()}>
+                <SlSettings className={`${bgSearch.iconSetting} m-auto w-4 min-h-32 object-cover`}/>
+              </BtnRadius>
+              <div className=' flex justify-between w-full'>
+                <div className='flex items-center gap-4'>
+                  <div className='flex gap-1 my-4 text-xl text-current '>
+                    <BtnRadius props='flex items-center justify-center hover:bg-transparent'>
+                      <BsArrowLeft className={`${bgSearch.iconArrow}`}/>
+                    </BtnRadius>
+                    <BtnRadius props='flex items-center justify-center hover:bg-transparent'>
+                      <BsArrowRight className={`${bgSearch.iconArrow}`}/>
+                    </BtnRadius>
+                  </div>
+                  <div className='flex items-center '>
+                    <div className='flex items-center justify-center gap-1 relative '>
+                      <InputSearch className={`${bgSearch.search} outline-none rounded-full h-10 lg:w-440 sm:w-240 pl-11 pr-5 leading-10 ${bgSearch.inputPlaceHolder} text-white text-sm`}/>
+                      <BtnRadius props={`${bgSearch.iconArrow} absolute left-0 top-2/4 px-3 -translate-y-2/4 hover:bg-transparent text-xl flex items-center`}>
+                        <BsSearch className={`${bgSearch.iconArrow}`}/>
                       </BtnRadius>
-                      <BtnRadius props='flex items-center justify-center hover:bg-transparent'>
-                        <BsArrowRight className={`${bgSearch.iconArrow}`}/>
-                      </BtnRadius>
-                    </div>
-                    <div className='flex items-center '>
-                      <div className='flex items-center justify-center gap-1 relative '>
-                        <InputSearch className={`${bgSearch.search} outline-none rounded-full h-10 w-440 pl-11 pr-5 leading-10 ${bgSearch.inputPlaceHolder} text-white text-sm`}/>
-                        <BtnRadius props={`${bgSearch.iconArrow} absolute left-0 top-2/4 px-3 -translate-y-2/4 hover:bg-transparent text-xl flex items-center`}>
-                          <BsSearch className={`${bgSearch.iconArrow}`}/>
-                        </BtnRadius>
-                      </div>
                     </div>
                   </div>
-                  <div className='flex items-center gap-3'>
-                    <div className='flex items-center justify-center gap-1 min-w-190'>
-                      <BtnRadius ref={bgSearch.buttonDownLoadRef} datatype='buttonDownLoad' props={`${bgSearch.btnDownLoad} flex min-h-40 items-center gap-2 px-5 text-sm text-zinc-400 hover:text-white`}>
-                        <FiDownload className={`${bgSearch.iconDownLoad}`} datatype='buttonDownLoad' />
-                        <span className={`${bgSearch.iconDownLoad}`}>Tải bản Windows</span>
-                      </BtnRadius>
-                    </div>
-                    <div className='relative group/popup flex items-center justify-center gap-1'>
-                      <BtnRadius props={`${bgSearch.btnDownLoad} p-3`}>
-                        <SlSettings className={`${bgSearch.iconSetting} w-4 h-4 object-cover`}/>
-                        <TogglePopup refElement={bgSearch.sectionElement} dataType='popup' classNameAdd={`${bgSearch.settingPopup} absolute group-hover/popup:block rounded-sm top-[120%] right-0 after:w-1/4 after:h-4 after:bg-transparent after:-top-4 after:absolute after:right-0`} />
-                      </BtnRadius>
-                    </div>
-                    <div className=''>
-                      <BtnRadius props='hover:bg-transparent '>
-                        <img 
-                          src='/images/avatar-jisoo.jpg' 
-                          alt='avatar' 
-                          className='rounded-full w-9 h-9 object-cover '
-                        />
-                      </BtnRadius>
-                    </div>
-                  </div>  
-                </div>   
+                </div>
+                <div className='flex items-center gap-3'>
+                  <div className='flex items-center justify-center gap-1 xl:min-w-190 sm:max-w-190'>
+                    <BtnRadius ref={bgSearch.buttonDownLoadRef} datatype='buttonDownLoad' props={`${bgSearch.btnDownLoad} flex min-h-40 items-center gap-2 px-5 text-sm text-zinc-400 hover:text-white`}>
+                      <FiDownload className={`${bgSearch.iconDownLoad}`} datatype='buttonDownLoad' />
+                      <span className={`lg:block sm:hidden ${bgSearch.iconDownLoad}`}>Tải bản Windows</span>
+                    </BtnRadius>
+                  </div>
+                  <div className='relative group/popup flex items-center justify-center gap-1'>
+                    <BtnRadius props={`${bgSearch.btnDownLoad} p-3`}>
+                      <SlSettings className={`${bgSearch.iconSetting} w-4 h-4 object-cover`}/>
+                      <TogglePopup refElement={bgSearch.sectionElement} dataType='popup' classNameAdd={`${bgSearch.settingPopup} absolute group-hover/popup:block rounded-sm top-[120%] right-0 after:w-1/4 after:h-4 after:bg-transparent after:-top-4 after:absolute after:right-0`} />
+                    </BtnRadius>
+                  </div>
+                  <div className=''>
+                    <BtnRadius props='hover:bg-transparent '>
+                      <img 
+                        src='/images/avatar-jisoo.jpg' 
+                        alt='avatar' 
+                        className='rounded-full w-9 h-9 object-cover '
+                      />
+                    </BtnRadius>
+                  </div>
+                </div>  
+              </div>   
       </div>
     </div>
   )

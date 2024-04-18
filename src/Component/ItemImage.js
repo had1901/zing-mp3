@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import img from '../mp3/imgTop100/img-prev.jpg'
-import { GoHeart, GoHeartFill } from 'react-icons/go'
-import { PiPauseCircleLight, PiPlayCircleLight } from 'react-icons/pi'
-import { IoIosMore } from 'react-icons/io'
-import BtnRadius from './BtnRadius'
-import { BsPatchCheck } from 'react-icons/bs'
 
-function ItemImage({ children, icon, addElement, addImg, style, classNameParent, classNameChild, classNameMore, classWrapImg, dataThumb, description, isDesc, thumb, onClick }) {
+function ItemImage({ onClick, ...props}) {
   
   // useEffect(() => {
   //   function callback(entries, observer) {
@@ -47,24 +41,24 @@ function ItemImage({ children, icon, addElement, addImg, style, classNameParent,
   
   return (
     <SkeletonTheme baseColor="#a6a6a6" highlightColor="#56595b">
-      <div className={`text-white ${classNameParent}`}>
-        {children ? children : 
-          <div className={`w-full ${classWrapImg}`}>
+      <div className={`text-white ${props.classNameParent}`}>
+        {props.children ? props.children : 
+          <div key={props.keyword} className={`w-full rounded-xl ${props.classWrapImg}`}>
               {
                 <div className='cursor-pointer relative rounded-xl overflow-hidden group/parent' >
                   <img 
                     
-                    src={thumb} 
+                    src={props.thumb} 
                     alt='img' 
-                    className={`w-full object-cover block rounded-xl group-hover/parent:scale-105 select-none ${classNameChild}`}   
+                    className={` w-full object-cover inline-block rounded-xl group-hover/parent:scale-110 select-none ${props.classNameChild} duration-700`}   
                     onClick={onClick}
                   />                  
-                  {icon}                                 
-                  {addElement}            
+                  {props.icon}                                 
+                  {props.addElement}            
                   { 
-                    addImg &&
-                    <div className='absolute left-0 right-0 top-0 bottom-0' style={{backgroundImage: 'linear-gradient(180deg,transparent,rgba(0,0,0,.5) 85%)',backgroundSize: '100% auto',}}>
-                      {addImg}
+                    props.addImg &&
+                    <div className='absolute left-0 right-0 top-0 bottom-0 rounded-xl' style={{backgroundImage: 'linear-gradient(180deg,transparent,rgba(0,0,0,.5) 85%)',backgroundSize: '100% auto',}}>
+                      {props.addImg}
                     </div> 
                   }            
                 </div>     
@@ -72,9 +66,9 @@ function ItemImage({ children, icon, addElement, addImg, style, classNameParent,
                 <Skeleton height={280} width={200}/>
               }     
             {
-              isDesc
+              props.isDesc
               &&
-              <p className={`my-2 text-sm text-gray-400 font-medium ${classNameMore}`}>{description || <Skeleton />}</p>
+              <p className={`my-2 text-sm text-gray-400 font-medium ${props.classNameMore}`}>{props.description || <Skeleton />}</p>
             }
           </div>
         }
