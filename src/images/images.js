@@ -25,7 +25,7 @@ export const Images = [
   },
   {
     title:'jennie',
-    link: 'slider-8.webp'
+    link: 'slider-8.jpg'
   },
   {
     title:'lisa',

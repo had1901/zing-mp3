@@ -11,11 +11,14 @@ import Title from './Title'
 import { ImgBackGround } from '../images/images'
 import ItemImage from './ItemImage'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
+import SearchBarMobile from './SearchBarMobile'
 
 function SearchBar() {
   const bgSearch = useContext(Context)
 
-  
+  const handleBackGroundContext = (item) => {
+    return bgSearch.handleBackGround(item)
+  }
   
   
   return (
@@ -33,7 +36,7 @@ function SearchBar() {
                     description={item.desc} 
                     classNameParent='w-1/6 px-2' 
                     classNameMore='text-xs text-white font-medium transition-all'
-                    onClick={() => bgSearch.handleBackGround(item)}
+                    onClick={() => handleBackGroundContext(item)}
                     icon={item.link === bgSearch.thumb ? <span className='absolute bottom-2 right-2 text-green-500 font-medium bg-transparent p-1 rounded shadow-2xl '><BsPatchCheckFill/></span> : ''}
                   />
                 ))
@@ -45,11 +48,11 @@ function SearchBar() {
           </span>
       </Modal>
 
-      <div className={`fixed ${bgSearch.searchBar} pl-3%3 pr-2%9 flex justify-between gap-x-4 xl:left-60 xs:left-0 right-0 z-30 items-center text-white select-none`}>       
+      <div className={`fixed ${bgSearch.searchBar} px-2%9 flex justify-between gap-x-4 xl:left-60 xs:left-0 right-0 z-30 items-center text-white select-none`}>       
+              <div className=' flex w-full xs:justify-between'>
               <BtnRadius props='xl:hidden sm:block flex items-center justify-center hover:bg-transparent' onClick={() => bgSearch.handleActiveSidebar()}>
                 <SlSettings className={`${bgSearch.iconSetting} m-auto w-4 min-h-32 object-cover`}/>
               </BtnRadius>
-              <div className=' flex sm:justify-between w-full xs:gap-x-2'>
                 <div className='flex items-center gap-4'>
                   <div className='flex gap-1 my-4 text-xl text-current '>
                     <BtnRadius props='flex items-center justify-center hover:bg-transparent'>
@@ -69,7 +72,7 @@ function SearchBar() {
                   </div>
                 </div>
                 <div className='flex items-center gap-3'>
-                  <div className='flex items-center justify-center gap-1 xl:min-w-190 sm:max-w-190 xs:hidden'>
+                  <div className='flex items-center justify-center gap-1 xl:min-w-190 xl:block sm:max-w-190 xs:hidden'>
                     <BtnRadius ref={bgSearch.buttonDownLoadRef} datatype='buttonDownLoad' props={`${bgSearch.btnDownLoad} flex min-h-40 items-center gap-2 px-5 text-sm text-zinc-400 hover:text-white`}>
                       <FiDownload className={`${bgSearch.iconDownLoad}`} datatype='buttonDownLoad' />
                       <span className={`lg:block xs:hidden ${bgSearch.iconDownLoad}`}>Tải bản Windows</span>
@@ -93,6 +96,8 @@ function SearchBar() {
                 </div>  
               </div>   
       </div>
+
+      <SearchBarMobile />
     </div>
   )
 }

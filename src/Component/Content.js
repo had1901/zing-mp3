@@ -54,9 +54,9 @@ function Content({ onClick, ...props }) {
                 <div className='cursor-pointer relative rounded-xl overflow-hidden group/parent'>
                   <img 
                     data={props.dataThumb}
-                    src={`./mp3/${props.thumb}`} 
+                    src={`./mp3${props.thumb}`} 
                     alt='img' 
-                    className={`w-full object-cover block rounded-xl group-hover/parent:scale-110 select-none ${props.classNameChild}`}   
+                    className={`w-full object-cover block rounded-xl group-hover/parent:scale-110 delay-75 select-none ${props.classNameChild}`}   
                     onClick={onClick}
                   /> 
                   <div className='hidden items-center text-xl absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 justify-center gap-4 group-hover/parent:flex'>

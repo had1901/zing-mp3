@@ -1,5 +1,4 @@
 import React from 'react'
-import forwardRef from './BtnRadius';
 
 function InputRange({valueAudio, valueVolume, min, max, onClick, curTime }) {
   return (

@@ -8,33 +8,42 @@ import { LiaMicrophoneAltSolid } from 'react-icons/lia';
 import BtnRadius from './BtnRadius';
 import { GoHeart, GoHeartFill } from 'react-icons/go';
 import { AiOutlineMinus } from 'react-icons/ai';
+import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 
 function ItemMusic({ onClick, ...props }) {
-  const [activeHeart, setActiveHeart] = useState(false)
-  const [textstroke, setTextstroke] = useState('text-stroke-any')
-  const iconRef = useRef(null)
   const contextMusic = useContext(Context) 
+  const iconRef = useRef(null)
+  
+  const [activeHeart, setActiveHeart] = useState(false)
+  const [random, setRandom] = useState(0)
+  const [textstroke, setTextstroke] = useState('text-stroke-any')
 
   const handleHeart =  () => {
     setActiveHeart(!activeHeart)
   }
+  
+  const handleGetInfoMusicContext = (item) => {
+    return contextMusic.handleGetInfoMusic(item)
+  }
+
   useEffect(() => {
     switch (props.number) {
-      case 0:
-        setTextstroke('text-stroke-0')
-        break
-      case 1: 
+      case 0: 
         setTextstroke('text-stroke-1')
         break
-      case 2: 
+      case 1: 
         setTextstroke('text-stroke-2')
         break
-      case 3: 
+      case 2: 
         setTextstroke('text-stroke-3')
         break
       default:
         return
     }   
+  },[])
+
+  useEffect(() => {
+    setRandom(Math.floor(Math.random() * 100))
   },[])
   
   return (
@@ -42,20 +51,35 @@ function ItemMusic({ onClick, ...props }) {
           {
             props.isNumberRank 
             &&
-            <div className='flex items-center justify-between min-w-60px gap-x-2 pl-3'>
-              <div className={`w-60px text-center text-2rem font-black ${textstroke}`}>{props.number === 0 ? (<p>Gợi ý</p>) : props.number}</div>
-              {props.number !== 0  && <AiOutlineMinus className='mx-1' />}
+            <div className='flex items-center justify-between min-w-60px pl-3'>
+              <div className={`w-60px text-center text-2rem font-black ${textstroke}`}>{props.number + 1}</div>
+              {
+                props.number % 2 === 0 ?
+                <div className='flex flex-col justify-center items-center flex-1 gap-y-[2px]'>
+                  <TiArrowSortedDown className='w-8 fill-red-500 text-lg'/>
+                  <span className='text-gray-500 text-xs font-semibold'>{random}</span>
+                </div>
+               
+                :
+                props.number % 3 === 0 ?
+                <div className='flex flex-col justify-center items-center flex-1 gap-y-1'>
+                  <TiArrowSortedUp className='w-8 fill-green-500 text-lg'/>
+                  <span className='text-gray-500 text-xs font-semibold'>{random}</span>
+                </div>
+                :
+                <AiOutlineMinus className='w-8 fill-white flex-1' />
+              }
             </div>
           }
           <div 
                 className={`flex items-center w-32 p-2 gap-x-4 group/item ${props.className}`}
                 onClick={onClick}
               >
-                <div className={`relative group/parent cursor-pointer ${props.classNameMore}`} onClick={() => contextMusic.handleGetInfoMusic(props.item)}>
+                <div className={`relative group/parent cursor-pointer ${props.classNameMore}`} onClick={() => handleGetInfoMusicContext(props.item)}>
                   <img 
                     src={`/mp3/${props.item.thumb}`} 
                     alt={props.item.name} 
-                    className='w-full h-full group-hover/item:bg-black group-hover/item:opacity-50 block rounded-lg object-cover border-black'                
+                    className='w-full h-full group-hover/item:bg-black group-hover/item:opacity-50 block rounded-md object-cover border-black'                
                   />
                   {
                     contextMusic.infoMusic === props.item 

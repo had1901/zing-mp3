@@ -33,6 +33,19 @@ html::-webkit-scrollbar{
 .swiper-button-next::after {
   font-size: 30px !important;
 }
+@media (min-width: 368px) and (max-width: 768px){
+  .swiper-button-prev, 
+  .swiper-button-next{
+    width: 32px !important;
+    height: 32px !important;
+    padding: 16px !important;
+  }
+  .swiper-button-prev::after, 
+  .swiper-button-next::after {
+    font-size: 14px !important;
+  
+  }
+}
 .swiper-pagination{
 }
 .swiper-pagination-bullet{
@@ -124,6 +137,7 @@ html::-webkit-scrollbar{
   background-color: yellow;
    
 }
+
 .new-song::-webkit-scrollbar{
   width: 5px;
   height: 5px;
@@ -147,12 +161,13 @@ html::-webkit-scrollbar{
 .slick-prev, .slick-next{
   z-index: 11;
 }
+
 .slick-prev:before, .slick-next:before {
   position: absolute;
   top: -5px !important;
   font-family: 'slick';
   font-size: 44px !important;
-  color: hsla(0, 0%, 100%, 0.367) !important;
+  color: hsla(0, 0%, 100%, 0.562) !important;
   z-index: 99 !important; 
 }
 .slick-next:before{
@@ -161,9 +176,17 @@ html::-webkit-scrollbar{
 .slick-prev:before{
   left: 8px !important;
 }
-
+.radio-song .slick-prev:before, .slick-next:before {
+  top: -30px !important;
+}
 .slick-slide > div {
-  margin: 0 10px !important;
+  margin-right: 10px !important;
+}
+.slick-slide:last-child > div{
+  margin-right: 0 !important;
+}
+.slick-list > .slick-slide:last-child{
+  /* margin-right: -10px !important; */
 }
 
 /* Text */
@@ -172,4 +195,8 @@ html::-webkit-scrollbar{
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+.radio__live-song::-webkit-scrollbar,
+.scroll-home::-webkit-scrollbar{
+  display: none;
 }

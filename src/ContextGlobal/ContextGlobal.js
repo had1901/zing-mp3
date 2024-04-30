@@ -37,13 +37,9 @@ function ContextProvider({ children }) {
   const [gifplay, setGifplay] = useState(false)
   const [isActiveSidebar, setIsActiveSidebar] = useState(false)
 
-
-
-
   const [sidebarComponent, setSidebarComponent] = useState()
   const [searchComponent, setSearchComponent] = useState()
   const [buttonDownLoadComponent, setButtonDownLoadComponent] = useState()
-
 
   const elementContainer = useRef()
   const buttonRef = useRef()

@@ -11,6 +11,7 @@ function SidebarItem({item, props, className, classNameMore, active, elementAfte
   const bg = `${bgSidebarItem.sidebarItem} group/item z-30 relative w-full flex items-center justify-between text-sm select-none gap-2 ${bgSidebarItem.sidebarItemActive} font-medium text-colo cursor-pointer h-12 px-6`
   let controlActive = active ? bg : customClasses
   
+
   return (  
     <div ref={refElement} className={classNameMore}>
       <Link to={linkBtn} className={controlActive} onClick={onClick}>
