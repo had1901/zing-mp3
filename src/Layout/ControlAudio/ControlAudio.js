@@ -6,6 +6,7 @@ import { LiaMicrophoneAltSolid, LiaRandomSolid, } from 'react-icons/lia';
 import { PiPauseCircleLight, PiPlayCircleLight } from 'react-icons/pi';
 import { VscChromeRestore } from 'react-icons/vsc';
 import { HiOutlineVolumeUp } from 'react-icons/hi';
+import { BiVolumeMute } from "react-icons/bi";
 import { BsMusicNoteList } from 'react-icons/bs';
 import { RxTrackPrevious, RxTrackNext, RxLoop } from 'react-icons/rx';
 
@@ -21,12 +22,16 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { BiPlus } from 'react-icons/bi';
 
 function ControlAudio() {
+   const audio = useRef()
+  const context = useContext(Context)
+
   const min = 0
   const max = 100
   const [valueAudio, setValueAudio] = useState(0)
   const [valueVolume, setValueVolume] = useState(1)
-  const [minVolume, setMinVolume] = useState(0.01)
+  const [minVolume, setMinVolume] = useState('0.01')
   const [maxVolume, setMaxVolume] = useState(1)
+  const [mutedVolume, setMutedVolume] = useState(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [activeAudio, setActiveAudio] = useState(false)
   const [activeHeart, setActiveHeart] = useState(false)
@@ -35,9 +40,7 @@ function ControlAudio() {
   const [curTime, setCurTime] = useState(0)
   const [totalTime, setTotalTime] = useState(0)
 
-  const audio = useRef()
-  const contextAudio = useContext(Context)
-
+ 
   const onPlay = useCallback(() => {
     const duration = audio.current.duration // Lấy ra tổng thời gian của bài hát
     const currentTime = audio.current.currentTime // Lấy ra thời gian hiện tại của bài hát ( đang phát )
@@ -46,7 +49,7 @@ function ControlAudio() {
     convertSecondsToCurrentTime(Math.floor(currentTime))
   },[])
 
-  function convertSecondsToTime(seconds) {
+  const convertSecondsToTime = (seconds) => {
     // Chia số giây thành phần phút và phần giây
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -60,7 +63,7 @@ function ControlAudio() {
     return setTotalTime(timeExpression);
   }
 
-  function convertSecondsToCurrentTime(seconds) {
+  const convertSecondsToCurrentTime = (seconds) => {
     // Chia số giây thành phần phút và phần giây
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -75,21 +78,52 @@ function ControlAudio() {
     return setCurTime(timeExpression);
   }
    
-  const handleHeart = () => {
+  const handleHeart = (e) => {
+    e.stopPropagation()
     setActiveHeart(!activeHeart)
   }
 
-  const handleLoop = () => {
-    setActiveLoop(!activeLoop)
+  const handlePrevious = (e) => {
+    e.stopPropagation()
+
+  }
+  const handleNext = (e) => {
+    e.stopPropagation()
+
   }
 
-  const handleAudio = () => {
+  const handleAudio = (e) => {
+    e.stopPropagation()
     setActiveAudio(!activeAudio)
     setIsPlaying(!isPlaying)
   }
+
+  const handleLoop = (e) => {
+    e.stopPropagation()
+    setActiveLoop(!activeLoop)
+  }
+
   const handleChangeVolume = (e) => {
-    setValueVolume(e.target.value)
-    audio.current.volume = valueVolume
+    e.stopPropagation()
+    const newValueVolume = e.target.value
+    setValueVolume(newValueVolume)
+    if(newValueVolume === minVolume) {
+      setMutedVolume(true)
+    } else (
+      setMutedVolume(false)
+    )
+    audio.current.volume = newValueVolume
+  }
+
+  const handleOpenSidebarRight = (e) => {
+    e.stopPropagation()
+    context.setIsOpenSidebarRight(!context.isOpenSidebarRight)
+    console.log(context.isOpenSidebarRight)
+  }
+
+  const handleDetailSong = (e) => {
+    e.stopPropagation()
+    console.log(123)
   }
 
   useEffect(() => {
@@ -107,17 +141,17 @@ function ControlAudio() {
 
   
   return (
-    <div className={` ${contextAudio.controlAudio} h-91 fixed bottom-0 flex justify-center w-full xs:hidden lg:block text-white border-t-1 border-zinc-700 z-50`}>
-      <div className='w-full text-white pr-5 pl-7 mx-auto flex justify-between items-center'>
+    <div className={` ${context.controlAudio} h-91 fixed bottom-0 flex justify-center w-full xs:hidden lg:block text-white border-t-1 border-zinc-700 z-50`}>
+      <div className='w-full text-white pr-5 pl-7 mx-auto flex justify-between items-center' onClick={(e) => handleDetailSong(e)}>
         <div className='flex items-center flex-1'>
           <div className='flex items-center min-w-235 max-w-235'>
             <div className='relative shrink-0'>
               <img 
                 src=
                 { 
-                  contextAudio.infoMusic.thumb
+                  context.infoMusic.thumb
                   ?
-                  `./mp3/${contextAudio.infoMusic.thumb}`
+                  `./mp3/${context.infoMusic.thumb}`
                   :
                   img1
                 }
@@ -126,15 +160,15 @@ function ControlAudio() {
               />         
             </div>
             <div className='mx-3 flex flex-col '>
-              <h3 className='text-sm font-semibold line-clamp-2'>{contextAudio.infoMusic ? contextAudio.infoMusic.name : 'DNA'}</h3>
-              <span className='text-xs text-zinc-500 font-medium'>{contextAudio.infoMusic ? contextAudio.infoMusic.singer : 'BTS'}</span>
+              <h3 className='text-sm font-semibold line-clamp-2'>{context.infoMusic ? context.infoMusic.name : 'DNA'}</h3>
+              <span className='text-xs text-zinc-500 font-medium'>{context.infoMusic ? context.infoMusic.singer : 'BTS'}</span>
             </div>
           </div>
           <div className='flex items-center mx-4 gap-1 text-white'> 
 
-          <audio ref={audio} src={`../../mp3/Music/${contextAudio.path}`} volume={valueVolume} autoPlay loop={activeLoop ? true : false} hidden controls onTimeUpdate={onPlay}></audio>      
+          <audio ref={audio} src={`../../mp3/Music/${context.path}`} volume={valueVolume} autoPlay loop={activeLoop ? true : false} hidden controls onTimeUpdate={onPlay}></audio>      
 
-            <BtnRadius onClick={handleHeart}>
+            <BtnRadius onClick={(e) => handleHeart(e)}>
               {
                 activeHeart  ? (<GoHeartFill />) : (<GoHeart />)
               }
@@ -149,10 +183,10 @@ function ControlAudio() {
             <BtnRadius>
               <LiaRandomSolid />
             </BtnRadius>
-            <BtnRadius>
+            <BtnRadius onClick={(e) => handlePrevious(e)}>
               <RxTrackPrevious />
             </BtnRadius>
-            <BtnRadius props='hover:bg-transparent' onClick={handleAudio}>
+            <BtnRadius props='hover:bg-transparent' onClick={(e) => handleAudio(e)}>
               <div>
                 {
                   activeAudio && audio.current.currentTime > 0 ?
@@ -165,10 +199,10 @@ function ControlAudio() {
                 } 
               </div>
             </BtnRadius>
-            <BtnRadius>
+            <BtnRadius onClick={(e) => handleNext(e)}>
               <RxTrackNext />
             </BtnRadius>
-            <BtnRadius onClick={handleLoop} className='group'>
+            <BtnRadius onClick={(e) => handleLoop(e)} className='group'>
               {
                 activeLoop 
                 ? 
@@ -204,25 +238,32 @@ function ControlAudio() {
               <VscChromeRestore className='flex-1' />
             </BtnRadius>
             <div className='flex items-center flex-1 gap-1'>
-              <BtnRadius>
-                <HiOutlineVolumeUp className='flex-1'/>
-              </BtnRadius>
-              <div className='w-[90px] control flex items-center flex-1 cursor-pointer transition-all group/parent'>         
-                <input className='w-full' type='range' min={minVolume} max={maxVolume} step={minVolume} value={valueVolume} onChange={(e) => handleChangeVolume(e)}/>          
+                <BtnRadius>
+                {
+                  mutedVolume
+                  ? 
+                    <BiVolumeMute className='flex-1'/>
+                  :
+                    <HiOutlineVolumeUp className='flex-1'/>
+                }
+                </BtnRadius>
+                <div className='w-[90px] control flex items-center flex-1 cursor-pointer transition-all group/parent'>         
+                  <input className='w-full' type='range' min={minVolume} max={maxVolume} step={minVolume} value={valueVolume} onChange={(e) => handleChangeVolume(e)}/>          
+                </div>
               </div>
-            </div>
           </div>
-          <span className=''>
+          <span onClick={(e) => handleOpenSidebarRight(e)}>
             <BtnRadius props='bg-gray-700 rounded-sm p-1'>
               <BsMusicNoteList className='flex-1'/>
             </BtnRadius>
           </span>
         </div>
       </div>
-      <div className={`absolute bottom-full left-0 w-240 flex items-center xl:translate-x-0 ${contextAudio.isActiveSidebar === true ? 'sm:translate-x-0' : 'xs:-translate-x-full'} transition-all flex-shrink-0 z-10 mt-auto px-6 gap-2 text-colo bg-main font-semibold h-12 cursor-pointer border-solid hover:text-white border-t-1 border-zinc-700`}>
+      <div className={`absolute bottom-full left-0 w-240 flex items-center xl:translate-x-0 ${context.isActiveSidebar === true ? 'sm:translate-x-0' : 'xs:-translate-x-full'} transition-all flex-shrink-0 z-10 mt-auto px-6 gap-2 text-colo bg-main font-semibold h-12 cursor-pointer border-solid hover:text-white border-t-1 border-zinc-700`}>
           <BiPlus/> 
           <span className='flex-1'>Tạo playlist mới</span>
-      </div>              
+      </div>    
+               
     </div>
   )
 }

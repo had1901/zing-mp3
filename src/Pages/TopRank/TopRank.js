@@ -14,9 +14,8 @@ function TopRank() {
     <>
       <SearchBar />
       <ContainerMain>
-        <div className='flex justify-center flex-wrap text-white mt-4'>
-          <div>
-            <svg width="420" height="166" viewBox="0 0 625 166">
+          <div className='text-center'>
+            <svg className='mx-auto' width="420" height="166" viewBox="0 0 625 166">
                 <defs>
                     <linearGradient id="csl6gbytxb" x1="0%" x2="102%" y1="49.434%" y2="50.578%">
                       <stop offset="0%" stopColor="#3023AE"></stop>
@@ -43,7 +42,7 @@ function TopRank() {
                 </g>
             </svg>
           </div>
-          <Content classNameParent='pt-8'>
+          <Content classNameParent='pt-8 '>
                 {
                   Top100.map((item, index) => (
                     <div key={index}>
@@ -75,7 +74,6 @@ function TopRank() {
                   ))
                 }
           </Content>      
-        </div>
       </ContainerMain>
     </>
 

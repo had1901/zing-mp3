@@ -36,6 +36,7 @@ function ContextProvider({ children }) {
   const [path, setPath] = useState('')
   const [gifplay, setGifplay] = useState(false)
   const [isActiveSidebar, setIsActiveSidebar] = useState(false)
+  const [isOpenSidebarRight, setIsOpenSidebarRight] = useState(false)
 
   const [sidebarComponent, setSidebarComponent] = useState()
   const [searchComponent, setSearchComponent] = useState()
@@ -328,6 +329,9 @@ function ContextProvider({ children }) {
     gifplay,
     isActive,
     isActiveSidebar,
+    isOpenSidebarRight,
+    
+    
 
     colorBgSearch,
     colorBgSidebar,
@@ -375,6 +379,8 @@ function ContextProvider({ children }) {
     handleBackGround,
     handleChangeThumb,
     handleActiveSidebar,
+
+    setIsOpenSidebarRight,
   }
   return (
     <Context.Provider value={value}>

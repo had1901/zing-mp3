@@ -2,10 +2,10 @@ import React, { useContext } from 'react'
 import { Context } from '../ContextGlobal/ContextGlobal'
 
 function InputSearch({ className }) {
-  const bgSearch = useContext(Context)
+  const context = useContext(Context)
   return (
     <input 
-      ref={bgSearch.searchRef}
+      ref={context.searchRef}
       datatype='search'
       type='text' 
       placeholder='Tìm kiếm bài hát, nghệ sĩ, lời bài hát...'

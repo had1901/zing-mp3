@@ -53,10 +53,11 @@ const menuSideBar2 = [
 ]
 
 function Sidebar() {
+  const context = useContext(Context)
+
   const [activeItem, setActiveItem] = useState(null)
   const [isActive, setIsActive] = useState(false)
 
-  const bgSidebar = useContext(Context)
 
   const handleClick = (item) => {
         setActiveItem(item)
@@ -95,8 +96,8 @@ function Sidebar() {
 
 
   return (
-    <section ref={bgSidebar.sidebarRef} datatype='sidebar' className={`h-90 xl:translate-x-0 ${bgSidebar.isActiveSidebar === true ? 'sm:translate-x-0 xs:bg-main shadow-sidebarShadow' : 'xs:-translate-x-full'}  transition-all fixed z-50 text-white ${bgSidebar.sideBar} `}>
-      <BsArrowLeft className={`${bgSidebar.iconArrow} absolute right-5 top-6 text-xl`} onClick={() => bgSidebar.handleActiveSidebar() }/>
+    <section ref={context.sidebarRef} datatype='sidebar' className={`h-90 xl:translate-x-0 ${context.isActiveSidebar === true ? 'sm:translate-x-0 xs:bg-main shadow-sidebarShadow' : 'xs:-translate-x-full'}  transition-all fixed z-50 text-white ${context.sideBar} `}>
+      <BsArrowLeft className={`${context.iconArrow} absolute right-5 top-6 text-xl`} onClick={() => context.handleActiveSidebar() }/>
       <div className='w-60 flex flex-col h-full'>
         <div className='flex-1 pb-32'>
           <div className='w-full h-70 px-7'>
@@ -114,14 +115,14 @@ function Sidebar() {
                 <ul>
                   {
                     menuSidebar1.map((item, index) => (
-                      <SidebarItem refElement={bgSidebar.divRef} key={index} active={item === activeItem} className={`px-6 h-12 ${bgSidebar.thumb ? bgSidebar.colorText : bgSidebar.colorTextPrimary}`} item={item} onClick={() => handleClick(item)}/>
+                      <SidebarItem refElement={context.divRef} key={index} active={item === activeItem} className={`px-6 h-12 ${context.thumb ? context.colorText : context.colorTextPrimary}`} item={item} onClick={() => handleClick(item)}/>
                     ))
                   }
                   <div className='overflow-y-auto mt-3 before:w-9/12 before:left-2/4 before:mx-auto before:h-px before:bg-zinc-600 before:top-0 before:block'>
                     <div className='pt-3'>
                       {
                         menuSideBar2.map((item, index) => (
-                          <SidebarItem refElement={bgSidebar.divRef} key={index} active={item === activeItem} item={item} className={`px-6 h-12 ${bgSidebar.thumb ? bgSidebar.colorText : bgSidebar.colorTextPrimary}`} onClick={() => handleClick(item)}/>
+                          <SidebarItem refElement={context.divRef} key={index} active={item === activeItem} item={item} className={`px-6 h-12 ${context.thumb ? context.colorText : context.colorTextPrimary}`} onClick={() => handleClick(item)}/>
                         ))
                       }
                     </div>

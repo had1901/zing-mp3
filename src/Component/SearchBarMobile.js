@@ -9,10 +9,10 @@ import { IoIosRadio } from "react-icons/io";
 
 
 function SearchBarMobile() {
-  const bgSearchMobile = useContext(Context)
+  const context = useContext(Context)
 
   const handleActiveSidebarContext = () => {
-    return bgSearchMobile.handleActiveSidebar()
+    return context.handleActiveSidebar()
   }
 
   return (
@@ -20,7 +20,7 @@ function SearchBarMobile() {
               <div className=' flex w-full xs:justify-between'>
 
                 <BtnRadius props='xl:hidden sm:block flex items-center justify-center hover:bg-transparent' onClick={() => handleActiveSidebarContext()}>
-                  <RiFolderMusicLine  className={`${bgSearchMobile.iconSetting} m-auto w-4 min-h-32 object-cover`}/>
+                  <RiFolderMusicLine  className={`${context.iconSetting} m-auto w-4 min-h-32 object-cover`}/>
                   <p>Thư viện</p>
                 </BtnRadius>
 

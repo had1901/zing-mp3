@@ -11,7 +11,7 @@ import { AiOutlineMinus } from 'react-icons/ai';
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 
 function ItemMusic({ onClick, ...props }) {
-  const contextMusic = useContext(Context) 
+  const context = useContext(Context) 
   const iconRef = useRef(null)
   
   const [activeHeart, setActiveHeart] = useState(false)
@@ -23,7 +23,7 @@ function ItemMusic({ onClick, ...props }) {
   }
   
   const handleGetInfoMusicContext = (item) => {
-    return contextMusic.handleGetInfoMusic(item)
+    return context.handleGetInfoMusic(item)
   }
 
   useEffect(() => {
@@ -82,7 +82,7 @@ function ItemMusic({ onClick, ...props }) {
                     className='w-full h-full group-hover/item:bg-black group-hover/item:opacity-50 block rounded-md object-cover border-black'                
                   />
                   {
-                    contextMusic.infoMusic === props.item 
+                    context.infoMusic === props.item 
                     ?
                       <div className='w-full h-full flex items-center justify-center text-center absolute z-10 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-musicBgColor shadow-musicShadow rounded-md'>                      
                           <img src='./mp3/gifWaveMusic/icon-playing.gif' alt='gif' className='w-1/3 inline-block ' />                      
@@ -106,7 +106,7 @@ function ItemMusic({ onClick, ...props }) {
                 <div className={props.classIcon}>
                   {
                     props.isIcon && 
-                    <div ref={iconRef} className='flex items-center hidden gap-2 group-hover/item:flex'>
+                    <div ref={iconRef} className='items-center hidden gap-2 group-hover/item:flex'>
                       <BtnRadius>
                         <LiaMicrophoneAltSolid />
                       </BtnRadius>                   

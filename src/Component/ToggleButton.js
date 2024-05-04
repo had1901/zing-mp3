@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import { Context } from '../ContextGlobal/ContextGlobal'
 
 function ToggleButton({ type, name, value, onClick }) {
   let Component = 'button'

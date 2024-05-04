@@ -19,12 +19,12 @@ import ToggleBtn from './ToggleBtn'
 
 function TogglePopup({ classNameAdd, refElement, datatype }) {
   const [hover, setHover] = useState(null)
-  const bgPopup = useContext(Context)
+  const context = useContext(Context)
 
-  let subMenu1 = <div className={`right-[94%] top-0 absolute hidden shadow-white  w-320 h-auto rounded-xl after:w-4 after:bg-transparent after:absolute after:-right-3 after:top-0 after:bottom-0 ${bgPopup.settingPopup} group-hover/btn:block`}>
+  let subMenu1 = <div className={`right-[94%] top-0 absolute hidden shadow-white  w-320 h-auto rounded-xl after:w-4 after:bg-transparent after:absolute after:-right-3 after:top-0 after:bottom-0 ${context.settingPopup} group-hover/btn:block`}>
                       <div className='px-3'>
                         <div className='flex items-center'>
-                          <Title title='Chuyển bài' classNameMore={`${bgPopup.titlePopup} text-left text-md my-3`}/>
+                          <Title title='Chuyển bài' classNameMore={`${context.titlePopup} text-left text-md my-3`}/>
                           <Label title='PLUS' classNameChild='text-ss ml-2 ' />
                         </div>
                         <div className='flex item-center justify-between'>
@@ -68,9 +68,9 @@ function TogglePopup({ classNameAdd, refElement, datatype }) {
                        
                       </div>
                 </div>
-  let subMenu2 = <div className={`right-[94%] top-[15%] absolute hidden shadow-white w-320 h-auto rounded-xl after:w-4 after:bg-transparent after:absolute after:-right-3 after:top-0 after:bottom-0 ${bgPopup.settingPopup} group-hover/btn:block`}>
+  let subMenu2 = <div className={`right-[94%] top-[15%] absolute hidden shadow-white w-320 h-auto rounded-xl after:w-4 after:bg-transparent after:absolute after:-right-3 after:top-0 after:bottom-0 ${context.settingPopup} group-hover/btn:block`}>
                     <div className='p-4'>
-                      <div className='cursor-pointer' onClick={bgPopup.handleChangeThumb}>
+                      <div className='cursor-pointer' onClick={context.handleChangeThumb}>
                         <div className='flex items-center justify-between hover:text-zinc-400'>
                           <Title title='Chủ đề' classNameMore='text-sm text-zinc-400'/>
                           <HiOutlineChevronRight className='right-1 top-1' />
@@ -78,12 +78,12 @@ function TogglePopup({ classNameAdd, refElement, datatype }) {
                         <div className='flex items-center mt-3'>
                           <div className='w-1/3 rounded border border-searchRose'>
                             <img 
-                              src={`${bgPopup.thumbSetting}`}  
+                              src={`${context.thumbSetting}`}  
                               alt='thumb' 
                               className='w-full block object-cover'        
                             />
                           </div>
-                          <Description desc={bgPopup.thumbName} classNameMore='ml-3' />
+                          <Description desc={context.thumbName} classNameMore='ml-3' />
                         </div>
                       </div>
                       <div className='mt-6 border-t-1 border-zinc-500 cursor-default'>
@@ -149,7 +149,7 @@ function TogglePopup({ classNameAdd, refElement, datatype }) {
               <SidebarItem 
                 key={index} 
                 item={item} 
-                className={`${bgPopup.colorTextPopup} hover:bg-zinc-600 relative hover:bg-opacity-60 font-normal rounded-md h-11 px-3`}
+                className={`${context.colorTextPopup} hover:bg-zinc-600 relative hover:bg-opacity-60 font-normal rounded-md h-11 px-3`}
                 classNameMore='group/btn'
                 element={<HiOutlineChevronRight className='right-1 top-1' />}
                 onMouseEnter={() => handleMouseEnter(index)}

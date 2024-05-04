@@ -33,7 +33,7 @@ import { GoChevronRight } from 'react-icons/go';
 
 
 function Home() {
-  const bgHome = useContext(Context)
+  const context = useContext(Context)
   
   const [activeTab, setActiveTab] = useState('Tất cả')
   const [itemSlideScreen, setItemSlideScreen] = useState(4)
@@ -91,7 +91,7 @@ function Home() {
   // Cấu hình Swipper slider
   const swiperProps = {
     spaceBetween: 20,
-    slidesPerView: itemSlideScreen,
+    slidesPerView: context.isOpenSidebarRight ? 3 : itemSlideScreen,
     loop: true,
     speed: 1000,
     modules: [Autoplay, Navigation, Pagination],
@@ -125,7 +125,7 @@ function Home() {
   return (
     <ContainerMain>    
         {/* <Particle />  */}
-        <div className={`${bgHome.thumb ? '' : 'bg-primary'}`}>        
+        <div className={`${context.thumb ? '' : 'bg-primary'}`}>        
               <Swiper {...swiperProps}>
                   {
                     Images.map((item, index) => (
@@ -246,8 +246,8 @@ function Home() {
                   {
                     Musics.slice(0, 14).map((music, index) => (
                       <ItemImage key={index} classNameParent='flex-shrink-0 '>
-                        <div className='relative'>
-                          <img src={`../../mp3/${music.thumb}`} alt={music.name} className='w-200 h-200 rounded-full object-cover border-4 border-red-600'/>
+                        <div className={`${context.isOpenSidebarRight ? 'h-[167px]' : 'h-[200px]'} relative max-w-200px transition-all duration-300`}>
+                          <img src={`../../mp3/${music.thumb}`} alt={music.name} className='w-full h-full rounded-full object-cover border-4 border-red-600'/>
                           <img src={`../../mp3/${music.thumb}`} alt={music.name} className='absolute bottom-0 right-0 w-16 h-16 rounded-full border-black object-cover border-2' />
                           <span className='absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-6 text-center rounded-md text-white bg-red-500 capitalize '>Live</span>
                         </div>

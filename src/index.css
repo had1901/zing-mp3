@@ -179,6 +179,7 @@ html::-webkit-scrollbar{
 .radio-song .slick-prev:before, .slick-next:before {
   top: -30px !important;
 }
+
 .slick-slide > div {
   margin-right: 10px !important;
 }

@@ -80,7 +80,7 @@ function ChartComponent() {
         chartInstance.destroy();
       }
     };
-  }, []);
+  }, [dataNumber, dataTime]);
 
   return (
     <div className=' mt-28'>
