@@ -74,7 +74,7 @@ function Home() {
     const handleToShowSlide = () => {
       const windowWidth = window.innerWidth
         if(windowWidth >= 1340) {
-          setItemSlideScreen(4)
+          setItemSlideScreen(3)
         } else if(windowWidth >= 1024) {
           setItemSlideScreen(3)
         } else if(windowWidth >= 768) {
@@ -90,8 +90,8 @@ function Home() {
   
   // Cấu hình Swipper slider
   const swiperProps = {
-    spaceBetween: 20,
-    slidesPerView: context.isOpenSidebarRight ? 3 : itemSlideScreen,
+    spaceBetween: 30,
+    slidesPerView: itemSlideScreen,
     loop: true,
     speed: 1000,
     modules: [Autoplay, Navigation, Pagination],
@@ -137,7 +137,7 @@ function Home() {
               </Swiper>  
 
               <Title title='Gần đây' classNameMore='lg:mt12 md:mt-8 xs:mt-4 xs:mb-3 sm:mb-5 mt-10 sm:text-xl xs:text-md capitalize'/>   
-              <div className='flex sm:overscroll-x-none xs:overflow-x-scroll scroll-home md:gap-x-6 xs:gap-x-2 ' >
+              <div className='flex sm:overscroll-x-none xs:overflow-x-auto scroll-home md:gap-x-6 xs:gap-x-2 ' >
                   {
                     Chills.map((item, index) => (
                         <Content key={index} description={item.card[0].desc} dataThumb={item.card[0].thumb} classNameChild='lazy-load' classNameParent='lg:w-1/44 lg:min-h-[224px] xs:w-20 xs:h-20 shrink-0' classNameMore='line-clamp-2' classWrapImg='lg:px-3 xs:px-1 xs:first:pl-0 xs:last:pr-0 '/>                

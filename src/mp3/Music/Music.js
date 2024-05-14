@@ -1,6 +1,9 @@
 export const Musics = [
+  
   {
+    id: 0,
     name: 'Life Go On',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'BTS',
     country: 'Korean',
     type: 'K-pop',
@@ -15,7 +18,9 @@ export const Musics = [
     listening: 50,
   },
   {
+    id: 1,
     name: 'Attention',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Charlie Puth',
     country: 'USA',
     type: 'US-UK',
@@ -30,7 +35,9 @@ export const Musics = [
     listening: 50,
   }, 
   {
+    id: 2,
     name: 'Despacito',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Luis Fonte',
     country: 'Korean',
     type: 'K-pop',
@@ -45,7 +52,9 @@ export const Musics = [
     listening: 50,
   }, 
   {
+    id: 3,
     name: 'DNA',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'BTS',
     country: 'Korean',
     type: 'K-pop',
@@ -60,7 +69,9 @@ export const Musics = [
     listening: 50,
   }, 
   {
+    id: 4,
     name: 'Hoa-Co-Lau-(TikTok-Speed-Up-Version)',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Phong Max',
     country: 'Korean',
     type: 'K-pop',
@@ -75,7 +86,9 @@ export const Musics = [
     listening: 50,
   }, 
   {
+    id: 5,
     name: 'How You Like That',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Black Pink',
     country: 'Korean',
     type: 'K-pop',
@@ -90,7 +103,9 @@ export const Musics = [
     listening: 50,
   }, 
   {
+    id: 6,
     name: 'Dreamers',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Jung Kook',
     country: 'Korean',
     type: 'K-pop',
@@ -105,7 +120,9 @@ export const Musics = [
     listening: 50,
   }, 
   {
+    id: 7,
     name: 'Some',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'BOLD4',
     country: 'Korean',
     type: 'K-pop',
@@ -120,7 +137,9 @@ export const Musics = [
     listening: 50,
   }, 
   {
+    id: 8,
     name: 'Từ em mà ra',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Liz Z, Đức Anh',
     country: 'Korean',
     type: 'K-pop',
@@ -135,7 +154,9 @@ export const Musics = [
     listening: 50,
   }, 
   {
+    id: 9,
     name: 'We don\'t talk anymore',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Charlie Puth',
     country: 'Korean',
     type: 'K-pop',
@@ -150,7 +171,9 @@ export const Musics = [
     listening: 50,
   },   
   {
+    id: 10,
     name: 'As If Its Your Last',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Black Pink',
     country: 'Korean',
     type: 'K-pop',
@@ -165,7 +188,9 @@ export const Musics = [
     listening: 50,
   },  
   {
+    id: 11,
     name: 'Life Go On',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'BTS',
     country: 'Korean',
     type: 'K-pop',
@@ -180,7 +205,9 @@ export const Musics = [
     listening: 50,
   },
   {
+    id: 12,
     name: 'Attention',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Charlie Puth',
     country: 'USA',
     type: 'US-UK',
@@ -195,7 +222,9 @@ export const Musics = [
     listening: 50,
   }, 
   {
+    id: 13,
     name: 'Despacito',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Luis Fonte',
     country: 'Korean',
     type: 'K-pop',
@@ -210,7 +239,9 @@ export const Musics = [
     listening: 50,
   }, 
   {
+    id: 14,
     name: 'DNA',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'BTS',
     country: 'Korean',
     type: 'K-pop',
@@ -225,7 +256,9 @@ export const Musics = [
     listening: 50,
   }, 
   {
+    id: 15,
     name: 'Hoa-Co-Lau-(TikTok-Speed-Up-Version)',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Phong Max',
     country: 'Korean',
     type: 'K-pop',
@@ -240,7 +273,9 @@ export const Musics = [
     listening: 50,
   }, 
   {
+    id: 16,
     name: 'How You Like That',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Black Pink',
     country: 'Korean',
     type: 'K-pop',
@@ -255,7 +290,9 @@ export const Musics = [
     listening: 50,
   }, 
   {
+    id: 17,
     name: 'Dreamers',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Jung Kook',
     country: 'Korean',
     type: 'K-pop',
@@ -270,7 +307,9 @@ export const Musics = [
     listening: 50,
   }, 
   {
+    id: 18,
     name: 'Some',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'BOLD4',
     country: 'Korean',
     type: 'K-pop',
@@ -285,7 +324,9 @@ export const Musics = [
     listening: 50,
   }, 
   {
+    id: 19,
     name: 'Từ em mà ra',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Liz Z, Đức Anh',
     country: 'Korean',
     type: 'K-pop',
@@ -300,7 +341,9 @@ export const Musics = [
     listening: 50,
   }, 
   {
+    id: 20,
     name: 'We don\'t talk anymore',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Charlie Puth',
     country: 'Korean',
     type: 'K-pop',
@@ -315,7 +358,9 @@ export const Musics = [
     listening: 50,
   },   
   {
+    id: 21,
     name: 'As If Its Your Last',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Black Pink',
     country: 'Korean',
     type: 'K-pop',
@@ -333,7 +378,9 @@ export const Musics = [
 
 export const MusicsVN = [
   {
+    id: 22,
     name: 'Chúng ta của hiện tại',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'BTS',
     country: 'Korean',
     type: 'K-pop',
@@ -348,7 +395,9 @@ export const MusicsVN = [
     listening: 50,
   },
   {
+    id: 23,
     name: 'See Tình',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Charlie Puth',
     country: 'USA',
     type: 'US-UK',
@@ -363,7 +412,9 @@ export const MusicsVN = [
     listening: 50,
   }, 
   {
+    id: 24,
     name: 'Hai phút hơn',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Luis Fonte',
     country: 'Korean',
     type: 'K-pop',
@@ -378,7 +429,9 @@ export const MusicsVN = [
     listening: 50,
   }, 
   {
+    id: 25,
     name: 'Bống bống bang bang',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'BTS',
     country: 'Korean',
     type: 'K-pop',
@@ -393,7 +446,9 @@ export const MusicsVN = [
     listening: 50,
   }, 
   {
+    id: 26,
     name: 'Hoa-Co-Lau-(TikTok-Speed-Up-Version)',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Phong Max',
     country: 'Korean',
     type: 'K-pop',
@@ -408,7 +463,9 @@ export const MusicsVN = [
     listening: 50,
   }, 
   {
+    id: 27,
     name: 'Thương em',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Black Pink',
     country: 'Korean',
     type: 'K-pop',
@@ -423,7 +480,9 @@ export const MusicsVN = [
     listening: 50,
   }, 
   {
+    id: 28,
     name: 'Chỉ là bạn',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Jung Kook',
     country: 'Korean',
     type: 'K-pop',
@@ -438,7 +497,9 @@ export const MusicsVN = [
     listening: 50,
   }, 
   {
+    id: 29,
     name: 'Ngày ấy bạn và tôi',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'BOLD4',
     country: 'Korean',
     type: 'K-pop',
@@ -453,7 +514,9 @@ export const MusicsVN = [
     listening: 50,
   }, 
   {
+    id: 30,
     name: 'Từ em mà ra',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Liz Z, Đức Anh',
     country: 'Korean',
     type: 'K-pop',
@@ -468,7 +531,9 @@ export const MusicsVN = [
     listening: 50,
   }, 
   {
+    id: 31,
     name: 'Lạc trôi',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Charlie Puth',
     country: 'Korean',
     type: 'K-pop',
@@ -483,7 +548,9 @@ export const MusicsVN = [
     listening: 50,
   }, 
   {
+    id: 32,
     name: 'Anh đâu định khóc',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Charlie Puth',
     country: 'Korean',
     type: 'K-pop',
@@ -498,7 +565,9 @@ export const MusicsVN = [
     listening: 50,
   },  
   {
+    id: 33,
     name: 'Hơn cả yêu',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Black Pink',
     country: 'Korean',
     type: 'K-pop',
@@ -516,7 +585,9 @@ export const MusicsVN = [
 
 export const MusicsWorld = [
   {
+    id: 34,
     name: 'One Call Away',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'BTS',
     country: 'Korean',
     type: 'K-pop',
@@ -532,7 +603,9 @@ export const MusicsWorld = [
     
   },
   {
+    id: 35,
     name: 'Made you look',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Charlie Puth',
     country: 'USA',
     type: 'US-UK',
@@ -545,7 +618,9 @@ export const MusicsWorld = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 36,
     name: 'Baby',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Luis Fonte',
     country: 'Korean',
     type: 'K-pop',
@@ -558,7 +633,9 @@ export const MusicsWorld = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 37,
     name: 'Play date',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'BTS',
     country: 'Korean',
     type: 'K-pop',
@@ -571,7 +648,9 @@ export const MusicsWorld = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 38,
     name: 'Shape of you',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Phong Max',
     country: 'Korean',
     type: 'K-pop',
@@ -584,7 +663,9 @@ export const MusicsWorld = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 39,
     name: 'Girl like you',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Black Pink',
     country: 'Korean',
     type: 'K-pop',
@@ -597,7 +678,9 @@ export const MusicsWorld = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 40,
     name: 'Memories',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Jung Kook',
     country: 'Korean',
     type: 'K-pop',
@@ -610,7 +693,9 @@ export const MusicsWorld = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 41,
     name: 'Ngày ấy bạn và tôi',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'BOLD4',
     country: 'Korean',
     type: 'K-pop',
@@ -623,7 +708,9 @@ export const MusicsWorld = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 42,
     name: 'Senorita',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Liz Z, Đức Anh',
     country: 'Korean',
     type: 'K-pop',
@@ -636,7 +723,9 @@ export const MusicsWorld = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 43,
     name: 'Cupid',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Charlie Puth',
     country: 'Korean',
     type: 'K-pop',
@@ -649,7 +738,9 @@ export const MusicsWorld = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 44,
     name: 'Sweet But Psycho',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Charlie Puth',
     country: 'Korean',
     type: 'K-pop',
@@ -662,7 +753,9 @@ export const MusicsWorld = [
     timeTotal: '2400 ',
   },  
   {
+    id: 45,
     name: 'Unstoppable',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Black Pink',
     country: 'Korean',
     type: 'K-pop',
@@ -678,7 +771,9 @@ export const MusicsWorld = [
 
 export const MusicsKR = [
   {
+    id: 46,
     name: 'Fake love',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'BTS',
     country: 'Korean',
     type: 'K-pop',
@@ -691,7 +786,9 @@ export const MusicsKR = [
     timeTotal: '2400 ',
   },
   {
+    id: 47,
     name: 'Haru haru',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Charlie Puth',
     country: 'USA',
     type: 'US-UK',
@@ -704,7 +801,9 @@ export const MusicsKR = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 48,
     name: 'Flower',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Luis Fonte',
     country: 'Korean',
     type: 'K-pop',
@@ -717,7 +816,9 @@ export const MusicsKR = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 49,
     name: 'Pink venom',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'BTS',
     country: 'Korean',
     type: 'K-pop',
@@ -730,7 +831,9 @@ export const MusicsKR = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 50,
     name: 'Kill this love',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Phong Max',
     country: 'Korean',
     type: 'K-pop',
@@ -743,7 +846,9 @@ export const MusicsKR = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 51,
     name: 'As if its your last',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Black Pink',
     country: 'Korean',
     type: 'K-pop',
@@ -756,7 +861,9 @@ export const MusicsKR = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 52,
     name: 'Dynamite',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Jung Kook',
     country: 'Korean',
     type: 'K-pop',
@@ -769,7 +876,9 @@ export const MusicsKR = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 53,
     name: 'Bot with luv',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'BOLD4',
     country: 'Korean',
     type: 'K-pop',
@@ -782,7 +891,9 @@ export const MusicsKR = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 54,
     name: 'Life goes on',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Liz Z, Đức Anh',
     country: 'Korean',
     type: 'K-pop',
@@ -795,7 +906,9 @@ export const MusicsKR = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 55,
     name: 'Ice cream',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Charlie Puth',
     country: 'Korean',
     type: 'K-pop',
@@ -808,7 +921,9 @@ export const MusicsKR = [
     timeTotal: '2400 ',
   }, 
   {
+    id: 56,
     name: 'DDU-DU DDU-DU',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Charlie Puth',
     country: 'Korean',
     type: 'K-pop',
@@ -821,7 +936,9 @@ export const MusicsKR = [
     timeTotal: '2400 ',
   },  
   {
+    id: 57,
     name: 'As If Its Your Last',
+    album: 'Hẹn gặp lại anh (Single)',
     singer: 'Black Pink',
     country: 'Korean',
     type: 'K-pop',

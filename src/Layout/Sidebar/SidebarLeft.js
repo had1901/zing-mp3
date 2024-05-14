@@ -55,7 +55,7 @@ const menuSideBar2 = [
 function Sidebar() {
   const context = useContext(Context)
 
-  const [activeItem, setActiveItem] = useState(null)
+  const [activeItem, setActiveItem] = useState(menuSidebar1[0])
   const [isActive, setIsActive] = useState(false)
 
 

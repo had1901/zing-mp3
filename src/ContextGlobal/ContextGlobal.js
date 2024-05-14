@@ -1,14 +1,24 @@
 import { useState, useRef, useEffect, createContext } from "react";
+import { Musics } from "../mp3/Music/Music";
 
 const Context = createContext()
 
 function ContextProvider({ children }) {
   const [theme, setTheme] = useState('dark')
+  const [songInitial, setSongInitial] = useState(Musics[0])
   const [infoMusic, setInfoMusic] = useState([])
+  const [listPlay, setListPlay] = useState(() => {
+    let songPlaying = JSON.parse(localStorage.getItem('listPlay'))
+    return songPlaying || songInitial
+  })
+  const [songListen, setSongListen] = useState(() => {
+    let stores = JSON.parse(localStorage.getItem('songListen'))
+    return stores
+  })
   const [thumb, setThumb] = useState(``)
   const [thumbSetting, setThumbSetting] = useState('./mp3/imgBackGround/london-thumb-setting.png')
   const [thumbName, setThumbName] = useState('Tím')
-
+  
   const [colorBgSearch, setColorBgSearch] = useState()
   const [colorBgSidebar, setColorBgSidebar] = useState()
   const [colorBgSidebarItem, setColorBgSidebarItem] = useState()
@@ -37,6 +47,8 @@ function ContextProvider({ children }) {
   const [gifplay, setGifplay] = useState(false)
   const [isActiveSidebar, setIsActiveSidebar] = useState(false)
   const [isOpenSidebarRight, setIsOpenSidebarRight] = useState(false)
+  const [activeAudio, setActiveAudio] = useState(false)
+
 
   const [sidebarComponent, setSidebarComponent] = useState()
   const [searchComponent, setSearchComponent] = useState()
@@ -74,6 +86,7 @@ function ContextProvider({ children }) {
     buttonDownLoadRef
   ]
 
+  
   useEffect(() => {
     window.addEventListener('scroll', () => {
       if(window.scrollY > 0) {
@@ -109,9 +122,25 @@ function ContextProvider({ children }) {
     setTheme(theme === 'dark' ? 'light' : 'dark')
   }
 
+  const handleListenNear = (item) => {
+    setListPlay(item)
+    localStorage.setItem('listPlay', JSON.stringify(item))
+    setSongListen(prev => {
+      if(prev === null || !prev.includes(item)) {
+        let songNew = [...(prev || []), item]
+        setSongListen(songNew)
+        localStorage.setItem('songListen', JSON.stringify(songNew))
+        return songNew
+      }
+      return prev
+    })
+    
+  }
+  
   const handleGetInfoMusic = (item, index) => {
     if(item) {
       setInfoMusic(item)
+      handleListenNear(item)
       setPath(item.path)
       setGifplay(true)
     }
@@ -330,8 +359,10 @@ function ContextProvider({ children }) {
     isActive,
     isActiveSidebar,
     isOpenSidebarRight,
-    
-    
+    activeAudio,
+    songInitial,
+    listPlay,
+    songListen,
 
     colorBgSearch,
     colorBgSidebar,
@@ -381,6 +412,7 @@ function ContextProvider({ children }) {
     handleActiveSidebar,
 
     setIsOpenSidebarRight,
+    setActiveAudio,
   }
   return (
     <Context.Provider value={value}>

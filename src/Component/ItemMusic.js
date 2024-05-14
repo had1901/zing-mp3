@@ -9,6 +9,9 @@ import BtnRadius from './BtnRadius';
 import { GoHeart, GoHeartFill } from 'react-icons/go';
 import { AiOutlineMinus } from 'react-icons/ai';
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
+import { PiPlayCircleLight } from 'react-icons/pi';
+import { LuMusic } from "react-icons/lu";
+
 
 function ItemMusic({ onClick, ...props }) {
   const context = useContext(Context) 
@@ -22,7 +25,8 @@ function ItemMusic({ onClick, ...props }) {
     setActiveHeart(!activeHeart)
   }
   
-  const handleGetInfoMusicContext = (item) => {
+  const handleGetInfoMusicContext = async (item) => {
+    await context.setActiveAudio(true)
     return context.handleGetInfoMusic(item)
   }
 
@@ -72,9 +76,12 @@ function ItemMusic({ onClick, ...props }) {
             </div>
           }
           <div 
-                className={`flex items-center w-32 p-2 gap-x-4 group/item ${props.className}`}
+                className={`flex items-center w-32 p-2 ${props.isAlbum ? 'gap-x-2' : 'gap-x-4'} group/item ${props.className}`}
                 onClick={onClick}
               >
+                {
+                  props.isAlbum && (<LuMusic className='mr-1'/>)
+                }
                 <div className={`relative group/parent cursor-pointer ${props.classNameMore}`} onClick={() => handleGetInfoMusicContext(props.item)}>
                   <img 
                     src={`/mp3/${props.item.thumb}`} 
@@ -85,22 +92,34 @@ function ItemMusic({ onClick, ...props }) {
                     context.infoMusic === props.item 
                     ?
                       <div className='w-full h-full flex items-center justify-center text-center absolute z-10 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-musicBgColor shadow-musicShadow rounded-md'>                      
-                          <img src='./mp3/gifWaveMusic/icon-playing.gif' alt='gif' className='w-1/3 inline-block ' />                      
+                          {
+                            context.activeAudio
+                            ? (<img src='./mp3/gifWaveMusic/icon-playing.gif' alt='gif' className='w-1/3 inline-block ' />)
+                            : (<PiPlayCircleLight className='w-1/3 text-4xl' />)
+                          
+                            
+
+                          }                      
                       </div>
                     :
                       null
                   }
                   <FaPlay className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 hidden text-white text-xl group-hover/item:block group-hover/item:opacity-90' />
                 </div>
-                <div className='flex flex-col justify-center leading-none flex-2 font-semibold'>
+                <div className={`${props.isAlbum ? 'flex-2' : 'flex-2'} flex flex-col justify-center leading-none  font-semibold`}>
                   <div className='flex items-center capitalize text-white text-sm '>
-                    <h4 className={props.classTitle}>{props.item.name}</h4> 
-                    <Label title={props.item.premium} />                
+                    <h4 className={`${props.classTitle} line-clamp-1`}>{props.item?.name}</h4> 
+                    <Label title={props.item?.premium} />                
                   </div>
                   <div>
                     <Link to='./zingchart' className={`text-textZingchart inline hover:underline hover:text-violet ${props.classSinger}`}>{props.item.singer}</Link>
                   </div>
-                  {props.isDate && <span className='text-xs text-textZingchart'>{props.item.date}</span>}
+                  {props.isDate && <span className='text-xs text-textZingchart'>{props.item?.date}</span>}
+                </div>
+                <div className={`${props.isAlbum ? 'flex-2' : '' }`}>
+                  {
+                    props.isAlbum && (<p>{props.item?.album}</p>)
+                  }
                 </div>
                 {props.children}
                 <div className={props.classIcon}>

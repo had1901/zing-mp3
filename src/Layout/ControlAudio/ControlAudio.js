@@ -20,6 +20,8 @@ import img1 from '../../mp3/imgMusic/life-goes-on.png';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { BiPlus } from 'react-icons/bi';
+import { Musics } from './../../mp3/Music/Music';
+import { Link } from 'react-router-dom';
 
 function ControlAudio() {
    const audio = useRef()
@@ -28,12 +30,10 @@ function ControlAudio() {
   const min = 0
   const max = 100
   const [valueAudio, setValueAudio] = useState(0)
-  const [valueVolume, setValueVolume] = useState(1)
+  const [valueVolume, setValueVolume] = useState(0.5)
   const [minVolume, setMinVolume] = useState('0.01')
-  const [maxVolume, setMaxVolume] = useState(1)
+  const [maxVolume, setMaxVolume] = useState(0.5)
   const [mutedVolume, setMutedVolume] = useState(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [activeAudio, setActiveAudio] = useState(false)
   const [activeHeart, setActiveHeart] = useState(false)
   const [activeLoop, setActiveLoop] = useState(false)
   const [isLoop, setIsLoop] = useState(false)
@@ -92,12 +92,6 @@ function ControlAudio() {
 
   }
 
-  const handleAudio = (e) => {
-    e.stopPropagation()
-    setActiveAudio(!activeAudio)
-    setIsPlaying(!isPlaying)
-  }
-
   const handleLoop = (e) => {
     e.stopPropagation()
     setActiveLoop(!activeLoop)
@@ -118,55 +112,57 @@ function ControlAudio() {
   const handleOpenSidebarRight = (e) => {
     e.stopPropagation()
     context.setIsOpenSidebarRight(!context.isOpenSidebarRight)
-    console.log(context.isOpenSidebarRight)
   }
 
   const handleDetailSong = (e) => {
     e.stopPropagation()
-    console.log(123)
   }
 
-  useEffect(() => {
-    if(isPlaying) {
-      onPlay()
-      audio.current.play()
-      console.log("Playing...")
-      setActiveAudio(true)
-    } else {
-      audio.current.pause()
-      setActiveAudio(false)
-      console.log("Pause")
-    }
-  },[isPlaying, onPlay])
+  const handlePlaySong = async () => {
+    await onPlay()
+    await audio.current.play()
+    context.setActiveAudio(true)
+  }
 
-  
+  const handlePauseSong = async () => {
+    await onPlay()
+    await audio.current.pause()
+    context.setActiveAudio(false)
+  }
+
+  const handleInputMouseDown = (e) => {
+    e.stopPropagation()
+  }
+
   return (
-    <div className={` ${context.controlAudio} h-91 fixed bottom-0 flex justify-center w-full xs:hidden lg:block text-white border-t-1 border-zinc-700 z-50`}>
-      <div className='w-full text-white pr-5 pl-7 mx-auto flex justify-between items-center' onClick={(e) => handleDetailSong(e)}>
+    <section className={` ${context.controlAudio} h-91 fixed bottom-0 flex justify-center w-full xs:hidden lg:block text-white border-t-1 border-zinc-700 z-50`} onClick={(e) => e.stopPropagation()}>
+      <Link to='/album' className='w-full h-full text-white pr-5 pl-7 mx-auto flex justify-between items-center' onClick={(e) => handleDetailSong(e)}>
         <div className='flex items-center flex-1'>
           <div className='flex items-center min-w-235 max-w-235'>
             <div className='relative shrink-0'>
               <img 
                 src=
                 { 
-                  context.infoMusic.thumb
+                  context.infoMusic?.thumb
                   ?
-                  `./mp3/${context.infoMusic.thumb}`
+                  `./mp3/${context.infoMusic?.thumb}`
                   :
-                  img1
+                  `./mp3/${context.songInitial?.thumb}`
+                  
                 }
                 alt='img'
-                className={`w-16 h-16 block object-cover rounded-full ${isPlaying && 'animate-spin-rotate'}`}
-              />         
+                className={`w-16 h-16 block object-cover rounded-full ${context.activeAudio && 'animate-spin-rotate'}`}
+              />    
+                  
             </div>
             <div className='mx-3 flex flex-col '>
-              <h3 className='text-sm font-semibold line-clamp-2'>{context.infoMusic ? context.infoMusic.name : 'DNA'}</h3>
-              <span className='text-xs text-zinc-500 font-medium'>{context.infoMusic ? context.infoMusic.singer : 'BTS'}</span>
+              <h3 className='text-sm font-semibold line-clamp-2'>{context.infoMusic.thumb ? context.infoMusic?.name : context.songInitial.name}</h3>
+              <span className='text-xs text-zinc-500 font-medium'>{context.infoMusic.thumb ? context.infoMusic?.singer : context.songInitial.singer}</span>
             </div>
           </div>
           <div className='flex items-center mx-4 gap-1 text-white'> 
 
-          <audio ref={audio} src={`../../mp3/Music/${context.path}`} volume={valueVolume} autoPlay loop={activeLoop ? true : false} hidden controls onTimeUpdate={onPlay}></audio>      
+          <audio ref={audio} src={context.path ? `../../mp3/Music/${context.path}` : ''} volume={valueVolume} autoPlay loop={activeLoop ? true : false} hidden controls onTimeUpdate={onPlay}></audio>      
 
             <BtnRadius onClick={(e) => handleHeart(e)}>
               {
@@ -186,18 +182,12 @@ function ControlAudio() {
             <BtnRadius onClick={(e) => handlePrevious(e)}>
               <RxTrackPrevious />
             </BtnRadius>
-            <BtnRadius props='hover:bg-transparent' onClick={(e) => handleAudio(e)}>
-              <div>
+            <BtnRadius props='hover:bg-transparent'>
                 {
-                  activeAudio && audio.current.currentTime > 0 ?
-                    (<PiPlayCircleLight className='text-5xl' />)
-                  :
-                  !activeAudio ? 
-                    (<PiPauseCircleLight className='text-5xl' />) 
-                  :  
-                  (<PiPlayCircleLight className='text-5xl' />)
-                } 
-              </div>
+                  context.activeAudio
+                  ? (<PiPauseCircleLight onClick={() => handlePauseSong()} className='text-5xl' />) 
+                  : (<PiPlayCircleLight onClick={() => handlePlaySong()} className='text-5xl' />)
+                }
             </BtnRadius>
             <BtnRadius onClick={(e) => handleNext(e)}>
               <RxTrackNext />
@@ -247,8 +237,8 @@ function ControlAudio() {
                     <HiOutlineVolumeUp className='flex-1'/>
                 }
                 </BtnRadius>
-                <div className='w-[90px] control flex items-center flex-1 cursor-pointer transition-all group/parent'>         
-                  <input className='w-full' type='range' min={minVolume} max={maxVolume} step={minVolume} value={valueVolume} onChange={(e) => handleChangeVolume(e)}/>          
+                <div className='w-[90px] control flex items-center flex-1 cursor-pointer transition-all group/parent' >         
+                  <input className='w-full' type='range' min={minVolume} max={maxVolume} step={minVolume} value={valueVolume} onMouseDown={(e) => handleInputMouseDown(e)} onChange={(e) => handleChangeVolume(e)}/>          
                 </div>
               </div>
           </div>
@@ -258,13 +248,13 @@ function ControlAudio() {
             </BtnRadius>
           </span>
         </div>
-      </div>
+      </Link>
       <div className={`absolute bottom-full left-0 w-240 flex items-center xl:translate-x-0 ${context.isActiveSidebar === true ? 'sm:translate-x-0' : 'xs:-translate-x-full'} transition-all flex-shrink-0 z-10 mt-auto px-6 gap-2 text-colo bg-main font-semibold h-12 cursor-pointer border-solid hover:text-white border-t-1 border-zinc-700`}>
           <BiPlus/> 
           <span className='flex-1'>Tạo playlist mới</span>
       </div>    
                
-    </div>
+    </section>
   )
 }
 export default ControlAudio

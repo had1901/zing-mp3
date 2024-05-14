@@ -10,6 +10,7 @@ import RankMusic from './Pages/RankMusic/RankMusic';
 import TopRank from './Pages/TopRank/TopRank';
 import GlobalPage from './Pages/GlobalPage';
 import Topic from './Pages/Topic/Topic';
+import Album from './Pages/Album/Album';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
               <Route path='/rank-music' element={<RankMusic/>}/> 
               <Route path='/topic' element={<Topic/>}/> 
               <Route path='/top-rank' element={<TopRank/>}/> 
+              <Route path='/album' element={<Album/>}/> 
           </Route>
           <Route path='/login' element={<Login/>}/>
           <Route path='/*' element={<NotFound/>}/>

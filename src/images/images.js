@@ -9,7 +9,7 @@ export const Images = [
   },
   {
     title:'rose',
-    link: 'slider-3.png'
+    link: 'slider-3.jpg'
   },
   {
     title:'jennie',
@@ -37,7 +37,7 @@ export const Images = [
   },
   {
     title:'jennie',
-    link: 'slider-11.webp'
+    link: 'slider-11.jpg'
   },
   {
     title:'lisa',

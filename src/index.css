@@ -201,3 +201,14 @@ html::-webkit-scrollbar{
 .scroll-home::-webkit-scrollbar{
   display: none;
 }
+@keyframes spinn {
+  from{
+    rotate: 0;
+  }
+  to{
+    rotate: 360deg;
+  }
+}
+*::-webkit-scrollbar{
+  display: none;
+}
