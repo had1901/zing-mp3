@@ -45,7 +45,7 @@ export const Images = [
   },
   {
     title:'rose',
-    link: 'slider-9.jpg'
+    link: 'slider-13.jpg'
   },
 ]
 

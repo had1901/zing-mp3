@@ -212,3 +212,28 @@ html::-webkit-scrollbar{
 *::-webkit-scrollbar{
   display: none;
 }
+input[type="range"] {
+  -webkit-appearance: none; /* Tắt kiểu dáng mặc định của thanh trượt trong WebKit */
+  width: 100%; /* Đặt chiều rộng của thanh trượt */
+  height: 4px; /* Đặt chiều cao của thanh trượt */ /* Đặt màu nền cho đường trượt */
+  border-radius: 5px; /* Đặt bo góc cho đường trượt */
+  outline: none; /* Tắt viền ngoài */
+  opacity: 0.7;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  display: none;
+  width:0;
+  height:0;
+  border-radius: 999px;
+  background-color: #fff;
+}
+input[type="range"]:hover{
+  height: 6px;
+}
+input[type="range"]:hover::-webkit-slider-thumb{
+  display: block;
+  width:14px;
+  height:14px;
+}

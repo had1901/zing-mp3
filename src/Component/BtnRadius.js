@@ -10,7 +10,10 @@ function BtnRadius({children, props, onClick, datatype}, ref) {
     <div 
       ref={ref}
       datatype={datatype} 
-      onClick={onClick} 
+      onClick={onClick ? onClick : (e) => {
+        e.preventDefault();
+        console.log(123)
+      }} 
       className={` flex transition-all items-center justify-center min-h-32 min-w-32 text-center text-white hover:bg-sidebarRose hover:text-white rounded-full cursor-pointer font-medium ${props}`}
     >
       {children}

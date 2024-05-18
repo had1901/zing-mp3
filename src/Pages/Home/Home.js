@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useState } from 'react'
+import React, { memo, useContext, useEffect, useState } from 'react'
 import '../../../src/index.css';
 
 import { Context } from '../../ContextGlobal/ContextGlobal';
@@ -35,59 +35,29 @@ import { GoChevronRight } from 'react-icons/go';
 function Home() {
   const context = useContext(Context)
   
-  const [activeTab, setActiveTab] = useState('Tất cả')
+  const [activeTab, setActiveTab] = useState('K-pop')
   const [itemSlideScreen, setItemSlideScreen] = useState(4)
-  const [arrMusic, setArrMusic] = useState([])
+  const [data, setData] = useState([])
 
   // Handle active tab
   const tabTitles = [
     {
-      tabTitle: 'Tất cả',
-      action: () => setArrMusic(Musics),
+      tabTitle: 'all',
     },
     {
       tabTitle: 'V-pop',
-      action: () => setArrMusic(MusicsVN),
     },
     {
       tabTitle: 'K-pop',
-      action: () => setArrMusic(Musics),
     },
     {
       tabTitle: 'US-UK',
-      action: () => setArrMusic(MusicsWorld),
     },
   ]
-
   const handleBtnActive = (tabTitle) => {
     setActiveTab(tabTitle)
   }
 
-  useEffect(() => {
-    const conditionTab = tabTitles.find(item => item.tabTitle === activeTab)
-    conditionTab ? conditionTab.action() : setArrMusic([])
-  },[activeTab])
-
-  
-  // Tính toán break-point để hiển thị số lượng slide
-  useEffect(() => {
-    const handleToShowSlide = () => {
-      const windowWidth = window.innerWidth
-        if(windowWidth >= 1340) {
-          setItemSlideScreen(3)
-        } else if(windowWidth >= 1024) {
-          setItemSlideScreen(3)
-        } else if(windowWidth >= 768) {
-          setItemSlideScreen(2)
-        } else {
-          setItemSlideScreen(1)
-        }
-      }
-    window.addEventListener('resize', handleToShowSlide)
-    handleToShowSlide()
-    return () => window.removeEventListener('resize', handleToShowSlide)
-  },[])
-  
   // Cấu hình Swipper slider
   const swiperProps = {
     spaceBetween: 30,
@@ -100,7 +70,6 @@ function Home() {
     autoplay: {delay: 3000, disableOnInteraction: false },
     className: 'w-full xl:h-fit lg:h-fit select-none',
   }
-  
   
   // Cấu hình react-slick
   const settings1 = {
@@ -120,7 +89,42 @@ function Home() {
     slidesToShow: 7,
     slidesToScroll: 7,
   }
+  // Call API
+  const fetching = async () => {
+    try {
+      const api =  `http://localhost:3333/${activeTab}`
+      const res = await fetch(api)
+      if(res.status !== 200) {
+        throw new Error(`Fetching ${api} failed`)
+      } 
+      const dataAPI = await res.json()
+      setData(dataAPI) 
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  useEffect(() => {
+    fetching()
+  },[activeTab])
 
+  // Tính toán break-point để hiển thị số lượng slide
+  useEffect(() => {
+    const handleToShowSlide = () => {
+      const windowWidth = window.innerWidth
+        if(windowWidth >= 1340) {
+          setItemSlideScreen(3)
+        } else if(windowWidth >= 1024) {
+          setItemSlideScreen(3)
+        } else if(windowWidth >= 768) {
+          setItemSlideScreen(2)
+        } else {
+          setItemSlideScreen(1)
+        }
+      }
+    window.addEventListener('resize', handleToShowSlide)
+    handleToShowSlide()
+    return () => window.removeEventListener('resize', handleToShowSlide)
+  },[])
 
   return (
     <ContainerMain>    
@@ -155,7 +159,7 @@ function Home() {
                 </div>
                 <section className='grid xl:grid-cols-3 lg:grid-cols-2 sm:grid-cols-1 mt-4'>
                   {
-                    arrMusic.map((item, index) => (
+                    data.map((item, index) => (
                       <ItemMusic key={index} item={item} isDate className='w-full rounded-lg hover:bg-searchRose' classWrap='flex justify-between' classSinger='text-sm' classNameMore='w-16 h-16' />
                     ))
                   }
@@ -281,4 +285,4 @@ function Home() {
   )
 }
 
-export default Home
+export default memo(Home)

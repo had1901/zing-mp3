@@ -21,7 +21,7 @@ export const Musics = [
     id: 1,
     name: 'Attention',
     album: 'Hẹn gặp lại anh (Single)',
-    singer: 'Charlie Puth',
+    singer: 'Attention',
     country: 'USA',
     type: 'US-UK',
     releaseDate: '2018',

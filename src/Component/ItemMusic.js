@@ -51,11 +51,11 @@ function ItemMusic({ onClick, ...props }) {
   },[])
   
   return (
-        <section className={props.classWrap}>
+        <section id={props.item?.id} className={props.classWrap}>
           {
             props.isNumberRank 
             &&
-            <div className='flex items-center justify-between min-w-60px pl-3'>
+            (<div className='flex items-center justify-between min-w-60px pl-3'>
               <div className={`w-60px text-center text-2rem font-black ${textstroke}`}>{props.number + 1}</div>
               {
                 props.number % 2 === 0 ?
@@ -73,34 +73,27 @@ function ItemMusic({ onClick, ...props }) {
                 :
                 <AiOutlineMinus className='w-8 fill-white flex-1' />
               }
-            </div>
+            </div>)
           }
-          <div 
-                className={`flex items-center w-32 p-2 ${props.isAlbum ? 'gap-x-2' : 'gap-x-4'} group/item ${props.className}`}
-                onClick={onClick}
-              >
+          <div className={`flex items-center w-32 p-2 ${props.isAlbum ? 'gap-x-2' : 'gap-x-4'} group/item ${props.className}`} onClick={onClick}>
                 {
                   props.isAlbum && (<LuMusic className='mr-1'/>)
                 }
                 <div className={`relative group/parent cursor-pointer ${props.classNameMore}`} onClick={() => handleGetInfoMusicContext(props.item)}>
                   <img 
-                    src={`/mp3/${props.item.thumb}`} 
-                    alt={props.item.name} 
+                    src={`/mp3/imgMusic/${props.item?.information?.thumb}`} 
+                    alt={props.item?.name?.song} 
                     className='w-full h-full group-hover/item:bg-black group-hover/item:opacity-50 block rounded-md object-cover border-black'                
                   />
                   {
                     context.infoMusic === props.item 
-                    ?
-                      <div className='w-full h-full flex items-center justify-center text-center absolute z-10 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-musicBgColor shadow-musicShadow rounded-md'>                      
+                    ?(<div className='w-full h-full flex items-center justify-center text-center absolute z-10 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-musicBgColor shadow-musicShadow rounded-md'>                      
                           {
                             context.activeAudio
                             ? (<img src='./mp3/gifWaveMusic/icon-playing.gif' alt='gif' className='w-1/3 inline-block ' />)
-                            : (<PiPlayCircleLight className='w-1/3 text-4xl' />)
-                          
-                            
-
+                            : (<FaPlay className='w-1/3 text-4xl' />)
                           }                      
-                      </div>
+                      </div>)
                     :
                       null
                   }
@@ -108,17 +101,17 @@ function ItemMusic({ onClick, ...props }) {
                 </div>
                 <div className={`${props.isAlbum ? 'flex-2' : 'flex-2'} flex flex-col justify-center leading-none  font-semibold`}>
                   <div className='flex items-center capitalize text-white text-sm '>
-                    <h4 className={`${props.classTitle} line-clamp-1`}>{props.item?.name}</h4> 
-                    <Label title={props.item?.premium} />                
+                    <h4 className={`${props.classTitle} line-clamp-1`}>{props.item?.name?.song}</h4> 
+                    <Label title={props.item?.desc?.premium} />                
                   </div>
                   <div>
-                    <Link to='./zingchart' className={`text-textZingchart inline hover:underline hover:text-violet ${props.classSinger}`}>{props.item.singer}</Link>
+                    <Link to='./zingchart' className={`text-textZingchart inline hover:underline hover:text-violet ${props.classSinger}`}>{props.item?.name?.singer}</Link>
                   </div>
-                  {props.isDate && <span className='text-xs text-textZingchart'>{props.item?.date}</span>}
+                  {props.isDate && <span className='text-xs text-textZingchart'>{props.item?.desc?.date}</span>}
                 </div>
                 <div className={`${props.isAlbum ? 'flex-2' : '' }`}>
                   {
-                    props.isAlbum && (<p>{props.item?.album}</p>)
+                    props.isAlbum && (<p>{props.item?.information?.album}</p>)
                   }
                 </div>
                 {props.children}
@@ -141,7 +134,7 @@ function ItemMusic({ onClick, ...props }) {
                   {
                     props.isTimeString 
                     &&
-                    <span className='text-xs text-textZingchart font-normal group-hover/item:hidden'>{props.item.timeString}</span>
+                    <span className='min-w-[40px] flex-1 text-xs text-textZingchart font-normal group-hover/item:hidden'>{props.item?.timeString}</span>
                   }
                 </div>
           </div>

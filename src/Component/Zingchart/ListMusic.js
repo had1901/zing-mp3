@@ -3,24 +3,46 @@ import ItemMusic from '../ItemMusic'
 import Description from '../Description'
 import { Musics } from '../../mp3/Music/Music'
 import Button from '../Button'
+import { useCallback } from 'react'
+import { useEffect } from 'react'
 
-function   ListMusic({ className }) {
+function ListMusic({ data, className }) {
+  console.log('ListMusic', data)
   const [itemShow, setItemShow] = useState(10)
+  // const [data, setData] = useState([])
+  // const [pathApi, setPathApi] = useState('mp3')
 
   const showItem = () => {
     setItemShow(itemShow + 10)
   }
 
+  // const fetching = useCallback(async () => {
+  //   try {
+  //     const api = `http://localhost:3333/${pathApi}`
+  //     const res = await fetch(api)
+  //     if(!res.ok) {
+  //       throw new Error(`Fetching '${api}' failed`)
+  //     }
+  //     const result = await res.json()
+  //     setData(result)
+  //   } catch (err) { 
+  //     console(err) 
+  //   }
+  // },[pathApi])
+
+  // useEffect(() => {
+  //   fetching()
+  // },[fetching])
   return (
     <section className={className}>
       <div>
         <div className='w-full'>
           {
-            Musics.slice(0, itemShow).map((item, index) => (             
+            data?.slice(0, itemShow).map((item, index) => (             
                 <ItemMusic 
                   key={index} 
                   number={index} 
-                  item={item} 
+                  item={item}
                   isIcon 
                   isNumberRank 
                   isTimeString 
@@ -30,7 +52,7 @@ function   ListMusic({ className }) {
                   classNameMore='w-10 h-10'
                 >
                 <div className='flex flex-1 text-textZingchart'>
-                  <Description desc={item.name} classNameMore='text-xs font-normal hover:text-violet hover:underline cursor-pointer'/>
+                  <Description desc={item.name.song} classNameMore='text-xs font-normal hover:text-violet hover:underline cursor-pointer'/>
                 </div>
                 </ItemMusic>              
             ))
@@ -38,7 +60,7 @@ function   ListMusic({ className }) {
         </div>
       </div>
       {
-        itemShow < Musics.length && 
+        itemShow < data.length && 
         <div className='text-center flex justify-center pt-5 '>
           <Button title='Xem top 100' onClick={showItem} className='w-28 px-3 py-2 border border-searchRose text-textZingchart text-sm rounded-full hover:bg-violet hover:text-white transition-all '/>
         </div>      

@@ -7,12 +7,15 @@ import BtnRadius from '../../Component/BtnRadius';
 
 import { LuAlarmClock } from "react-icons/lu";
 import { IoIosMore } from 'react-icons/io';
+import { useCallback } from 'react';
+import { useEffect } from 'react';
 
 function SidebarRight() {
   const context = useContext(Context)
   const [active, setActive] = useState(1)
   const [activeSongListen, setActiveSongListen] = useState(false)
-
+  const [data, setData] = useState([])
+  const [path, setPath] = useState('mp3')
   const handleActive= (num) => {
     if(num === 2) {
       setActiveSongListen(true)
@@ -21,6 +24,23 @@ function SidebarRight() {
     }
     setActive(num)
   }
+  const fetching = useCallback( async () => {
+    try {
+       const url = `http://localhost:3333/${path}`
+       const callData = await fetch(url)
+       if(!callData.ok) {
+         throw new Error(`Fetching ${url} failed`)
+       }
+       const result = await callData.json()
+       setData(result)
+     } catch (err) {
+       console.log(err)
+     }
+   },[path])
+ 
+   useEffect(() => {
+     fetching()
+   },[fetching])
 
   return (
     <div className={`${context.isOpenSidebarRight ? 'translate-x-[0]' : 'translate-x-[100%]'} fixed top-0 right-0 z-40 transition-all duration-500 w-[330px] h-[100%] pb-[90px] bg-transparent border-l-[#ffffff1a] border-l-2 `}>
@@ -55,7 +75,7 @@ function SidebarRight() {
           </section>
           <section className='grid xl:grid-cols-1 h-[calc(100%_-_90px)] overflow-y-scroll px-2 '>
               {
-                Musics.map((item, index) => (
+                data.map((item, index) => (
                   <ItemMusic key={index} item={item} className='w-full rounded-[4px] hover:bg-searchRose py-[6px]' classWrap='flex justify-between' classSinger='text-[12px]' classNameMore='w-10 h-10' classTitle='font-medium'  />
                 ))
               }

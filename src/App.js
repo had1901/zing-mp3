@@ -25,6 +25,7 @@ function App() {
               <Route path='/topic' element={<Topic/>}/> 
               <Route path='/top-rank' element={<TopRank/>}/> 
               <Route path='/album' element={<Album/>}/> 
+              <Route path='/album/:id' element={<NotFound/>}/> 
           </Route>
           <Route path='/login' element={<Login/>}/>
           <Route path='/*' element={<NotFound/>}/>

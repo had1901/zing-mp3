@@ -1,20 +1,24 @@
-import { useState, useRef, useEffect, createContext } from "react";
+import { useState, useRef, useEffect, createContext, useCallback } from "react";
 import { Musics } from "../mp3/Music/Music";
 
 const Context = createContext()
 
 function ContextProvider({ children }) {
   const [theme, setTheme] = useState('dark')
-  const [songInitial, setSongInitial] = useState(Musics[0])
+  const [dataContext, setDataContext] = useState([])
+  const [pathContext, setPathContext] = useState('mp3')
+  const [songInitial, setSongInitial] = useState([])
+  console.log('dataContext', dataContext)
   const [infoMusic, setInfoMusic] = useState([])
   const [listPlay, setListPlay] = useState(() => {
     let songPlaying = JSON.parse(localStorage.getItem('listPlay'))
-    return songPlaying || songInitial
+    return songPlaying || songInitial[0]
   })
   const [songListen, setSongListen] = useState(() => {
     let stores = JSON.parse(localStorage.getItem('songListen'))
     return stores
   })
+
   const [thumb, setThumb] = useState(``)
   const [thumbSetting, setThumbSetting] = useState('./mp3/imgBackGround/london-thumb-setting.png')
   const [thumbName, setThumbName] = useState('Tím')
@@ -86,34 +90,10 @@ function ContextProvider({ children }) {
     buttonDownLoadRef
   ]
 
-  
-  useEffect(() => {
-    window.addEventListener('scroll', () => {
-      if(window.scrollY > 0) {
-        setCheckScroll(window.scrollY)
-      } else {
-        setCheckScroll('')
-
-      }
-    })
-  }, [])
-
-  useEffect(() => {
-    if(searchRef && searchRef.current) {
-      setSearchComponent(searchRef.current.getAttribute('datatype'))
-    }
-    if(sidebarRef && sidebarRef.current) {
-      setSidebarComponent(sidebarRef.current.getAttribute('datatype'))
-    }
-    if(buttonDownLoadRef && buttonDownLoadRef.current) {
-      setButtonDownLoadComponent(buttonDownLoadRef.current.getAttribute('datatype'))
-    }
-    
-  }, [deps])
-
   const onClose = () => {
     setIsActive(false)
   }
+
   const handleChangeThumb = () => {
     setIsActive(!isActive)
   }
@@ -134,14 +114,14 @@ function ContextProvider({ children }) {
       }
       return prev
     })
-    
   }
   
   const handleGetInfoMusic = (item, index) => {
     if(item) {
+      console.log('Global: ',item)
       setInfoMusic(item)
       handleListenNear(item)
-      setPath(item.path)
+      setPath(item?.information?.path)
       setGifplay(true)
     }
   }  
@@ -340,7 +320,6 @@ function ContextProvider({ children }) {
     }
   }
 
-  
   const value = {
     theme,
     infoMusic,
@@ -414,6 +393,52 @@ function ContextProvider({ children }) {
     setIsOpenSidebarRight,
     setActiveAudio,
   }
+
+  const fetchingData = useCallback( async () => {
+    try {
+      const api = `http://localhost:3333/${pathContext}`
+      console.log('Call: ', api)
+
+      const res = await fetch(api)
+      if(res.status !== 200) {
+        throw new Error ('Fetching false')
+      }
+      const result = await res.json()
+      console.log('result: ', result)
+      setDataContext(result)
+      setSongInitial(result)
+    } catch (err) {
+      console.log(err)
+    }
+  },[pathContext])
+
+  useEffect(() => {
+    console.log('Path Context changed:', pathContext);
+    fetchingData()
+  },[fetchingData, pathContext])
+
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      if(window.scrollY > 0) {
+        setCheckScroll(window.scrollY)
+      } else {
+        setCheckScroll('')
+      }
+    })
+  }, [])
+
+  useEffect(() => {
+    if(searchRef && searchRef.current) {
+      setSearchComponent(searchRef.current.getAttribute('datatype'))
+    }
+    if(sidebarRef && sidebarRef.current) {
+      setSidebarComponent(sidebarRef.current.getAttribute('datatype'))
+    }
+    if(buttonDownLoadRef && buttonDownLoadRef.current) {
+      setButtonDownLoadComponent(buttonDownLoadRef.current.getAttribute('datatype'))
+    }
+  }, [deps])
+
   return (
     <Context.Provider value={value}>
       {children}
