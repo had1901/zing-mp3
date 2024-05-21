@@ -4,16 +4,20 @@ import './index.css';
 import App from './App';
 import { BrowserRouter as Router  } from 'react-router-dom'
 import { ContextProvider } from './ContextGlobal/ContextGlobal';
+import { Provider as ReduxProvider } from 'react-redux';
+import store from './redux/stores/stores';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ContextProvider>
-      <Router>
-        <App />
-      </Router>
-    </ContextProvider>
+    <ReduxProvider store={store}>
+      <ContextProvider>
+        <Router>
+          <App />
+        </Router>
+      </ContextProvider>
+    </ReduxProvider>
   </React.StrictMode>
 );
 

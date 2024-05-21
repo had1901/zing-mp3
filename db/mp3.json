@@ -266,8 +266,51 @@
             "views": 1200000000,
             "listening": 50
           }
+      },
+      { 
+        "id": 2, 
+        "information": {
+          "thumb": "life-goes-on.png" ,
+          "path": "chungtacuatuonglai.mp3",
+          "album": "Hẹn gặp lại anh (Single)",
+          "durationTime": "tung" 
+        },
+        "name": { 
+            "song": "Chung ta cua tuong lai",
+            "singer": "Song Tung - MTP"
+          },
+        "desc": {
+            "category": "K-pop",
+            "country": "Korean" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 3, 
+        "information": {
+          "thumb": "life-goes-on.png" ,
+          "path": "Cuon-Cuon-Tan-Than-Dieu-Dai-Hiep-2014-OST-Truong-Kiet.mp3",
+          "album": "Hẹn gặp lại anh (Single)",
+          "durationTime": "tung" 
+        },
+        "name": { 
+            "song": "Cuon Cuon Tan Than Dieu Dai Hiep 2014 OST Truong Kiet",
+            "singer": "Sog Tung - MTP"
+          },
+        "desc": {
+            "category": "K-pop",
+            "country": "Korean" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
       }
-      
     ],
     "V-pop": [
       { 

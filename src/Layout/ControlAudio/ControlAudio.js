@@ -30,16 +30,19 @@ function ControlAudio() {
   const inputRangeSong = useRef()
   const context = useContext(Context)
 
-  const navigate = useNavigate()
-  const [post, setPost] = useState([])
-  const [getData, setGetData] = useState('posts')
   const min = 0
   const max = 100
   const step = 0.01
+
+  const navigate = useNavigate()
+  const [post, setPost] = useState([])
+  const [getData, setGetData] = useState('posts')
+  
   const [valueAudio, setValueAudio] = useState(0)
   const [prevVolume, setPrevVolume] = useState(0.5)
   const [time, setTime] = useState(0)
-
+  const [isDragging, setIsDragging] = useState(false)
+  console.log(isDragging)
   const [valueInputSong, setValueInputSong] = useState(0)
   const [minValueInputSong, setMinValueInputSong] = useState(0)
   const [maxValueInputSong, setMaxValueInputSong] = useState(100)
@@ -55,15 +58,21 @@ function ControlAudio() {
   const [curTime, setCurTime] = useState(0)
   const [totalTime, setTotalTime] = useState(0)
 
+  // Hàm update thời lượng khi bài hát đang phát
   const onPlay = useCallback(() => {
-    const duration = audio.current.duration // Lấy ra tổng thời gian của bài hát
-    const currentTime = audio.current.currentTime // Lấy ra thời gian hiện tại của bài hát ( đang phát )
-    setCurTime(currentTime / duration * 100) 
-    convertSecondsToTime(Math.floor(duration))    
-    convertSecondsToCurrentTime(Math.floor(currentTime))
+    if(isDragging && audio.current) {
+      console.log('onPlay', isDragging)
+      const duration = audio.current.duration // Lấy ra tổng thời gian của bài hát
+      const currentTime = audio.current.currentTime // Lấ  ra thời gian hiện tại của bài hát ( đang phát )
+      setCurTime(currentTime / duration * 100) 
+      convertSecondsToTotalTime(Math.floor(duration))    
+      convertSecondsToCurrentTime(Math.floor(currentTime))
+      changeRangeInputSong()
+    }
   },[])
 
-  const convertSecondsToTime = (seconds) => {
+  // Tính toán chuyển đổi TỔNG thời lượng của bài bát sang định dạng thời gian (00:00)
+  const convertSecondsToTotalTime = (seconds) => {
     // Chia số giây thành phần phút và phần giây
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -76,6 +85,7 @@ function ControlAudio() {
     return setTotalTime(timeExpression);
   }
 
+  // Tính toán chuyển đổi thời lượng HIỆN TẠI của bài bát sang định dạng thời gian (00:00)
   const convertSecondsToCurrentTime = (seconds) => {
     // Chia số giây thành phần phút và phần giây
     const minutes = Math.floor(seconds / 60);
@@ -89,90 +99,112 @@ function ControlAudio() {
     return setCurTime(timeExpression);
   }
    
+  // Ngăn chặn sự kiện nổi bọt
+  const handleStopPropagation = (e) => {
+    e.stopPropagation()
+  }
+
+  // Yêu thích bài hát
   const handleHeart = (e) => {
     e.stopPropagation()
     setActiveHeart(!activeHeart)
   }
 
+  // Chuyển bài hát trước đó
   const handlePrevious = (e) => {
     e.stopPropagation()
 
   }
+
+  // Chuyển bài hát tiếp theo
   const handleNext = (e) => {
     e.stopPropagation()
 
   }
 
+  // Vòng lặp phát lại bài hát
   const handleLoop = (e) => {
     e.stopPropagation()
     setActiveLoop(!activeLoop)
   }
 
-  
+  // Điều hướng đến album của bài hát đang phát
   const handleDetailSong = () => {
     navigate('/album')
 
   }
 
+  // Đóng mở menu bên phải
   const handleOpenSidebarRight = (e) => {
     e.stopPropagation()
     context.setIsOpenSidebarRight(!context.isOpenSidebarRight)
   }
 
+  // Phát bài hát
   const handlePlaySong = async () => {
     await onPlay()
     await audio.current.play()
     context.setActiveAudio(true)
   }
 
+  // Tạm dừng bài hát
   const handlePauseSong = async () => {
     await onPlay()
     await audio.current.pause()
     context.setActiveAudio(false)
   }
-
+  // Ngăn chặn sự kiện nổi bọt
   const onStopNavigate = (e) => {
     e.stopPropagation()
     handleDetailSong(e)
-
   }
-  const handleChangeInputRangeSong = (e) => {
-    e.stopPropagation()
-    const newValueRange = e.target.value
-    setValueInputSong(newValueRange)
-    audio.current.currentTime = newValueRange
-  }
+  // Hàm update Value
+  // const handleChangeInputRangeSong = (e) => {
+  //   e.stopPropagation()
+  //   const newValueRange = e.target.value
+  //   setValueInputSong(newValueRange)
+  //   audio.current.currentTime = newValueRange
+  // }
 
+  // Hàm tính toán auto update thanh line chạy cho thời lượng bài hát
   const changeRangeInputSong = useCallback(() => {
-    // const interval = setInterval(() => {
-      if(inputRangeSong.current) {
+      if(audio.current && inputRangeSong.current && !isDragging) {
         let timer = (audio.current.currentTime / audio.current.duration) * 100
         console.log('time: ',timer)
-        setTime(audio.current.currentTime && audio.current.currentTime)
+        setTime(audio.current.currentTime)
         setValueInputSong(timer)
         let color = `linear-gradient(90deg, rgb(255,255,255) ${timer}%, rgb(130,130,130) ${timer}%)`
         inputRangeSong.current.style.background = color
       }
-      // return () => clearInterval(interval)/
-    // },1000)
-  },[])
-  const clickChangeInputRangeSong = () => {
-    let inputValue = inputRangeSong.current.value
-    console.log('song: ',inputValue)
-    let color = `linear-gradient(90deg, rgb(255,255,255) ${inputValue}%, rgb(130,130,130) ${inputValue}%)`
-    inputRangeSong.current.style.background = color
-  }
-  // useEffect(() => {
-  //   const clearInter = changeRangeInputSong()
-  //   return () => clearInter()
-  // },[changeRangeInputSong])
+  },[isDragging])
 
-  // useEffect(() => {
-  //   if (inputRangeSong.current) {
-      
+  // Click thay đổi thanh line thời lượng bài hát
+  // const clickChangeInputRangeSong = () => {
+  //   let inputValue = inputRangeSong.current.value
+  //   let audioCurrent = audio.current.currentTime
+  //   console.log('songClick: ',inputValue)
+  //   if(inputValue) {
+  //     setValueInputSong(inputValue)
+  //     audio.current.currentTime = inputValue
+  //   } else {
+  //     setValueInputSong(audioCurrent)
   //   }
-  // },[valueInputSong])
-
+  //   // setValueInputSong(inputValue)
+  //   // audio.current.value = inputValue
+  //   // audio.current.currentTime = inputValue
+  //   // let color = `linear-gradient(90deg, rgb(255,255,255) ${inputValue}%, rgb(130,130,130) ${inputValue}%)`
+  //   // inputRangeSong.current.style.background = color
+  // }
+  const handleTimeAudio = () => {
+    let valueInput = inputRangeSong.current.value
+    console.log('valueInput: ',valueInput)
+    audio.current.currentTime = valueInput       
+    console.log('audioEl: ',audio.current.currentTime)
+    let color = `linear-gradient(90deg, rgb(255,255,255) ${audio.current.currentTime}%, rgb(130,130,130) ${audio.current.currentTime}%)`
+    inputRangeSong.current.style.background = color
+    changeRangeInputSong() 
+  }
+  // Xử lý tăng giảm âm lượng
   const handleChangeInputRangeVolume = (e) => {
     e.stopPropagation()
     const newValueVolume = e.target.value
@@ -185,6 +217,7 @@ function ControlAudio() {
     }
   }
   
+  // Xử lý nút bật - tắt âm lượng -> làm thay đổi input range
   const handleMutedVolume = (e) => {
     e.stopPropagation()
     if(mutedVolume === false) {
@@ -196,7 +229,8 @@ function ControlAudio() {
       setMutedVolume(false)
     }
   }
-  
+
+  // Xử lý thanh input volume khi kéo
   const changeVolume = useCallback(() => {
     const handlePercent = (num) => {
       return (num * 100)
@@ -206,18 +240,38 @@ function ControlAudio() {
     inputVolume.current.style.background = color
   },[])
   
-  const handleStopPropagation = (e) => {
-    e.stopPropagation()
-  }
-
   useEffect(() => {
     changeVolume()
   },[changeVolume, valueVolume])
 
-  useEffect(() => {
-    changeRangeInputSong()
-  },[changeRangeInputSong, valueInputSong])
+  // const handleInputMouseDown = () => {
+  //   handleInputMouseMove()
+  //   setIsDragging(true)
+  //   console.log('Moues down')
+  // }
+  // const handleInputMouseUp = () => {
+  //   setIsDragging(false)
+  //   console.log('Moues up')
+  //   onPlay()
+  // }
+  // const handleInputMouseMove = () => {
+  //   setIsDragging(true)
+  //   console.log('Moues move')
 
+  // }
+  // useEffect(() => {
+  //   const audioEl = audio.current
+  //   if(audioEl) {
+  //     audioEl.addEventListener('timeupdate', changeRangeInputSong)
+  //   }
+  //   return () => {
+  //     if(audioEl) {
+  //       audioEl.removeEventListener('timeupdate', changeRangeInputSong)
+  //     }
+  //   }
+  // },[changeRangeInputSong])
+
+  // Xử lý lắng nghe sự kiện bài hát KẾT THÚC
   useEffect(() => {
     const audioElement = audio.current
     const handleAudioEnded = () => {
@@ -233,6 +287,8 @@ function ControlAudio() {
       }
     }
   },[context])
+
+  // Call API bài hát
   const fetching = useCallback( async () => {
    try {
       const url = `http://localhost:3333/${getData}`
@@ -246,7 +302,6 @@ function ControlAudio() {
       console.log(err)
     }
   },[getData])
-
   useEffect(() => {
     fetching()
   },[fetching])
@@ -340,8 +395,11 @@ function ControlAudio() {
                     step={0.1} 
                     value={valueInputSong} 
                     onClick={handleStopPropagation}
-                    onInput={handleChangeInputRangeSong}
-                    onChange={clickChangeInputRangeSong}
+                    onChange={handleTimeAudio}
+                    // onMouseUp={handleInputMouseUp}
+                    // onMouseDown={handleInputMouseDown}
+                    // onMouseMove={handleInputMouseMove}
+                    // onChange={clickChangeInputRangeSong}
                   />    
             </div>
             <span id='time-total' className='px-1 text-sm text-zinc-200 font-medium shrink-0 select-none'>{totalTime ? totalTime : '00:00'}</span>

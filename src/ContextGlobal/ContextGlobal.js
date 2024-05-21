@@ -8,7 +8,6 @@ function ContextProvider({ children }) {
   const [dataContext, setDataContext] = useState([])
   const [pathContext, setPathContext] = useState('mp3')
   const [songInitial, setSongInitial] = useState([])
-  console.log('dataContext', dataContext)
   const [infoMusic, setInfoMusic] = useState([])
   const [listPlay, setListPlay] = useState(() => {
     let songPlaying = JSON.parse(localStorage.getItem('listPlay'))

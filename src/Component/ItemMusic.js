@@ -75,7 +75,7 @@ function ItemMusic({ onClick, ...props }) {
               }
             </div>)
           }
-          <div className={`flex items-center w-32 p-2 ${props.isAlbum ? 'gap-x-2' : 'gap-x-4'} group/item ${props.className}`} onClick={onClick}>
+          <div className={`relative flex items-center w-32 p-2 ${props.isAlbum ? 'gap-x-2' : 'gap-x-4'} group/item ${props.className}`} onClick={onClick}>
                 {
                   props.isAlbum && (<LuMusic className='mr-1'/>)
                 }
@@ -109,7 +109,7 @@ function ItemMusic({ onClick, ...props }) {
                   </div>
                   {props.isDate && <span className='text-xs text-textZingchart'>{props.item?.desc?.date}</span>}
                 </div>
-                <div className={`${props.isAlbum ? 'flex-2' : '' }`}>
+                <div className={`${props.isAlbum ? 'flex-2 text-xs text-[#ffffff80]' : '' }`}>
                   {
                     props.isAlbum && (<p>{props.item?.information?.album}</p>)
                   }
@@ -130,7 +130,7 @@ function ItemMusic({ onClick, ...props }) {
                     </div>
   
                   }
-                  <IoIosMore className='mr-2 hover:bg-searchRose text-gray-400 hover:text-white hidden w-4 h-4 box-content p-2 cursor-pointer rounded-full font-bold group-hover/item:block' />
+                  <IoIosMore className='absolute right-0 top-1/2 -translate-y-1/2 mr-2 hover:bg-searchRose text-gray-400 hover:text-white hidden w-4 h-4 box-content p-2 cursor-pointer rounded-full font-bold group-hover/item:block' />
                   {
                     props.isTimeString 
                     &&

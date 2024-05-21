@@ -59,9 +59,13 @@ function SidebarRight() {
       {
         activeSongListen 
       ?
-        (context.songListen?.map((item,index) => (
-          <ItemMusic key={index} item={item} className='w-full rounded-[4px] hover:bg-searchRose py-[6px]' classWrap='flex justify-between' classSinger='text-[12px]' classNameMore='w-10 h-10' classTitle='font-medium'  />
-        )))
+        (<div className='overflow-y-auto'>
+          {
+            context.songListen?.map((item,index) => (
+              <ItemMusic key={index} item={item} className='w-full rounded-[4px] hover:bg-searchRose py-[6px]' classWrap='flex justify-between' classSinger='text-[12px]' classNameMore='w-10 h-10' classTitle='font-medium'  />
+            ))
+          }
+        </div>)
       :
         (<>
           <section>
