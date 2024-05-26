@@ -51,7 +51,7 @@ function Content({ onClick, ...props }) {
         {props.children ? props.children : 
           <div className={`w-full ${props.classWrapImg}`}>
               {
-                <div className='cursor-pointer relative rounded-xl overflow-hidden group/parent'>
+                <div className={`${props.classOurImg} cursor-pointer relative rounded-xl overflow-hidden group/parent`}>
                   <img 
                     data={props.dataThumb}
                     src={`./mp3${props.thumb}`} 

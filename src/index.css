@@ -177,7 +177,7 @@ html::-webkit-scrollbar{
   left: 8px !important;
 }
 .radio-song .slick-prev:before, .slick-next:before {
-  top: -30px !important;
+  top: -5px !important;
 }
 
 .slick-slide > div {
@@ -249,4 +249,9 @@ input[type="range"]:hover::-webkit-slider-thumb{
 }
 .bg-blue{
   background-color: blue;
+}
+.body-animate {
+  transition: all ;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
 }

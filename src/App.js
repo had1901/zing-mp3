@@ -1,5 +1,6 @@
-import React from 'react';
-import { Routes, Route  } from 'react-router-dom'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
+import { Routes, Route, useLocation, useNavigate  } from 'react-router-dom'
 import Home from './Pages/Home/Home';
 import Login from './Pages/Login';
 import ZingChart from './Pages/ZingChart/ZingChart';
@@ -11,26 +12,33 @@ import TopRank from './Pages/TopRank/TopRank';
 import GlobalPage from './Pages/GlobalPage';
 import Topic from './Pages/Topic/Topic';
 import Album from './Pages/Album/Album';
+import { useSelector } from 'react-redux';
 
 
 function App() {
-  return (
-      <Routes>
-          <Route path='/' element={<GlobalPage/>}>
-              <Route path='/' element={<Home/>}/> 
-              <Route path='/zing-chart' element={<ZingChart/>}/> 
-              <Route path='/radio' element={<Radio/>}/> 
-              <Route path='/libraries' element={<Libraries/>}/> 
-              <Route path='/rank-music' element={<RankMusic/>}/> 
-              <Route path='/topic' element={<Topic/>}/> 
-              <Route path='/top-rank' element={<TopRank/>}/> 
-              <Route path='/album' element={<Album/>}/> 
-              <Route path='/album/:id' element={<NotFound/>}/> 
-          </Route>
-          <Route path='/login' element={<Login/>}/>
-          <Route path='/*' element={<NotFound/>}/>
-      </Routes>
-  );
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        navigate('/')
+    },[])
+
+    return (
+        <Routes>
+            <Route path='/' element={<GlobalPage/>}>
+                <Route path='/' element={<Home/>}/> 
+                <Route path='/zing-chart' element={<ZingChart/>}/> 
+                <Route path='/radio' element={<Radio/>}/> 
+                <Route path='/libraries' element={<Libraries/>}/> 
+                <Route path='/rank-music' element={<RankMusic/>}/> 
+                <Route path='/topic' element={<Topic/>}/> 
+                <Route path='/top-rank' element={<TopRank/>}/> 
+                <Route path='/album' element={<Album/>}/> 
+                <Route path='/album/:categoryAlbum' element={<Album/>}/> 
+            </Route>
+            <Route path='/login' element={<Login/>}/>
+            <Route path='/*' element={<NotFound/>}/>
+        </Routes>
+    );
 }
 
 export default App;

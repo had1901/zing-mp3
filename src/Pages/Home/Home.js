@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { memo, useContext, useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import '../../../src/index.css';
 
-import { Context } from '../../ContextGlobal/ContextGlobal';
 
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -14,7 +13,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import { Chills, Musics, MusicsVN, MusicsWorld } from '../../mp3/Music/Music';
+import { Chills, Musics} from '../../mp3/Music/Music';
 import { Images, ImgBackGround } from '../../images/images';
 import { zingchartList } from '../../images/imgZingchart/zingchart';
 import { imgPartner } from '../../images/imgPartnerJS';
@@ -29,20 +28,21 @@ import ItemImage from './../../Component/ItemImage';
 import ContainerMain from '../../Component/ContainerMain';
 
 import { GoChevronRight } from 'react-icons/go';
+import { useSelector } from 'react-redux';
 
 
 
 function Home() {
-  const context = useContext(Context)
-  
-  const [activeTab, setActiveTab] = useState('K-pop')
+  const state = useSelector((state) => state.backgroundReducer.backgroundBody)
+  const stateSidebar = useSelector((state) => state.openSidebarRightReducer)
+  const [activeTab, setActiveTab] = useState('All')
   const [itemSlideScreen, setItemSlideScreen] = useState(4)
   const [data, setData] = useState([])
 
   // Handle active tab
   const tabTitles = [
     {
-      tabTitle: 'all',
+      tabTitle: 'All',
     },
     {
       tabTitle: 'V-pop',
@@ -54,6 +54,7 @@ function Home() {
       tabTitle: 'US-UK',
     },
   ]
+  
   const handleBtnActive = (tabTitle) => {
     setActiveTab(tabTitle)
   }
@@ -70,7 +71,7 @@ function Home() {
     autoplay: {delay: 3000, disableOnInteraction: false },
     className: 'w-full xl:h-fit lg:h-fit select-none',
   }
-  
+
   // Cấu hình react-slick
   const settings1 = {
     dots: true,
@@ -89,6 +90,7 @@ function Home() {
     slidesToShow: 7,
     slidesToScroll: 7,
   }
+
   // Call API
   const fetching = async () => {
     try {
@@ -129,7 +131,7 @@ function Home() {
   return (
     <ContainerMain>    
         {/* <Particle />  */}
-        <div className={`${context.thumb ? '' : 'bg-primary'}`}>        
+        <div className={`${state ? '' : 'bg-primary'}`}>        
               <Swiper {...swiperProps}>
                   {
                     Images.map((item, index) => (
@@ -140,11 +142,11 @@ function Home() {
                   }
               </Swiper>  
 
-              <Title title='Gần đây' classNameMore='lg:mt12 md:mt-8 xs:mt-4 xs:mb-3 sm:mb-5 mt-10 sm:text-xl xs:text-md capitalize'/>   
+              <Title title='Gần đây' classNameMore='lg:mt-12 md:mt-8 xs:mt-4 xs:mb-3 sm:mb-5 mt-10 sm:text-xl xs:text-md capitalize'/>   
               <div className='flex sm:overscroll-x-none xs:overflow-x-auto scroll-home md:gap-x-6 xs:gap-x-2 ' >
                   {
                     Chills.map((item, index) => (
-                        <Content key={index} description={item.card[0].desc} dataThumb={item.card[0].thumb} classNameChild='lazy-load' classNameParent='lg:w-1/44 lg:min-h-[224px] xs:w-20 xs:h-20 shrink-0' classNameMore='line-clamp-2' classWrapImg='lg:px-3 xs:px-1 xs:first:pl-0 xs:last:pr-0 '/>                
+                        <Content key={index} description={item.card[0].desc} dataThumb={item.card[0].thumb} classNameChild='lazy-load ' classNameParent='lg:w-[199px] lg:h-[250px] xs:w-20 xs:h-20 shrink-0' classNameMore='line-clamp-2' classWrapImg='lg:px-3 xs:px-1 xs:first:pl-0 xs:last:pr-0 ' classOurImg='lg:max-h-[199px]'/>                
                       ))     
                   }
               </div>  
@@ -250,7 +252,7 @@ function Home() {
                   {
                     Musics.slice(0, 14).map((music, index) => (
                       <ItemImage key={index} classNameParent='flex-shrink-0 '>
-                        <div className={`${context.isOpenSidebarRight ? 'h-[167px]' : 'h-[200px]'} relative max-w-200px transition-all duration-300`}>
+                        <div className={`${stateSidebar.isOpen ? 'h-[167px]' : 'h-[200px]'} relative max-w-200px transition-all duration-300`}>
                           <img src={`../../mp3/${music.thumb}`} alt={music.name} className='w-full h-full rounded-full object-cover border-4 border-red-600'/>
                           <img src={`../../mp3/${music.thumb}`} alt={music.name} className='absolute bottom-0 right-0 w-16 h-16 rounded-full border-black object-cover border-2' />
                           <span className='absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-6 text-center rounded-md text-white bg-red-500 capitalize '>Live</span>

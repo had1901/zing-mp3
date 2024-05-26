@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { IoIosMore } from 'react-icons/io';
 import { Link } from 'react-router-dom';
@@ -9,25 +10,27 @@ import BtnRadius from './BtnRadius';
 import { GoHeart, GoHeartFill } from 'react-icons/go';
 import { AiOutlineMinus } from 'react-icons/ai';
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
-import { PiPlayCircleLight } from 'react-icons/pi';
 import { LuMusic } from "react-icons/lu";
+import { useDispatch, useSelector } from 'react-redux';
+import { actions } from '../redux/actions/actions';
 
 
 function ItemMusic({ onClick, ...props }) {
-  const context = useContext(Context) 
   const iconRef = useRef(null)
   
   const [activeHeart, setActiveHeart] = useState(false)
   const [random, setRandom] = useState(0)
   const [textstroke, setTextstroke] = useState('text-stroke-any')
 
+  const state = useSelector(state => state.getInfoSongReducer)
+  const dispatch = useDispatch()
+  
   const handleHeart =  () => {
     setActiveHeart(!activeHeart)
   }
   
-  const handleGetInfoMusicContext = async (item) => {
-    await context.setActiveAudio(true)
-    return context.handleGetInfoMusic(item)
+  const handleGetInfoMusic = (item) => {
+    dispatch(actions.getInfoSongAction({ song: item, activeAudio: true }))
   }
 
   useEffect(() => {
@@ -79,17 +82,17 @@ function ItemMusic({ onClick, ...props }) {
                 {
                   props.isAlbum && (<LuMusic className='mr-1'/>)
                 }
-                <div className={`relative group/parent cursor-pointer ${props.classNameMore}`} onClick={() => handleGetInfoMusicContext(props.item)}>
+                <div className={`relative group/parent cursor-pointer ${props.classNameMore}`} onClick={() => handleGetInfoMusic(props.item)}>
                   <img 
                     src={`/mp3/imgMusic/${props.item?.information?.thumb}`} 
                     alt={props.item?.name?.song} 
                     className='w-full h-full group-hover/item:bg-black group-hover/item:opacity-50 block rounded-md object-cover border-black'                
                   />
                   {
-                    context.infoMusic === props.item 
+                    state.infoSong === props.item 
                     ?(<div className='w-full h-full flex items-center justify-center text-center absolute z-10 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-musicBgColor shadow-musicShadow rounded-md'>                      
                           {
-                            context.activeAudio
+                            state.activeAudio
                             ? (<img src='./mp3/gifWaveMusic/icon-playing.gif' alt='gif' className='w-1/3 inline-block ' />)
                             : (<FaPlay className='w-1/3 text-4xl' />)
                           }                      

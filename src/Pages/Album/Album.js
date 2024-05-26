@@ -15,13 +15,16 @@ import ItemMusic from './../../Component/ItemMusic';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { actions } from '../../redux/actions/actions'
+import { useParams } from 'react-router-dom'
 
 function Album() {
   const context = useContext(Context)
-
+  const { categoryAlbum } = useParams()
   const [activeHeart, setActiveHeart] = useState(false)
   const [data, setData] = useState([])
-  const [path, setPath] = useState('mp3')
+  const state = useSelector(state => state.getInfoSongReducer)
+
+  console.log('album: ',state)
   
   const color = {
     red: 'bg-red-500',
@@ -44,7 +47,7 @@ function Album() {
   useEffect(() => {
     const fetching = async () => {
       try {
-        const api = `http://localhost:3333/${path}`
+        const api = `http://localhost:3333/${categoryAlbum}`
         const res = await fetch(api)
         if(res.status !== 200) {
           throw new Error ('Fetching false')
@@ -56,17 +59,17 @@ function Album() {
       }
     }
     fetching()
-  },[path])
+  },[categoryAlbum])
   return (
     <ContainerMain>  
         <section className='flex gap-5 text-white'>
           <div className='w-[300px] text-center'> 
             <div className='rounded-2xl overflow-hidden'>
-              <img src={img1} alt='img' className='w-full h-[300px] object-cover mx-auto block hover:scale-[1.1] transition duration-500 cursor-pointer'/>
+              <img src={`/mp3/imgMusic/${data[0]?.information?.thumb}`} alt='img' className='w-full h-[300px] object-cover mx-auto block hover:scale-[1.1] transition duration-500 cursor-pointer'/>
             </div>
             <h2 className='mt-3 px-[6px] text-[20px] font-bold leading-[30px]'>Acoustic</h2>
             <p className='px-[6px] text-xs text-[#ffffff80] leading-[21px]'>Cập nhật: 28/03/2024</p>
-            <p className='px-[6px] text-xs text-[#ffffff80] leading-[21px]'>Hoàng Duyên, Dương Edward, LyLy, Lưu Hương Giang</p>
+            <p className='px-[6px] text-xs text-[#ffffff80] leading-[21px]'>{data[0]?.name?.singer}</p>
             <p className='px-[6px] text-xs text-[#ffffff80] leading-[21px]'>22k người yêu thích</p>
             <BtnRadius props={`min-h-40 items-center gap-2 px-5 mt-4 text-sm text-zinc-400 hover:bg-transparent`}>
               <span className={`flex justify-center items-center gap-3 min-w-[200px] h-[40px] uppercase rounded-full bg-[#ffffff0d] ${context.iconDownLoad}`}>
@@ -107,8 +110,22 @@ function Album() {
                 )) 
               }
               </div>
-              <div className='flex items-center text-[13px] text-[#ffffff80] mt-[18px]'>
-                {data.length + 1} bài hát - <span>2 tiếng 40 phút</span>
+              <div className='text-[13px] mt-[18px]'>
+                <h3 className='capitalize text-[14px] font-bold'>Thông tin</h3>
+                <div className=' text-[13px] mt-2'>
+                  <div className='flex item-center '>
+                    <p className='min-w-[97px] leading-[18px] text-[#ffffff80]'>Số bài hát</p>
+                    <span className='ml-3 leading-4'>{data.length + 1}</span>
+                  </div>
+                  <div className='flex item-center '>
+                    <p className='min-w-[97px] leading-[18px] text-[#ffffff80]'>Ngày phát hành</p>
+                    <span className='ml-3 leading-4'>07/04/2024</span>
+                  </div>
+                  <div className='flex item-center '>
+                    <p className='min-w-[97px] leading-[18px] text-[#ffffff80]'>Cung cấp bởi</p>
+                    <span className='ml-3 leading-4'>Euphoria Media Vietnam</span>
+                  </div>
+                </div>
               </div>
           </div> 
         </section> 

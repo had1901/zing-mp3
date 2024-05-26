@@ -9,36 +9,37 @@ import { useEffect } from 'react'
 function ListMusic({ data, className }) {
   console.log('ListMusic', data)
   const [itemShow, setItemShow] = useState(10)
-  // const [data, setData] = useState([])
-  // const [pathApi, setPathApi] = useState('mp3')
+  const [data1, setData1] = useState([])
+  const [pathApi, setPathApi] = useState('mp3')
 
   const showItem = () => {
     setItemShow(itemShow + 10)
   }
 
-  // const fetching = useCallback(async () => {
-  //   try {
-  //     const api = `http://localhost:3333/${pathApi}`
-  //     const res = await fetch(api)
-  //     if(!res.ok) {
-  //       throw new Error(`Fetching '${api}' failed`)
-  //     }
-  //     const result = await res.json()
-  //     setData(result)
-  //   } catch (err) { 
-  //     console(err) 
-  //   }
-  // },[pathApi])
+  const fetching = useCallback(async () => {
+    try {
+      const api = `http://localhost:3333/${pathApi}`
+      const res = await fetch(api)
+      if(!res.ok) {
+        throw new Error(`Fetching '${api}' failed`)
+      }
+      const result = await res.json()
+      setData1(result)
+    } catch (err) { 
+      console(err) 
+    }
+  },[pathApi])
 
-  // useEffect(() => {
-  //   fetching()
-  // },[fetching])
+  useEffect(() => {
+    fetching()
+  },[fetching])
+
   return (
     <section className={className}>
       <div>
         <div className='w-full'>
           {
-            data?.slice(0, itemShow).map((item, index) => (             
+            data1?.slice(0, itemShow).map((item, index) => (             
                 <ItemMusic 
                   key={index} 
                   number={index} 
@@ -60,7 +61,7 @@ function ListMusic({ data, className }) {
         </div>
       </div>
       {
-        itemShow < data.length && 
+        itemShow < data1.length && 
         <div className='text-center flex justify-center pt-5 '>
           <Button title='Xem top 100' onClick={showItem} className='w-28 px-3 py-2 border border-searchRose text-textZingchart text-sm rounded-full hover:bg-violet hover:text-white transition-all '/>
         </div>      

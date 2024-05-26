@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
-import { Context } from '../ContextGlobal/ContextGlobal'
+import React from 'react'
+import { useSelector } from 'react-redux'
 
 function Modal({ classNameMore, children }) {
-  const context = useContext(Context)
+  const state = useSelector(state => state.openThemeModalReducer)
   return (
-    <div className={`${classNameMore} ${context.isActive ? 'block' : 'hidden'}`}>{children}</div>
+    <div className={`${classNameMore} ${state.isOpen ? 'block' : 'hidden'}`}>{children}</div>
   )
 }
 

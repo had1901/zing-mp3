@@ -6,7 +6,7 @@
         "information": {
           "thumb": "life-goes-on.png" ,
           "path": "Life-Goes-On-BTS.mp3",
-          "album": "Hẹn gặp lại anh (Single)",
+          "album": "US-UK",
           "durationTime": "tung" 
         },
         "name": { 
@@ -28,9 +28,9 @@
         "information": {
             "thumb": "life-goes-on.png" ,
             "path": "Life-Goes-On-BTS.mp3",
-            "album": "Hẹn gặp lại anh (Single)",
+            "album": "US-UK",
             "durationTime": "tung" 
-        },
+          },
         "name": { 
             "song": "Attention",
             "singer": "Attention"
@@ -50,9 +50,9 @@
         "information": {
             "thumb": "despacito.png" ,
             "path": "Despacito.mp3",
-            "album": "Hẹn gặp lại anh (Single)",
+            "album": "US-UK",
             "durationTime": "3260" 
-        },
+          },
         "name": { 
             "song": "Despacito",
             "singer": "Luis Fonte"
@@ -72,9 +72,9 @@
         "information": {
             "thumb": "dna.png" ,
             "path": "DNA-BTS.mp3",
-            "album": "Hẹn gặp lại anh (Single)",
+            "album": "V-pop",
             "durationTime": "3260" 
-        },
+          },
         "name": { 
             "song": "DNA",
             "singer": "BTS"
@@ -94,9 +94,9 @@
         "information": {
             "thumb": "hoa-co-lau.png" ,
             "path": "Hoa-Co-Lau-(TikTok-Speed-Up-Version).mp3",
-            "album": "Hẹn gặp lại anh (Single)",
+            "album": "V-pop",
             "durationTime": "3260" 
-        },
+          },
         "name": { 
             "song": "Hoa-Co-Lau-(TikTok-Speed-Up-Version)",
             "singer": "Phong Max"
@@ -116,9 +116,9 @@
         "information": {
             "thumb": "hoa-co-lau.png" ,
             "path": "How-You-Like-That-BLACKPINK.mp3",
-            "album": "Hẹn gặp lại anh (Single)",
+            "album": "V-pop",
             "durationTime": "3260" 
-        },
+          },
         "name": { 
             "song": "How You Like That",
             "singer": "Black Pink"
@@ -138,9 +138,9 @@
         "information": {
             "thumb": "hoa-co-lau.png" ,
             "path": "Dreamers-Jung-Kook.mp3",
-            "album": "Hẹn gặp lại anh (Single)",
+            "album": "V-pop",
             "durationTime": "3260" 
-        },
+          },
         "name": { 
             "song": "Dreamers",
             "singer": "Jung Kook"
@@ -160,9 +160,9 @@
         "information": {
             "thumb": "some.png" ,
             "path": "some.mp3",
-            "album": "Hẹn gặp lại anh (Single)",
+            "album": "V-pop",
             "durationTime": "3260" 
-        },
+          },
         "name": { 
             "song": "Some",
             "singer": "BOLD4"
@@ -182,9 +182,9 @@
         "information": {
             "thumb": "some.png" ,
             "path": "tu-em-ma-ra.mp3",
-            "album": "Hẹn gặp lại anh (Single)",
+            "album": "V-pop",
             "durationTime": "3260" 
-        },
+          },
         "name": { 
             "song": "Từ em mà ra",
             "singer": "Liz Z, Đức Anh"
@@ -204,9 +204,9 @@
         "information": {
             "thumb": "we-dont-talk-anymore.jpg" ,
             "path": "We-dont-talk-anymore-CharliePuth.mp3",
-            "album": "Hẹn gặp lại anh (Single)",
+            "album": "V-pop",
             "durationTime": "3260" 
-        },
+          },
         "name": { 
             "song": "We don\\'t talk anymore",
             "singer": "Charlie Puth"
@@ -226,9 +226,9 @@
         "information": {
             "thumb": "how-you-like-that.png" ,
             "path": "As-If-It-Your-Last-BLACKPINK.mp3",
-            "album": "Hẹn gặp lại anh (Single)",
+            "album": "V-pop",
             "durationTime": "3260" 
-        },
+          },
         "name": { 
             "song": "As If Its Your Last",
             "singer": "Black Pink"
@@ -244,13 +244,13 @@
           }
       }
     ],
-    "all": [
+    "All": [
       { 
         "id": 1, 
         "information": {
           "thumb": "life-goes-on.png" ,
           "path": "Life-Goes-On-BTS.mp3",
-          "album": "Hẹn gặp lại anh (Single)",
+          "album": "V-pop",
           "durationTime": "tung" 
         },
         "name": { 
@@ -272,7 +272,7 @@
         "information": {
           "thumb": "life-goes-on.png" ,
           "path": "chungtacuatuonglai.mp3",
-          "album": "Hẹn gặp lại anh (Single)",
+          "album": "V-pop",
           "durationTime": "tung" 
         },
         "name": { 
@@ -294,7 +294,7 @@
         "information": {
           "thumb": "life-goes-on.png" ,
           "path": "Cuon-Cuon-Tan-Than-Dieu-Dai-Hiep-2014-OST-Truong-Kiet.mp3",
-          "album": "Hẹn gặp lại anh (Single)",
+          "album": "V-pop",
           "durationTime": "tung" 
         },
         "name": { 
@@ -310,20 +310,432 @@
             "views": 1200000000,
             "listening": 50
           }
+      },
+      { 
+        "id": 4, 
+        "information": {
+
+            "thumb": "dna.png" ,
+            "path": "DNA-BTS.mp3",
+            "album": "V-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "DNA",
+            "singer": "BTS"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 5, 
+        "information": {
+
+            "thumb": "hoa-co-lau.png" ,
+            "path": "Hoa-Co-Lau-(TikTok-Speed-Up-Version).mp3",
+            "album": "V-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "Hoa-Co-Lau-(TikTok-Speed-Up-Version)",
+            "singer": "Phong Max"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 6, 
+        "information": {
+
+            "thumb": "hoa-co-lau.png" ,
+            "path": "How-You-Like-That-BLACKPINK.mp3",
+            "album": "V-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "How You Like That",
+            "singer": "Black Pink"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 7, 
+        "information": {
+
+            "thumb": "hoa-co-lau.png" ,
+            "path": "Dreamers-Jung-Kook.mp3",
+            "album": "V-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "Dreamers",
+            "singer": "Jung Kook"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 8, 
+        "information": {
+
+            "thumb": "some.png" ,
+            "path": "some.mp3",
+            "album": "V-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "Some",
+            "singer": "BOLD4"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 9, 
+        "information": {
+
+            "thumb": "some.png" ,
+            "path": "tu-em-ma-ra.mp3",
+            "album": "V-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "Từ em mà ra",
+            "singer": "Liz Z, Đức Anh"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 10, 
+        "information": {
+
+            "thumb": "we-dont-talk-anymore.jpg" ,
+            "path": "We-dont-talk-anymore-CharliePuth.mp3",
+            "album": "V-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "We don\\'t talk anymore",
+            "singer": "Charlie Puth"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 11, 
+        "information": {
+
+            "thumb": "how-you-like-that.png" ,
+            "path": "As-If-It-Your-Last-BLACKPINK.mp3",
+            "album": "V-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "As If Its Your Last",
+            "singer": "Black Pink"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
       }
     ],
     "V-pop": [
       { 
-        "id": 3, 
+        "id": 1, 
         "information": {
-            "thumb": "despacito.png" ,
-            "path": "Despacito.mp3",
-            "album": "Hẹn gặp lại anh (Single)",
-            "durationTime": "3260" 
+          "thumb": "life-goes-on.png" ,
+          "path": "Life-Goes-On-BTS.mp3",
+          "album": "V-pop",
+          "durationTime": "tung" 
         },
         "name": { 
-            "song": "V-pop song",
-            "singer": "Luis Fonte"
+            "song": "All song",
+            "singer": "BTS"
+          },
+        "desc": {
+            "category": "K-pop",
+            "country": "Korean" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 2, 
+        "information": {
+          "thumb": "life-goes-on.png" ,
+          "path": "chungtacuatuonglai.mp3",
+          "album": "V-pop",
+          "durationTime": "tung" 
+        },
+        "name": { 
+            "song": "Chung ta cua tuong lai",
+            "singer": "Song Tung - MTP"
+          },
+        "desc": {
+            "category": "K-pop",
+            "country": "Korean" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 3, 
+        "information": {
+          "thumb": "life-goes-on.png" ,
+          "path": "Cuon-Cuon-Tan-Than-Dieu-Dai-Hiep-2014-OST-Truong-Kiet.mp3",
+          "album": "V-pop",
+          "durationTime": "tung" 
+        },
+        "name": { 
+            "song": "Cuon Cuon Tan Than Dieu Dai Hiep 2014 OST Truong Kiet",
+            "singer": "Sog Tung - MTP"
+          },
+        "desc": {
+            "category": "K-pop",
+            "country": "Korean" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 4, 
+        "information": {
+
+            "thumb": "dna.png" ,
+            "path": "DNA-BTS.mp3",
+            "album": "V-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "DNA",
+            "singer": "BTS"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 5, 
+        "information": {
+
+            "thumb": "hoa-co-lau.png" ,
+            "path": "Hoa-Co-Lau-(TikTok-Speed-Up-Version).mp3",
+            "album": "V-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "Hoa-Co-Lau-(TikTok-Speed-Up-Version)",
+            "singer": "Phong Max"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 6, 
+        "information": {
+
+            "thumb": "hoa-co-lau.png" ,
+            "path": "How-You-Like-That-BLACKPINK.mp3",
+            "album": "V-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "How You Like That",
+            "singer": "Black Pink"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 7, 
+        "information": {
+
+            "thumb": "hoa-co-lau.png" ,
+            "path": "Dreamers-Jung-Kook.mp3",
+            "album": "V-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "Dreamers",
+            "singer": "Jung Kook"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 8, 
+        "information": {
+
+            "thumb": "some.png" ,
+            "path": "some.mp3",
+            "album": "V-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "Some",
+            "singer": "BOLD4"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 9, 
+        "information": {
+
+            "thumb": "some.png" ,
+            "path": "tu-em-ma-ra.mp3",
+            "album": "V-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "Từ em mà ra",
+            "singer": "Liz Z, Đức Anh"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 10, 
+        "information": {
+
+            "thumb": "we-dont-talk-anymore.jpg" ,
+            "path": "We-dont-talk-anymore-CharliePuth.mp3",
+            "album": "V-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "We don\\'t talk anymore",
+            "singer": "Charlie Puth"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 11, 
+        "information": {
+
+            "thumb": "how-you-like-that.png" ,
+            "path": "As-If-It-Your-Last-BLACKPINK.mp3",
+            "album": "V-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "As If Its Your Last",
+            "singer": "Black Pink"
           },
         "desc": {
             "category": "US-UK",
@@ -338,15 +750,235 @@
     ],
     "K-pop": [
       { 
+        "id": 1, 
+        "information": {
+          "thumb": "life-goes-on.png" ,
+          "path": "Life-Goes-On-BTS.mp3",
+          "album": "K-pop",
+          "durationTime": "tung" 
+        },
+        "name": { 
+            "song": "Life Go On",
+            "singer": "BTS"
+          },
+        "desc": {
+            "category": "K-pop",
+            "country": "Korean" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 2, 
+        "information": {
+            "thumb": "life-goes-on.png" ,
+            "path": "Life-Goes-On-BTS.mp3",
+            "album": "K-pop",
+            "durationTime": "tung" 
+          },
+        "name": { 
+            "song": "Attention",
+            "singer": "Attention"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 3, 
+        "information": {
+            "thumb": "despacito.png" ,
+            "path": "Despacito.mp3",
+            "album": "K-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "Despacito",
+            "singer": "Luis Fonte"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 4, 
+        "information": {
+            "thumb": "dna.png" ,
+            "path": "DNA-BTS.mp3",
+            "album": "K-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "DNA",
+            "singer": "BTS"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 5, 
+        "information": {
+            "thumb": "hoa-co-lau.png" ,
+            "path": "Hoa-Co-Lau-(TikTok-Speed-Up-Version).mp3",
+            "album": "K-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "Hoa-Co-Lau-(TikTok-Speed-Up-Version)",
+            "singer": "Phong Max"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 6, 
+        "information": {
+            "thumb": "hoa-co-lau.png" ,
+            "path": "How-You-Like-That-BLACKPINK.mp3",
+            "album": "K-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "How You Like That",
+            "singer": "Black Pink"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 7, 
+        "information": {
+            "thumb": "hoa-co-lau.png" ,
+            "path": "Dreamers-Jung-Kook.mp3",
+            "album": "K-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "Dreamers",
+            "singer": "Jung Kook"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 8, 
+        "information": {
+            "thumb": "some.png" ,
+            "path": "some.mp3",
+            "album": "K-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "Some",
+            "singer": "BOLD4"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 9, 
+        "information": {
+            "thumb": "some.png" ,
+            "path": "tu-em-ma-ra.mp3",
+            "album": "K-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "Từ em mà ra",
+            "singer": "Liz Z, Đức Anh"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 10, 
+        "information": {
+            "thumb": "we-dont-talk-anymore.jpg" ,
+            "path": "We-dont-talk-anymore-CharliePuth.mp3",
+            "album": "K-pop",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "We don\\'t talk anymore",
+            "singer": "Charlie Puth"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
         "id": 11, 
         "information": {
             "thumb": "how-you-like-that.png" ,
             "path": "As-If-It-Your-Last-BLACKPINK.mp3",
-            "album": "Hẹn gặp lại anh (Single)",
+            "album": "K-pop",
             "durationTime": "3260" 
-        },
+          },
         "name": { 
-            "song": "K-pop song",
+            "song": "As If Its Your Last",
             "singer": "Black Pink"
           },
         "desc": {
@@ -366,12 +998,34 @@
         "information": {
             "thumb": "some.png" ,
             "path": "tu-em-ma-ra.mp3",
-            "album": "Hẹn gặp lại anh (Single)",
+            "album": "US-UK",
             "durationTime": "3260" 
-        },
+          },
         "name": { 
             "song": "US-UK song",
             "singer": "Liz Z, Đức Anh"
+          },
+        "desc": {
+            "category": "US-UK",
+            "country": "USA" ,
+            "date": "Hôm nay" ,
+            "releaseDate": 2020,
+            "premium": "premium",
+            "views": 1200000000,
+            "listening": 50
+          }
+      },
+      { 
+        "id": 11, 
+        "information": {
+            "thumb": "how-you-like-that.png" ,
+            "path": "As-If-It-Your-Last-BLACKPINK.mp3",
+            "album": "US-UK",
+            "durationTime": "3260" 
+          },
+        "name": { 
+            "song": "As If Its Your Last",
+            "singer": "Black Pink"
           },
         "desc": {
             "category": "US-UK",
@@ -391,17 +1045,17 @@
         { "id": "2", 
           "title": "another title" 
         }
-      ],
-      "comments": [
-        { "id": "1", 
-          "text": "a comment about post 1", "postId": "1" 
-        },
-        { "id": "2", 
-          "text": "another comment about post 1", "postId": "1" 
-        }
-      ],
-      "profile": {
-        "name": "typicode"
+    ],
+    "comments": [
+      { "id": "1", 
+        "text": "a comment about post 1", "postId": "1" 
+      },
+      { "id": "2", 
+        "text": "another comment about post 1", "postId": "1" 
       }
+    ],
+    "profile": {
+      "name": "typicode"
+    }
     
 }

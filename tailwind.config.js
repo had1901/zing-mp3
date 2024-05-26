@@ -116,9 +116,10 @@ module.exports = {
         main: '#231b2e',
         violet: '#9b4de0',
         colo: '#DADADA',
-        active: '#3a3344',
+        active: '#3a3344b3',
         silver: '#a6a6a6',
         colorPopup: '#34224f',
+  
         before: '3px',
         shadowPopup: '0 0 5px 0 rgba(0,0,0,.2)',
         bgOpacity: 'rgba(156, 156, 156, 0.3)',
@@ -153,7 +154,7 @@ module.exports = {
         textLisa: '#CC3373',
         controlAudioLisa: '#f4cbca',
         lineActiveLisa: '#D14781',
-
+        modelLisa: '#e1beb6',
         popupUI: '#EFEDEB',
         searchBarIU: '#e6e1de',
         controlAudioIU: '#f5e6e0',

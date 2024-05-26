@@ -9,6 +9,7 @@ import { LuAlarmClock } from "react-icons/lu";
 import { IoIosMore } from 'react-icons/io';
 import { useCallback } from 'react';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 function SidebarRight() {
   const context = useContext(Context)
@@ -16,6 +17,8 @@ function SidebarRight() {
   const [activeSongListen, setActiveSongListen] = useState(false)
   const [data, setData] = useState([])
   const [path, setPath] = useState('mp3')
+  const state2 = useSelector(state => state.openSidebarRightReducer)
+
   const handleActive= (num) => {
     if(num === 2) {
       setActiveSongListen(true)
@@ -24,6 +27,7 @@ function SidebarRight() {
     }
     setActive(num)
   }
+  
   const fetching = useCallback( async () => {
     try {
        const url = `http://localhost:3333/${path}`
@@ -43,7 +47,7 @@ function SidebarRight() {
    },[fetching])
 
   return (
-    <div className={`${context.isOpenSidebarRight ? 'translate-x-[0]' : 'translate-x-[100%]'} fixed top-0 right-0 z-40 transition-all duration-500 w-[330px] h-[100%] pb-[90px] bg-transparent border-l-[#ffffff1a] border-l-2 `}>
+    <div className={`${state2.isOpen ? 'translate-x-[0]' : 'translate-x-[100%]'} fixed top-0 right-0 z-40 transition-all duration-500 w-[330px] h-[100%] pb-[90px] bg-transparent border-l-[#ffffff1a] border-l-2 `}>
       <section className='flex items-center justify-between text-gray-300 text-xs h-[65px] px-2'>
         <div className='flex rounded-full bg-[#2f2739] h-[32px] p-[3px]'>
           <button onClick={() => handleActive(1)} className={`${active === 1 ? 'bg-[#6d6875] text-white' : ''} min-w-[100px] rounded-full px-2`}>Danh sách phát</button>

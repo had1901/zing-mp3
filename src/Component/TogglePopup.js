@@ -14,14 +14,20 @@ import Label from './Label'
 import ToggleButton from './ToggleButton'
 import Description from './Description'
 import ToggleBtn from './ToggleBtn'
+import { useDispatch, useSelector } from 'react-redux'
+import { actions } from '../redux/actions/actions'
 
 
 
 function TogglePopup({ classNameAdd, refElement, datatype }) {
   const [hover, setHover] = useState(null)
   const context = useContext(Context)
-
-  let subMenu1 = <div className={`right-[94%] top-0 absolute hidden shadow-white  w-320 h-auto rounded-xl after:w-4 after:bg-transparent after:absolute after:-right-3 after:top-0 after:bottom-0 ${context.settingPopup} group-hover/btn:block`}>
+  const state = useSelector(state => state.backgroundReducer)
+  const dispatch = useDispatch()
+  const handleOpenMThemeModal = () => {
+    dispatch(actions.openThemeModalAction(true))
+  }
+  let subMenu1 = <div className={`right-[94%] top-0 absolute hidden shadow-white  w-320 h-auto rounded-xl after:w-4 after:bg-transparent after:absolute after:-right-3 after:top-0 after:bottom-0 ${state.backgroundPopupSetting} group-hover/btn:block`}>
                       <div className='px-3'>
                         <div className='flex items-center'>
                           <Title title='Chuyển bài' classNameMore={`${context.titlePopup} text-left text-md my-3`}/>
@@ -68,9 +74,9 @@ function TogglePopup({ classNameAdd, refElement, datatype }) {
                        
                       </div>
                 </div>
-  let subMenu2 = <div className={`right-[94%] top-[15%] absolute hidden shadow-white w-320 h-auto rounded-xl after:w-4 after:bg-transparent after:absolute after:-right-3 after:top-0 after:bottom-0 ${context.settingPopup} group-hover/btn:block`}>
+  let subMenu2 = <div className={`right-[94%] top-[15%] absolute hidden shadow-white w-320 h-auto rounded-xl after:w-4 after:bg-transparent after:absolute after:-right-3 after:top-0 after:bottom-0 ${state.backgroundPopupSetting} group-hover/btn:block`}>
                     <div className='p-4'>
-                      <div className='cursor-pointer' onClick={context.handleChangeThumb}>
+                      <div className='cursor-pointer' onClick={handleOpenMThemeModal}>
                         <div className='flex items-center justify-between hover:text-zinc-400'>
                           <Title title='Chủ đề' classNameMore='text-sm text-zinc-400'/>
                           <HiOutlineChevronRight className='right-1 top-1' />
@@ -78,12 +84,12 @@ function TogglePopup({ classNameAdd, refElement, datatype }) {
                         <div className='flex items-center mt-3'>
                           <div className='w-1/3 rounded border border-searchRose'>
                             <img 
-                              src={`${context.thumbSetting}`}  
+                              src={`${state.imgSetting}`}  
                               alt='thumb' 
                               className='w-full block object-cover'        
                             />
                           </div>
-                          <Description desc={context.thumbName} classNameMore='ml-3' />
+                          <Description desc={state.backgroundName} classNameMore='ml-3' />
                         </div>
                       </div>
                       <div className='mt-6 border-t-1 border-zinc-500 cursor-default'>
