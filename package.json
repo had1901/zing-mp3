@@ -11,7 +11,9 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.2",
     "classnames": "^2.3.2",
+    "cors": "^2.8.5",
     "css-loader": "^6.8.1",
+    "json-serve": "^0.1.0",
     "json-server": "^0.17.4",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
@@ -33,7 +35,7 @@
   },
   "scripts": {
     "json": "npx json-server -p 3333 db/mp3.json",
-    "start": "react-scripts start ",
+    "start": "node index.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

@@ -54,7 +54,7 @@ function Libraries() {
   }
   useEffect(() => {
     const fetching = () => {
-      axios.get(API_URL)
+      axios.get('http://localhost:3333/mp3')
         .then(response => setDataMusic(response.data))
         
         .catch(function (error) {
