@@ -28,8 +28,6 @@ function SearchBar() {
   const navigate = useNavigate()
   const location = useLocation()
   const [history, setHistory] = useState([location.pathname])
-  console.log('location: ',location)
-  console.log('history: ',history)
   
   const handleBack = (e) => {
     e.stopPropagation()

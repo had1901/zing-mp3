@@ -24,21 +24,7 @@ function Album() {
   const [data, setData] = useState([])
   const state = useSelector(state => state.getInfoSongReducer)
 
-  console.log('album: ',state)
   
-  const color = {
-    red: 'bg-red-500',
-    green: 'bg-green-500',
-    blue: 'bg-blue-500',
-    pink: 'bg-pink-500',
-  }
-
-  // const newState = useSelector((state) => state.number)
-  const dataState = useSelector((state) => state.activeReducer)
-  const dispatch = useDispatch()
-  console.log('theme: ', dataState)
-  const buttons = ['red', 'green', 'blue', 'pink']
- 
   const handleHeart = (e) => {
     e.stopPropagation()
     setActiveHeart(!activeHeart)
@@ -60,6 +46,8 @@ function Album() {
     }
     fetching()
   },[categoryAlbum])
+
+  
   return (
     <ContainerMain>  
         <section className='flex gap-5 text-white'>
@@ -149,8 +137,6 @@ function Album() {
                 </li>
               ))
             }
-              
-             
           </ul>
         </section>
         <section className='text-white capitalize pb-5'>
@@ -169,17 +155,6 @@ function Album() {
             }
           </ul>
         </section>
-
-        <div className='text-white'>
-          <h2 className={`${color[dataState.activeIndex]}`}>Text</h2>
-          <div className='flex gap-3'>
-            {
-              buttons.map((btn, index) => (
-                 <button key={index} className={`${dataState.activeIndex === btn ? 'text-violet' : ''} border border-yellow-200 bg-slate-800`} onClick={() => dispatch(actions.btnActiveAction(btn))}>{btn}</button>
-              ))
-            }
-          </div>
-        </div>
     </ContainerMain>    
 
   )

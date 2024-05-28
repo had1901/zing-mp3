@@ -30,7 +30,13 @@ function ItemMusic({ onClick, ...props }) {
   }
   
   const handleGetInfoMusic = (item) => {
-    dispatch(actions.getInfoSongAction({ song: item, activeAudio: true }))
+    dispatch(actions.getInfoSongAction({ 
+      song: item, 
+      activeAudio: true, 
+      autoPlay: true,
+      prevSong: false,
+      nextSong: false
+    }))
   }
 
   useEffect(() => {

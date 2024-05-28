@@ -1,8 +1,8 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, { memo, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 
 import { GoHeart, GoHeartFill, GoVideo } from 'react-icons/go';
-import { IoIosMore } from 'react-icons/io';
+import { IoIosMore, IoIosPause, IoIosPlay, IoMdPause, IoMdPlay } from 'react-icons/io';
 import { LiaMicrophoneAltSolid, LiaRandomSolid, } from 'react-icons/lia';
 import { PiPauseCircleLight, PiPlayCircleLight } from 'react-icons/pi';
 import { VscChromeRestore } from 'react-icons/vsc';
@@ -20,10 +20,11 @@ import { BiPlus } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../../redux/actions/actions';
 
-function ControlAudio() {
+const ControlAudio = memo(() => {
   const audio = useRef()
   const inputVolume = useRef()
   const inputRangeSong = useRef()
+  const clickSetTimeAudioRef = useRef()
   const context = useContext(Context)
   const step = 0.01
 
@@ -45,19 +46,19 @@ function ControlAudio() {
   const [activeLoop, setActiveLoop] = useState(false)
   const [curTime, setCurTime] = useState(0)
   const [totalTime, setTotalTime] = useState(0)
+  const [currentSongIndex, setCurrentSongIndex] = useState(0)
+  const [isRandom, setIsRandom] = useState(false)
 
   const state = useSelector(state => state.backgroundReducer)
   const stateSong = useSelector(state => state.getInfoSongReducer)
-  console.log('stateSong: ',stateSong)
   const dispatch = useDispatch()
+
   
   // Hàm update thời lượng khi bài hát đang phát
-  const onPlay = useCallback(() => {
+  const handleTimeUpdateAudio = useCallback(() => {
       if(audio.current) {
         const duration = audio.current.duration // Lấy ra tổng thời gian của bài hát
         const currentTime = audio.current.currentTime // Lấ  ra thời gian hiện tại của bài hát ( đang phát )
-        console.log('currentTime', currentTime)
-        console.log('duration', duration)
         if(!isNaN(currentTime) && !isNaN(duration)) {
           setCurTime((currentTime / duration) * 100) 
           convertSecondsToTotalTime(Math.floor(duration))    
@@ -106,15 +107,34 @@ function ControlAudio() {
     setActiveHeart(!activeHeart)
   }
 
+  // Bài hát ngẫu nhiên
+  const handleRandomSong = (e) => {
+    e.stopPropagation()
+    setIsRandom(!isRandom)
+  }
+
   // Chuyển bài hát trước đó
   const handlePrevious = (e) => {
     e.stopPropagation()
-
+    if(isRandom) {
+      setCurrentSongIndex(Math.floor(Math.random() * data.length))
+    } else {
+      setCurrentSongIndex(prevIndex => (prevIndex - 1 + data.length) % data.length)
+      dispatch(actions.getInfoSongAction({ prevSong: true }))
+    }
+    dispatch(actions.getInfoSongAction({ activeAudio: true, prevSong: true }))
   }
 
   // Chuyển bài hát tiếp theo
   const handleNext = (e) => {
     e.stopPropagation()
+    if(isRandom) {
+      setCurrentSongIndex(Math.floor(Math.random() * data.length))
+    } else {
+      setCurrentSongIndex(prevIndex => (prevIndex + 1) % data.length)
+      dispatch(actions.getInfoSongAction({ nextSong: true }))
+    }
+    dispatch(actions.getInfoSongAction({ activeAudio: true, nextSong: true }))
   }
 
   // Vòng lặp phát lại bài hát
@@ -137,7 +157,7 @@ function ControlAudio() {
   // Phát bài hát
   const handlePlaySong = async (e) => {
     e.stopPropagation()
-    await onPlay()
+    await handleTimeUpdateAudio()
     await audio.current.play()
     dispatch(actions.getInfoSongAction({ activeAudio: true }))
   }
@@ -145,10 +165,18 @@ function ControlAudio() {
   // Tạm dừng bài hát
   const handlePauseSong = async (e) => {
     e.stopPropagation()
-    await onPlay()
+    await handleTimeUpdateAudio()
     await audio.current.pause()
     dispatch(actions.getInfoSongAction({ activeAudio: false }))
   }
+
+  const handleClickSetTimeAudio = useCallback((e) => {
+    let width = clickSetTimeAudioRef.current.clientWidth
+    const timeDuration = audio.current.duration
+    const offset = e.nativeEvent.offsetX
+    const progress = (offset / width) * 100
+    audio.current.currentTime = (progress / 100) * timeDuration
+  },[])
   
   // Ngăn chặn sự kiện nổi bọt
   const onStopNavigate = (e) => {
@@ -208,7 +236,6 @@ function ControlAudio() {
   useEffect(() => {
     const audioElement = audio.current
     const handleAudioEnded = () => {
-      // context.setActiveAudio(false)
       dispatch(actions.getInfoSongAction({ activeAudio: false}))
     }
     if(audioElement) {
@@ -220,7 +247,7 @@ function ControlAudio() {
         audioElement.removeEventListener('ended', handleAudioEnded)
       }
     }
-  },[context])
+  },[context, dispatch])
 
   // Call API bài hát
   const fetching = useCallback( async () => {
@@ -246,7 +273,7 @@ function ControlAudio() {
   //     window.addEventListener('load', () => {
   //       if(audio.current) {
   //         audio.current.pause()
-  //         dispatch(actions.getInfoSongAction({ activeAudio: true }))
+  //         dispatch(actions.getInfoSongAction({ activeAudio: false }))
   //         console.log("DOM fully loaded and parsed");
   //       }
   //     })
@@ -261,31 +288,31 @@ function ControlAudio() {
           <div className='flex items-center min-w-235 max-w-235'>
             <div className='relative shrink-0'>
               <img 
-                src={`/mp3/imgMusic/${stateSong.infoSong?.song?.information?.thumb}`}
+                src={`/mp3/imgMusic/${stateSong.nextSong || stateSong.prevSong ? (data[currentSongIndex].information.thumb) : (stateSong.infoSong.song.information.thumb)}`}
                 alt='img'
                 className={`w-16 h-16 block object-cover rounded-full ${stateSong.activeAudio && 'animate-spin-rotate'}`}
               />    
                   
             </div>
             <div className='mx-3 flex flex-col '>
-              <h3 className='text-sm font-semibold line-clamp-2'>{stateSong.infoSong?.song?.name.song}</h3>
-              <span className='text-xs text-zinc-500 font-medium'>{stateSong.infoSong?.song?.name.singer}</span>
+              <h3 className='text-sm font-semibold line-clamp-2'>{stateSong.nextSong || stateSong.prevSong ? (data[currentSongIndex].name.song) : (stateSong.infoSong?.song?.name.song)}</h3>
+              <span className='text-xs text-zinc-500 font-medium'>{stateSong.nextSong || stateSong.prevSong ? (data[currentSongIndex].name.singer) : (stateSong.infoSong?.song?.name.singer)}</span>
             </div>
           </div>
           <div className='flex items-center mx-4 gap-1 text-white'> 
 
           <audio 
             ref={audio} 
-            src={`/mp3/Music/${stateSong.infoSong.song.information.path}`} 
+            src={`/mp3/Music/${stateSong.nextSong || stateSong.prevSong ? (data[currentSongIndex].information.path) : (stateSong.infoSong.song.information.path)}`} 
             volume={valueVolume} 
             loop={activeLoop ? true : false} 
             hidden 
-            autoPlay
+            autoPlay={stateSong.infoSong.song && stateSong.autoPlay ? true : false}
             controls 
-            onTimeUpdate={onPlay}
+            onTimeUpdate={handleTimeUpdateAudio}
           />     
 
-            <BtnRadius onClick={(e) => handleHeart(e)}>
+            <BtnRadius onClick={(e) => handleHeart(e)}> 
               {
                 activeHeart  ? (<GoHeartFill />) : (<GoHeart />)
               }
@@ -297,23 +324,30 @@ function ControlAudio() {
         </div>
         <div className='min-w-[800px] text-xl mx-auto flex-col items-center justify-center h-full'>
           <div className='flex items-center text-xl justify-center gap-3 h-12 mt-2'>
-            <BtnRadius>
-              <LiaRandomSolid />
+            <BtnRadius onClick={handleRandomSong}>
+            {console.log('re-render')}
+              <LiaRandomSolid className={`${isRandom && 'text-main'}`} />
             </BtnRadius>
-            <BtnRadius onClick={(e) => handlePrevious(e)}>
+            <BtnRadius onClick={handlePrevious}>
               <RxTrackPrevious />
             </BtnRadius>
             <BtnRadius props='hover:bg-transparent'>
                 {
                   stateSong.activeAudio
-                  ? (<PiPauseCircleLight onClick={handlePauseSong} className='text-5xl' />) 
-                  : (<PiPlayCircleLight onClick={handlePlaySong} className='text-5xl' />)
+                  ?  (<div className='relative w-[38px] h-[38px] rounded-full border-[1.5px] border-white' onClick={handlePauseSong}>
+                        <IoIosPause  className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-md'/>
+                     </div>)
+                  :  (<div className='relative w-[38px] h-[38px] rounded-full border-[1.5px] border-white' onClick={handlePlaySong}>
+                        <IoIosPlay className='absolute top-1/2 left-1/2 -translate-x-[44%] -translate-y-1/2 text-md'/>
+                     </div>)
                 }
+                {/* (<PiPauseCircleLight onClick={handlePauseSong} className='text-5xl' />) */}
+                {/* (<PiPlayCircleLight onClick={handlePlaySong} className='text-5xl' />) */}
             </BtnRadius>
-            <BtnRadius onClick={(e) => handleNext(e)}>
+            <BtnRadius onClick={handleNext}>
               <RxTrackNext />
             </BtnRadius>
-            <BtnRadius onClick={(e) => handleLoop(e)} className='group'>
+            <BtnRadius onClick={handleLoop} className='group'>
               {
                 activeLoop 
                 ? (<div className='relative group'>
@@ -325,8 +359,8 @@ function ControlAudio() {
             </BtnRadius>
           </div>
           <div className='flex items-center justify-center gap-2 h-6'>
-            <span id='time-line' className='px-1 text-sm font-medium text-zinc-400 shrink-0 select-none'>{curTime ? curTime : '0'}</span>
-            <div className='control flex items-center cursor-pointer group/parent w-3/4 py-1 '>
+            <span id='time-line' className='text-xs text-center min-w-[44px] font-medium text-zinc-400 shrink-0 select-none tracking-widest'>{curTime ? curTime : '0'}</span>
+            <div ref={clickSetTimeAudioRef} className='control flex flex-1 items-center cursor-pointer group/parent w-3/4 py-1 ' onClick={handleClickSetTimeAudio}>
               <input 
                     className='w-full' 
                     type='range' 
@@ -335,11 +369,11 @@ function ControlAudio() {
                     min={minValueInputSong} 
                     max={maxValueInputSong} 
                     value={valueInputSong} 
-                    onClick={handleStopPropagation}
+                    // onClick={handleStopPropagation}
                     onChange={handleTimeAudio}
                   />    
             </div>
-            <span id='time-total' className='px-1 text-sm text-zinc-200 font-medium shrink-0 select-none'>{totalTime ? totalTime : '00:00'}</span>
+            <span id='time-total' className='text-xs text-center min-w-[44px] text-zinc-200 font-medium shrink-0 select-none tracking-widest'>{totalTime ? totalTime : '00:00'}</span>
           </div>
           <div>
             
@@ -393,5 +427,5 @@ function ControlAudio() {
                
     </section>
   )
-}
-export default ControlAudio
+})
+export default memo(ControlAudio)

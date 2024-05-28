@@ -68,22 +68,13 @@ const initInfoSong = {
   },
   listenNear: '',
   activeAudio: false,
+  autoPlay: false,
+  prevSong: false,
+  nextSong: false, 
 }
 
 
 // Reducer
-const activeReducer = (state = initActive, action) => {
-  switch (action.type) {
-    case SET_TOGGLE:
-      return {
-          ...state,
-          activeIndex: action.payload,
-          text: action.payload
-      }
-    default:
-      return state
-    }
-}
 const backgroundReducer = (state = initBackground, action) => { 
   switch (action.type) {
     case SET_BACKGROUND:
@@ -237,14 +228,19 @@ const getInfoSongReducer = (state = initInfoSong, action) => {
             song: action.payload.song
           },
           listenNear: action.payload.song,
-          activeAudio: action.payload.activeAudio
+          activeAudio: action.payload.activeAudio,
+          autoPlay: action.payload.autoPlay,
+          prevSong: action.payload.prevSong,
+          nextSong: action.payload.nextSong,
         }
       }
       
       if(!action.payload.song && action.payload.activeAudio !== undefined) {
         return {
           ...state,
-          activeAudio: action.payload.activeAudio
+          activeAudio: action.payload.activeAudio,
+          prevSong: action.payload.prevSong,
+          nextSong: action.payload.nextSong,
         }
         
       }
@@ -277,7 +273,6 @@ const setThumbMiddleware = (thumb) => {
 
   // Combine Reducers
 const rootReducer = combineReducers({
-    activeReducer,
     backgroundReducer,
     openThemeModalReducer,
     activeNavigateReducer,

@@ -5,9 +5,11 @@
   "homepage": "https://had1901.github.io/",
   "dependencies": {
     "@headlessui/react": "^1.7.17",
+    "@reduxjs/toolkit": "^2.2.5",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.2",
     "classnames": "^2.3.2",
     "css-loader": "^6.8.1",
     "json-server": "^0.17.4",
