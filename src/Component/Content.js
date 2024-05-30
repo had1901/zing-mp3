@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
 import { GoHeart, GoHeartFill } from 'react-icons/go'
 import { PiPlayCircleLight } from 'react-icons/pi'
 import { IoIosMore } from 'react-icons/io'
 import BtnRadius from './BtnRadius'
 
+import Skeleton, {SkeletonTheme} from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import { useSelector } from 'react-redux'
+
 function Content({ onClick, ...props }) {
   const [isLove, setIsLove] = useState(false)
+  const state = useSelector(state => state.backgroundReducer)
 
   useEffect(() => {
     function callback(entries, observer) {
@@ -47,14 +50,14 @@ function Content({ onClick, ...props }) {
   }
   return (
     <SkeletonTheme baseColor="#a6a6a6" highlightColor="#56595b">
-      <div className={`text-white ${props.classNameParent}`}>
+      <div className={`${state.textColor} ${props.classNameParent}`}>
         {props.children ? props.children : 
           <div className={`w-full ${props.classWrapImg}`}>
               {
                 <div className={`${props.classOurImg} cursor-pointer relative rounded-xl overflow-hidden group/parent`}>
                   <img 
                     data={props.dataThumb}
-                    src={`./mp3${props.thumb}`} 
+                    src={`./mp3${props.thumb }`} 
                     alt='img' 
                     className={`w-full object-cover block rounded-xl group-hover/parent:scale-110 delay-75 select-none ${props.classNameChild}`}   
                     onClick={onClick}
@@ -71,8 +74,8 @@ function Content({ onClick, ...props }) {
                     </BtnRadius>
                   </div>   
                 </div>     
-                ||
-                <Skeleton height={280} width={200}/>
+                
+                
               }     
             {/* {
                 isLoading

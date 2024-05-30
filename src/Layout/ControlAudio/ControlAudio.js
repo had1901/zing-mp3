@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, { memo, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 
 import { GoHeart, GoHeartFill, GoVideo } from 'react-icons/go';
@@ -114,7 +114,7 @@ const ControlAudio = memo(() => {
   }
 
   // Chuyển bài hát trước đó
-  const handlePrevious = (e) => {
+  const handlePrevious = useCallback((e) => {
     e.stopPropagation()
     if(isRandom) {
       setCurrentSongIndex(Math.floor(Math.random() * data.length))
@@ -123,10 +123,10 @@ const ControlAudio = memo(() => {
       dispatch(actions.getInfoSongAction({ prevSong: true }))
     }
     dispatch(actions.getInfoSongAction({ activeAudio: true, prevSong: true }))
-  }
+  },[isRandom, data.length, dispatch])
 
   // Chuyển bài hát tiếp theo
-  const handleNext = (e) => {
+  const handleNext = useCallback((e) => {
     e.stopPropagation()
     if(isRandom) {
       setCurrentSongIndex(Math.floor(Math.random() * data.length))
@@ -135,7 +135,7 @@ const ControlAudio = memo(() => {
       dispatch(actions.getInfoSongAction({ nextSong: true }))
     }
     dispatch(actions.getInfoSongAction({ activeAudio: true, nextSong: true }))
-  }
+  },[isRandom, data.length, dispatch])
 
   // Vòng lặp phát lại bài hát
   const handleLoop = (e) => {
@@ -193,7 +193,7 @@ const ControlAudio = memo(() => {
   }
 
   // Xử lý tăng giảm âm lượng
-  const handleChangeInputRangeVolume = (e) => {
+  const handleChangeInputRangeVolume = useCallback((e) => {
     e.stopPropagation()
     const newValueVolume = e.target.value
     setValueVolume(newValueVolume)
@@ -203,7 +203,7 @@ const ControlAudio = memo(() => {
     } else {
       setMutedVolume(false)
     }
-  }
+  },[])
   
   // Xử lý nút bật - tắt âm lượng -> làm thay đổi input range
   const handleMutedVolume = (e) => {
@@ -247,7 +247,7 @@ const ControlAudio = memo(() => {
         audioElement.removeEventListener('ended', handleAudioEnded)
       }
     }
-  },[context, dispatch])
+  },[dispatch])
 
   // Call API bài hát
   const fetching = useCallback( async () => {
@@ -264,10 +264,12 @@ const ControlAudio = memo(() => {
     }
   },[getSong])
 
+
   useEffect(() => {
     fetching()
   },[fetching])
   
+
   // useEffect(() => {
   //   const handleLoad = () => {
   //     window.addEventListener('load', () => {

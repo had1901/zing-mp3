@@ -8,11 +8,13 @@ import BtnRadius from '../../Component/BtnRadius';
 import { GoHeart, GoHeartFill } from 'react-icons/go';
 import { useDispatch } from 'react-redux';
 import { actions } from '../../redux/actions/actions';
+import Account from '../../Component/Account';
 
 function Libraries() {
   const [dataMusic, setDataMusic] = useState([])
   const [activeHeart, setActiveHeart] = useState(false)
   const [activeTab, setActiveTab] = useState('Yêu thích')
+  const [activeId, setActiveId] = useState()
   const [activeTab2, setActiveTab2] = useState('Bài hát')
   const dispatch = useDispatch()
 
@@ -29,10 +31,10 @@ function Libraries() {
     'Đã tải lên'
   ]
 
-  console.log(dataMusic)
-  const handleHeart = (e) => {
+  const handleHeart = (e, id) => {
     e.stopPropagation()
     setActiveHeart(!activeHeart)
+    setActiveId(id)
   }
   const handleClick = e => {
     e.preventDefault()
@@ -54,7 +56,7 @@ function Libraries() {
   }
   useEffect(() => {
     const fetching = () => {
-      axios.get('http://localhost:3333/mp3')
+      axios.get('https://json-server-mp3.onrender.com/mp3')
         .then(response => setDataMusic(response.data))
         
         .catch(function (error) {
@@ -142,11 +144,11 @@ function Libraries() {
                         <p>{song.information.album}</p>
                       </div>
                       <div className='flex items-center gap-4 text-xs text-[#ffffff80]'>
-                        <BtnRadius onClick={(e) => handleHeart(e)}> 
+                        <div onClick={(e) => handleHeart(e, song.id)}> 
                           {
-                            activeHeart  ? (<GoHeartFill />) : (<GoHeart />)
+                            activeHeart && activeId === song.id ? (<GoHeartFill />) : (<GoHeart />)
                           }
-                        </BtnRadius>
+                        </div>
                         <span>05:02</span>
                       </div>
                     </a>
@@ -156,6 +158,7 @@ function Libraries() {
           </ul>
         </div>
       </section>
+      <Account />
     </ContainerMain>
   )
 }

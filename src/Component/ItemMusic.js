@@ -14,6 +14,8 @@ import { LuMusic } from "react-icons/lu";
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../redux/actions/actions';
 
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 function ItemMusic({ onClick, ...props }) {
   const iconRef = useRef(null)
@@ -23,6 +25,7 @@ function ItemMusic({ onClick, ...props }) {
   const [textstroke, setTextstroke] = useState('text-stroke-any')
 
   const state = useSelector(state => state.getInfoSongReducer)
+  const state2 = useSelector(state => state.backgroundReducer)
   const dispatch = useDispatch()
   
   const handleHeart =  () => {
@@ -90,7 +93,7 @@ function ItemMusic({ onClick, ...props }) {
                 }
                 <div className={`relative group/parent cursor-pointer ${props.classNameMore}`} onClick={() => handleGetInfoMusic(props.item)}>
                   <img 
-                    src={`/mp3/imgMusic/${props.item?.information?.thumb}`} 
+                    src={`/mp3/imgMusic/${props.item?.information?.thumb || <Skeleton />}`} 
                     alt={props.item?.name?.song} 
                     className='w-full h-full group-hover/item:bg-black group-hover/item:opacity-50 block rounded-md object-cover border-black'                
                   />
@@ -106,17 +109,17 @@ function ItemMusic({ onClick, ...props }) {
                     :
                       null
                   }
-                  <FaPlay className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 hidden text-white text-xl group-hover/item:block group-hover/item:opacity-90' />
+                  <FaPlay className={`absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 hidden ${state2.textColor} text-xl group-hover/item:block group-hover/item:opacity-90`}/>
                 </div>
                 <div className={`${props.isAlbum ? 'flex-2' : 'flex-2'} flex flex-col justify-center leading-none  font-semibold`}>
-                  <div className='flex items-center capitalize text-white text-sm '>
-                    <h4 className={`${props.classTitle} line-clamp-1`}>{props.item?.name?.song}</h4> 
-                    <Label title={props.item?.desc?.premium} />                
+                  <div className={`flex items-center capitalize ${state2.textColor} text-sm`}>
+                    <h4 className={`${props.classTitle}  line-clamp-1`}>{props.item?.name?.song || <Skeleton />}</h4> 
+                    <Label title={props.item?.desc?.premium || <Skeleton />} />                
                   </div>
                   <div>
-                    <Link to='./zingchart' className={`text-textZingchart inline hover:underline hover:text-violet ${props.classSinger}`}>{props.item?.name?.singer}</Link>
+                    <Link to='./zingchart' className={`${state2.textColor} inline hover:underline hover:text-violet ${props.classSinger}`}>{props.item?.name?.singer}</Link>
                   </div>
-                  {props.isDate && <span className='text-xs text-textZingchart'>{props.item?.desc?.date}</span>}
+                  {props.isDate && <span className={`text-xs ${state2.textColor}`}>{props.item?.desc?.date || <Skeleton />}</span>}
                 </div>
                 <div className={`${props.isAlbum ? 'flex-2 text-xs text-[#ffffff80]' : '' }`}>
                   {
@@ -139,7 +142,7 @@ function ItemMusic({ onClick, ...props }) {
                     </div>
   
                   }
-                  <IoIosMore className='absolute right-0 top-1/2 -translate-y-1/2 mr-2 hover:bg-searchRose text-gray-400 hover:text-white hidden w-4 h-4 box-content p-2 cursor-pointer rounded-full font-bold group-hover/item:block' />
+                  <IoIosMore className={`absolute right-0 top-1/2 -translate-y-1/2 mr-2 hover:bg-searchRose text-gray-400 hover:${state2.textColor} hidden w-4 h-4 box-content p-2 cursor-pointer rounded-full font-bold group-hover/item:block`} />
                   {
                     props.isTimeString 
                     &&

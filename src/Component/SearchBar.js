@@ -17,6 +17,7 @@ import { useEffect } from 'react';
 import { actions } from '../redux/actions/actions'
 import { middleware } from '../redux/reducer/reducer'
 import { useLocation, useNavigate } from 'react-router-dom'
+import Account from './Account'
 
 
 function SearchBar() {
@@ -28,6 +29,7 @@ function SearchBar() {
   const navigate = useNavigate()
   const location = useLocation()
   const [history, setHistory] = useState([location.pathname])
+  const [toggle, setToggle] = useState(false)
   
   const handleBack = (e) => {
     e.stopPropagation()
@@ -51,6 +53,10 @@ function SearchBar() {
 
   const handleCloseThemeModal = () => {
     dispatch(actions.openThemeModalAction(false))
+  }
+  const handleOpenAccount = () => {
+    // dispatch(actions.openAccountPopupAction(false))
+    setToggle(!toggle)
   }
 
   useEffect(() => {
@@ -127,12 +133,14 @@ function SearchBar() {
                     </BtnRadius>
                   </div>
                   <div className=''>
-                    <BtnRadius props='hover:bg-transparent '>
+                    <BtnRadius props='hover:bg-transparent relative' >
                       <img 
                         src='/images/avatar-jisoo.jpg' 
                         alt='avatar' 
                         className='rounded-full w-9 h-9 object-cover '
+                        onClick={handleOpenAccount}
                       />
+                      { toggle && <Account /> }
                     </BtnRadius>
                   </div>
                 </div>  

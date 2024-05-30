@@ -29,7 +29,8 @@ import ContainerMain from '../../Component/ContainerMain';
 
 import { GoChevronRight } from 'react-icons/go';
 import { useSelector } from 'react-redux';
-
+import Skeleton, {SkeletonTheme} from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 
 function Home() {
@@ -94,7 +95,7 @@ function Home() {
   // Call API
   const fetching = async () => {
     try {
-      const api =  `http://localhost:3333/${activeTab}`
+      const api =  `https://json-server-mp3.onrender.com/${activeTab}`
       const res = await fetch(api)
       if(res.status !== 200) {
         throw new Error(`Fetching ${api} failed`)
@@ -106,7 +107,7 @@ function Home() {
     }
   }
   useEffect(() => {
-    fetching()
+      fetching()
   },[activeTab])
 
   // Tính toán break-point để hiển thị số lượng slide
@@ -149,13 +150,14 @@ function Home() {
                         <Content key={index} description={item.card[0].desc} dataThumb={item.card[0].thumb} classNameChild='lazy-load ' classNameParent='lg:w-[199px] lg:h-[250px] xs:w-20 xs:h-20 shrink-0' classNameMore='line-clamp-2' classWrapImg='lg:px-3 xs:px-1 xs:first:pl-0 xs:last:pr-0 ' classOurImg='lg:max-h-[199px]'/>                
                       ))     
                   }
+          
               </div>  
               <Title title='Mới Phát Hành' classNameMore='capitalize' classNameParent='mt-11 mb-5 mt-10 text-xl'/>       
               <Content>
                 <div className='flex flex-wrap gap-3 '> 
                     {
                       tabTitles.map((tab, index) => (
-                        <Button key={index} title={tab.tabTitle} onClick={() => handleBtnActive(tab.tabTitle)} className={`rounded-2xl select-none ${activeTab === tab.tabTitle ? 'bg-violet border-b-violet border-none' : ''} text-sm min-w-107 h-6 border  `} />                  
+                        <Button key={index} title={tab.tabTitle} onClick={() => handleBtnActive(tab.tabTitle)} className={`rounded-2xl select-none ${activeTab === tab.tabTitle ? 'bg-violet border-b-violet text-white border-none' : ''} text-sm min-w-107 h-6 border `} />                  
                       ))
                     }
                 </div>

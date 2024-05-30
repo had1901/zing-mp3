@@ -33,7 +33,7 @@ function Album() {
   useEffect(() => {
     const fetching = async () => {
       try {
-        const api = `http://localhost:3333/${categoryAlbum}`
+        const api = `https://json-server-mp3.onrender.com/${categoryAlbum}`
         const res = await fetch(api)
         if(res.status !== 200) {
           throw new Error ('Fetching false')

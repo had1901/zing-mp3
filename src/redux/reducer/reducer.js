@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 import { 
   actions, 
-  SET_TOGGLE, 
   SET_BACKGROUND,  
   SET_OPEN_MODAL,
+  SET_OPEN_ACCOUNT,
   SET_NAVIGATE,
   SET_OPEN_SIDEBAR_RIGHT,
   GET_SONG,
@@ -14,11 +14,10 @@ const initActive = {
     activeIndex : 'red',
     text: null,
 }
-
 const initOpen= {
-    isOpen: false
+    isOpen: false,
+    isOpenAccount: false
 }
-
 const initBackground = {
     backgroundSearchBar: 'bg-primary',
     backgroundBody : 'bg-primary',
@@ -30,14 +29,15 @@ const initBackground = {
     backgroundModel: 'bg-[#34224f]',
     activeTab: 'bg-[#ffffff1a]',
     backgroundUpdateAccount: 'bg-[#9b4de0]',
-    textActiveTabColor: 'text-white'
+    textActiveTabColor: 'text-white',
+    bgHover: 'bg-[#0000000d]',
+    bgSidebarLeft: 'bg-[#ffffff0d]',
+    
 }
-
 const initActiveNavigate = {
     item: 'Khám phá',
     isActive: false
 }
-
 const initOpenSidebarRight = {
   isOpen: false
 }
@@ -191,6 +191,11 @@ const openThemeModalReducer = (state = initOpen, action) => {
           ...state,
           isOpen: action.payload
       }
+      case SET_OPEN_ACCOUNT:
+        return {
+            ...state,
+            isOpenAccount: action.payload
+        }
     default:
       return state
     }

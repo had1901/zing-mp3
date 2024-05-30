@@ -126,7 +126,7 @@ function Sidebar() {
   }, [dispatch, location.pathname]);
 
   return (
-    <section className={`h-90 xl:translate-x-0 ${context.isActiveSidebar === true ? 'sm:translate-x-0 xs:bg-main shadow-sidebarShadow' : 'xs:-translate-x-full'}  transition-all fixed z-50 ${context.sideBar} `}>
+    <section className={`h-90 xl:translate-x-0 ${context.isActiveSidebar === true ? 'sm:translate-x-0 xs:bg-main shadow-sidebarShadow' : 'xs:-translate-x-full'}  transition-all fixed z-50 ${state2.bgSidebarLeft} `}>
       <BsArrowLeft className={`${state2.textColor} absolute right-5 top-6 text-xl`} onClick={() => context.handleActiveSidebar() }/>
       <div className='w-60 flex flex-col h-full'>
         <div className='flex-1 pb-32'>

@@ -169,6 +169,7 @@ module.exports = {
       boxShadow: {
         musicShadow: '0px 0px 7px 3px inset',
         sidebarShadow: '2px 0px 54px 2px rgb(32 32 32 / 24%)',
+        account: '0 0 5px 0 rgba(0, 0, 0, .2)'
       },
       animation: {
         'spin-rotate': 'spinn 4s infinite linear ',

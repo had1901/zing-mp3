@@ -2,6 +2,7 @@
 const SET_THUMB = 'SET_THUMB'
 const SET_BACKGROUND = 'SET_BACKGROUND'
 const SET_OPEN_MODAL = 'OPEN_MODAL'
+const SET_OPEN_ACCOUNT = 'SET_OPEN_ACCOUNT'
 const SET_BACKGROUND_SEARCH = 'SET_BACKGROUND_SEARCH'
 const SET_NAVIGATE = 'SET_NAVIGATE'
 const SET_OPEN_SIDEBAR_RIGHT = 'SET_OPEN_SIDEBAR_RIGHT'
@@ -21,6 +22,12 @@ const SET_PLAYING = 'SET_PLAYING'
         payload: payload
     }
  }
+ const openAccountPopupAction = (payload) => {
+  return {
+      type: SET_OPEN_ACCOUNT,
+      payload: payload
+  }
+}
  const activeNavigateAction = (payload) => {
     return {
         type: SET_NAVIGATE,
@@ -52,7 +59,8 @@ const SET_PLAYING = 'SET_PLAYING'
     activeNavigateAction,
     openSidebarRightAction,
     getInfoSongAction,
-    autoPlaySongAction
+    autoPlaySongAction,
+    openAccountPopupAction
   }
 
 
@@ -66,4 +74,5 @@ const SET_PLAYING = 'SET_PLAYING'
   SET_OPEN_SIDEBAR_RIGHT,
   GET_SONG,
   SET_PLAYING,
+  SET_OPEN_ACCOUNT
 }

@@ -29,7 +29,7 @@ function ZingChart() {
   
   const fetching = useCallback(async () => {
     try {
-      const api = `http://localhost:3333/${pathApi}`
+      const api = `https://json-server-mp3.onrender.com/${pathApi}`
       const res = await fetch(api)
       if(!res.ok) {
         throw new Error(`Fetching '${api}' failed`)
