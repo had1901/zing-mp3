@@ -1,5 +1,5 @@
 import React from 'react'
-import ContainerMain from '../Component/ContainerMain'
+import ContainerMain from '../components/ContainerMain'
 import { useParams } from 'react-router-dom'
 
 function NotFound() {

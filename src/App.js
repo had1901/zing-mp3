@@ -1,23 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import { Routes, Route, useLocation, useNavigate  } from 'react-router-dom'
-import Home from './Pages/Home/Home';
-import Login from './Pages/Login';
-import ZingChart from './Pages/ZingChart/ZingChart';
-import Radio from './Pages/Radio/Radio';
-import Libraries from './Pages/Libraries/Libraries';
-import NotFound from './Pages/NotFound';
-import RankMusic from './Pages/RankMusic/RankMusic';
-import TopRank from './Pages/TopRank/TopRank';
-import GlobalPage from './Pages/GlobalPage';
-import Topic from './Pages/Topic/Topic';
-import Album from './Pages/Album/Album';
-import { useSelector } from 'react-redux';
+import Home from './pages/Home'
+import Login from './pages/Login'
+import ZingChart from './pages/ZingChart'
+import Radio from './pages/Radio'
+import Libraries from './pages/Libraries'
+import NotFound from './pages/NotFound'
+import RankMusic from './pages/RankMusic'
+import TopRank from './pages/TopRank'
+import GlobalPage from './pages/GlobalPage'
+import Topic from './pages/Topic'
+import Album from './pages/Album'
+
 
 
 function App() {
     const navigate = useNavigate()
-
+    
     useEffect(() => {
         navigate('/')
     },[])

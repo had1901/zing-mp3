@@ -1,8 +1,8 @@
 import React from 'react'
-import SearchBar from '../Component/SearchBar'
-import SidebarLeft from './Sidebar/SidebarLeft'
-import SidebarRight from './Sidebar/SidebarRight'
-import ControlAudio from './ControlAudio/ControlAudio'
+import SearchBar from '../components/SearchBar'
+import SidebarLeft from './SidebarLeft'
+import SidebarRight from './SidebarRight'
+import ControlAudio from './ControlAudio'
 
 function GlobalLayout({children}) {
   return (

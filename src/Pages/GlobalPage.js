@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react'
-import GlobalLayout from '../Layout/GlobalLayout'
+import GlobalLayout from '../layout/GlobalLayout'
 import { Outlet } from 'react-router-dom'
-import { Context } from '../ContextGlobal/ContextGlobal'
+import { Context } from '../context/ContextGlobal'
 import { useDispatch, useSelector } from 'react-redux'
-import { middleware } from '../redux/reducer/reducer'
+import { middleware } from '../redux/reducer'
 
 function GlobalPage() {
   const context = useContext(Context)
