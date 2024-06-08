@@ -55,7 +55,6 @@ function ContextProvider({ children }) {
         const prevSong = prev.some(pre => pre.information.path === item.information.path && pre.name.song === item.name.song)
         if(prev === undefined || null || !prevSong) {
           let songNew = [...prev, item]
-          // setSongListen(songNew)
           localStorage.setItem('songListen', JSON.stringify(songNew))
           return songNew
         }

@@ -10,6 +10,7 @@ import { IoIosMore } from 'react-icons/io';
 import { useCallback } from 'react';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { fetching, fetchingMusic } from '../service';
 
 function SidebarRight() {
   const context = useContext(Context)
@@ -27,24 +28,10 @@ function SidebarRight() {
     }
     setActive(num)
   }
-  
-  const fetching = useCallback( async () => {
-    try {
-       const url = `https://json-server-mp3.onrender.com/${path}`
-       const callData = await fetch(url)
-       if(!callData.ok) {
-         throw new Error(`Fetching ${url} failed`)
-       }
-       const result = await callData.json()
-       setData(result)
-     } catch (err) {
-       console.log(err)
-     }
-   },[path])
- 
+
    useEffect(() => {
-     fetching()
-   },[fetching])
+     fetching(fetchingMusic, path, setData)
+   },[path])
 
   return (
     <div className={`${state2.isOpen ? 'translate-x-[0]' : 'translate-x-[100%]'} fixed top-0 right-0 z-40 transition-all duration-500 w-[330px] h-[100%] pb-[90px] bg-transparent border-l-[#ffffff1a] border-l-2 `}>

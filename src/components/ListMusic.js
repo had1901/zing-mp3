@@ -2,43 +2,28 @@ import React, { useState } from 'react'
 import ItemMusic from './ItemMusic'
 import Description from './Description'
 import Button from './Button'
-import { useCallback } from 'react'
 import { useEffect } from 'react'
+import { fetching, fetchingMusic } from '../service'
 
-function ListMusic({ data, className }) {
-  console.log('ListMusic', data)
+function ListMusic({ className }) {
   const [itemShow, setItemShow] = useState(10)
-  const [data1, setData1] = useState([])
-  const [pathApi, setPathApi] = useState('mp3')
+  const [data, setData] = useState([])
+  const [path, setPath] = useState('mp3')
 
   const showItem = () => {
     setItemShow(itemShow + 10)
   }
 
-  const fetching = useCallback(async () => {
-    try {
-      const api = `https://json-server-mp3.onrender.com/${pathApi}`
-      const res = await fetch(api)
-      if(!res.ok) {
-        throw new Error(`Fetching '${api}' failed`)
-      }
-      const result = await res.json()
-      setData1(result)
-    } catch (err) { 
-      console(err) 
-    }
-  },[pathApi])
-
   useEffect(() => {
-    fetching()
-  },[fetching])
+    fetching(fetchingMusic, path, setData)
+  },[path])
 
   return (
     <section className={className}>
       <div>
         <div className='w-full'>
           {
-            data1?.slice(0, itemShow).map((item, index) => (             
+            data?.slice(0, itemShow).map((item, index) => (             
                 <ItemMusic 
                   key={index} 
                   number={index} 
@@ -60,7 +45,7 @@ function ListMusic({ data, className }) {
         </div>
       </div>
       {
-        itemShow < data1.length && 
+        itemShow < data.length && 
         <div className='text-center flex justify-center pt-5 '>
           <Button title='Xem top 100' onClick={showItem} className='w-28 px-3 py-2 border border-searchRose text-textZingchart text-sm rounded-full hover:bg-violet hover:text-white transition-all '/>
         </div>      

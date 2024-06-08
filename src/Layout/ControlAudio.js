@@ -1,10 +1,9 @@
-import React, { memo, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { memo, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 
 import { GoHeart, GoHeartFill, GoVideo } from 'react-icons/go';
-import { IoIosMore, IoIosPause, IoIosPlay, IoMdPause, IoMdPlay } from 'react-icons/io';
+import { IoIosMore, IoIosPause, IoIosPlay } from 'react-icons/io';
 import { LiaMicrophoneAltSolid, LiaRandomSolid, } from 'react-icons/lia';
-import { PiPauseCircleLight, PiPlayCircleLight } from 'react-icons/pi';
 import { VscChromeRestore } from 'react-icons/vsc';
 import { HiOutlineVolumeUp } from 'react-icons/hi';
 import { BiVolumeMute } from "react-icons/bi";
@@ -19,6 +18,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { BiPlus } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../redux/actions';
+import { fetching, fetchingMusic } from '../service';
 
 const ControlAudio = memo(() => {
   const audio = useRef()
@@ -30,7 +30,7 @@ const ControlAudio = memo(() => {
 
   const navigate = useNavigate()
   const [data, setData] = useState([])
-  const [getSong, setGetSong] = useState('mp3')
+  const [path, setPath] = useState('mp3')
   
   const [prevVolume, setPrevVolume] = useState(0.5)
   const [valueInputSong, setValueInputSong] = useState(0)
@@ -251,25 +251,10 @@ const ControlAudio = memo(() => {
     }
   },[dispatch])
 
-  // Call API bài hát
-  const fetching = useCallback( async () => {
-   try {
-      const url = `https://json-server-mp3.onrender.com/${getSong}`
-      const callData = await fetch(url)
-      if(!callData.ok) {
-        throw new Error(`Fetching ${url} failed`)
-      }
-      const data = await callData.json()
-      setData(data)
-    } catch (err) {
-      console.log(err)
-    }
-  },[getSong])
-
-
+  
   useEffect(() => {
-    fetching()
-  },[fetching])
+    fetching(fetchingMusic, path, setData)
+  },[path])
   
 
   // useEffect(() => {

@@ -7,6 +7,7 @@ import { FaCirclePlay } from "react-icons/fa6";
 import ItemMusic from './../components/ItemMusic';
 import Button from './../components/Button';
 import ContainerMain from './../components/ContainerMain';
+import { fetching, fetchingMusic } from '../service';
 
 
 function ZingChart() {
@@ -14,7 +15,7 @@ function ZingChart() {
   const [showMusicUSUK, setShowMusicUSUK] = useState(5)
   const [showMusicKpop, setShowMusicKpop] = useState(5)
   const [data, setData] = useState([])
-  const [pathApi, setPathApi] = useState('mp3')
+  const [path, setPath] = useState('mp3')
 
   const handleShowMusicVN = () => {
     setShowMusicVN(showMusicVN + 5)
@@ -26,23 +27,9 @@ function ZingChart() {
     setShowMusicKpop(showMusicKpop + 5)
   }
   
-  const fetching = useCallback(async () => {
-    try {
-      const api = `https://json-server-mp3.onrender.com/${pathApi}`
-      const res = await fetch(api)
-      if(!res.ok) {
-        throw new Error(`Fetching '${api}' failed`)
-      }
-      const result = await res.json()
-      setData(result)
-    } catch (err) { 
-      console(err) 
-    }
-  },[pathApi])
-
   useEffect(() => {
-    fetching()
-  },[fetching])
+    fetching(fetchingMusic, path, setData)
+  },[path])
 
   return (
     <ContainerMain>

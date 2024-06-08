@@ -15,6 +15,7 @@ import ItemMusic from './../components/ItemMusic';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { fetching, fetchingMusic } from '../service'
 
 function Album() {
   const context = useContext(Context)
@@ -30,20 +31,7 @@ function Album() {
   }
 
   useEffect(() => {
-    const fetching = async () => {
-      try {
-        const api = `https://json-server-mp3.onrender.com/${categoryAlbum}`
-        const res = await fetch(api)
-        if(res.status !== 200) {
-          throw new Error ('Fetching false')
-        }
-        const result = await res.json()
-        setData(result)
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    fetching()
+    fetching(fetchingMusic, categoryAlbum, setData)
   },[categoryAlbum])
 
   

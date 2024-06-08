@@ -31,6 +31,7 @@ import { GoChevronRight } from 'react-icons/go';
 import { useSelector } from 'react-redux';
 import Skeleton, {SkeletonTheme} from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import { fetching, fetchingMusic } from '../service';
 
 
 function Home() {
@@ -39,7 +40,6 @@ function Home() {
   const [activeTab, setActiveTab] = useState('All')
   const [itemSlideScreen, setItemSlideScreen] = useState(4)
   const [data, setData] = useState([])
-
   // Handle active tab
   const tabTitles = [
     {
@@ -92,22 +92,9 @@ function Home() {
     slidesToScroll: 7,
   }
 
-  // Call API
-  const fetching = async () => {
-    try {
-      const api =  `https://json-server-mp3.onrender.com/${activeTab}`
-      const res = await fetch(api)
-      if(res.status !== 200) {
-        throw new Error(`Fetching ${api} failed`)
-      } 
-      const dataAPI = await res.json()
-      setData(dataAPI) 
-    } catch (err) {
-      console.log(err)
-    }
-  }
+
   useEffect(() => {
-      fetching()
+    fetching(fetchingMusic, activeTab, setData)
   },[activeTab])
 
   // Tính toán break-point để hiển thị số lượng slide
