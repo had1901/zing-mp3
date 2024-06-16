@@ -13,6 +13,7 @@ import { RxTrackPrevious, RxTrackNext, RxLoop } from 'react-icons/rx';
 import BtnRadius from './../components/BtnRadius';
 import { Context } from '../context/ContextGlobal';
 
+import { motion } from "framer-motion"
 
 import 'react-loading-skeleton/dist/skeleton.css'
 import { BiPlus } from 'react-icons/bi';
@@ -25,6 +26,7 @@ const ControlAudio = memo(() => {
   const inputVolume = useRef()
   const inputRangeSong = useRef()
   const clickSetTimeAudioRef = useRef()
+  const ref = useRef()
   const context = useContext(Context)
   const step = 0.01
 
@@ -50,6 +52,8 @@ const ControlAudio = memo(() => {
   const [isRandom, setIsRandom] = useState(false)
 
   const state = useSelector(state => state.backgroundReducer)
+  const thumb = useSelector((state) => state.backgroundReducer.backgroundBody)
+
   const stateSong = useSelector(state => state.getInfoSongReducer)
   const dispatch = useDispatch()
 
@@ -255,6 +259,22 @@ const ControlAudio = memo(() => {
   useEffect(() => {
     fetching(fetchingMusic, path, setData)
   },[path])
+
+  useEffect(() => {
+    const element = ref.current
+    if(thumb) {
+      element.classList.add(state.backgroundControlAudio)
+      element.classList.add('body-animate')
+
+    } else {
+      element.classList.remove(state.backgroundControlAudio)
+      element.classList.remove('body-animate')
+    }
+    return () => {
+      element.classList.remove(state.backgroundControlAudio)
+      element.classList.remove('body-animate')
+    }
+  },[thumb])
   
 
   // useEffect(() => {
@@ -271,7 +291,7 @@ const ControlAudio = memo(() => {
   // },[dispatch])
 
   return (
-    <section className={`${state.backgroundControlAudio} ${state.textColor} h-91 fixed bottom-0 flex justify-center w-full xs:hidden lg:block text-white border-t-1 border-zinc-700 z-50`} >
+    <section ref={ref} className={` ${state.textColor} h-91 fixed bottom-0 flex justify-center w-full xs:hidden lg:block text-white border-t-1 border-zinc-700 z-50`} >
       <div className='w-full h-full text-white pr-5 pl-7 mx-auto flex justify-between items-center cursor-pointer' onClick={handleDetailSong}>
         <div className='flex items-center h-full'>
           <div className='flex items-center min-w-235 max-w-235'>

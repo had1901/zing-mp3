@@ -8,6 +8,10 @@ import ItemMusic from './../components/ItemMusic';
 import Button from './../components/Button';
 import ContainerMain from './../components/ContainerMain';
 import { fetching, fetchingMusic } from '../service';
+import SkeletonMusic from '../components/Skeleton/SkeletonMusic';
+import SkeletonHomeMusic from './../components/Skeleton/SkeletonHomeMusic';
+import Skeleton from 'react-loading-skeleton';
+import { motion, AnimatePresence } from "framer-motion"
 
 
 function ZingChart() {
@@ -16,6 +20,7 @@ function ZingChart() {
   const [showMusicKpop, setShowMusicKpop] = useState(5)
   const [data, setData] = useState([])
   const [path, setPath] = useState('mp3')
+  const [isLoading, setIsLoading] = useState(true)
 
   const handleShowMusicVN = () => {
     setShowMusicVN(showMusicVN + 5)
@@ -29,17 +34,36 @@ function ZingChart() {
   
   useEffect(() => {
     fetching(fetchingMusic, path, setData)
+    setTimeout(() => {
+      setIsLoading(false)
+    },800)
   },[path])
 
   return (
     <ContainerMain>
         <div className='text-white'>
-            <div className='flex items-center gap-x-4 py-4'>
-              <Title title='#zingchart' classNameParent='' classNameMore='text-40px uppercase zing-chart-text' />
-              <FaCirclePlay className='text-40px' />
-            </div>
+              {
+                isLoading
+                ? (<AnimatePresence>
+                    <motion.div className='py-4'
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 0.3 }}
+                      exit={{ opacity: 0 }}
+                    >
+                      <Skeleton width={320} height={50} />
+                    </motion.div>
+                  </AnimatePresence>)
+                : data && (<div className='flex items-center gap-x-4 py-4 transition-opacity duration-500'>
+                    <Title title='#zingchart' classNameParent='' classNameMore='text-40px uppercase zing-chart-text' />
+                    <FaCirclePlay className='text-40px' />
+                  </div>)
+              }
             {/* <ChartComponent /> */}
-            <ListMusic data={data} />
+            <div className='min-h-[800px]'>
+              {(<SkeletonMusic listMusic={data?.length} time classWrap={`mt-5 pl-4 transition-opacity duration-500 ${isLoading ? 'visible' : 'hidden'}`}/>)}
+              {(<ListMusic data={data} className={`transition-opacity duration-500 ${isLoading ? 'invisible' : 'visible'}`}/>)}
+            </div>
             <Title title='Bảng Xếp Hạng Tuần' classNameParent='mt-14 mb-4' classNameMore='text-40px zing-chart-text' />
             <div>
               <Container classContainer='grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 gap-7'>
@@ -50,7 +74,9 @@ function ZingChart() {
                   </div>
                   <Container classContainer=''>
                     {
-                      data.slice(0, showMusicVN).map((item, index) => (
+                      isLoading
+                      ? (<SkeletonHomeMusic listMusic={5} />)
+                      : data.slice(0, showMusicVN).map((item, index) => (
                         <ItemMusic key={index} item={item} number={index} isIcon isNumberRank isTimeString classTitle='line-clamp-1' classWrap='flex item-center border-b-1 border-sidebarRose rounded-lg hover:bg-searchRose cursor-pointer' className='w-full justify-between cursor-pointer p-3 ' classSinger='text-xs font-normal' classIcon='flex flex-1 justify-end' classNameMore='w-10 h-10' />
                       ))
                     }
@@ -66,7 +92,9 @@ function ZingChart() {
                   </div>
                   <Container classContainer=''>
                     {
-                      data.slice(0, showMusicUSUK).map((item, index) => (
+                      isLoading
+                      ? (<SkeletonHomeMusic listMusic={5} />)
+                      : data.slice(0, showMusicUSUK).map((item, index) => (
                         <ItemMusic key={index} item={item} number={index} isIcon isNumberRank isTimeString classTitle='line-clamp-1' classWrap='flex item-center border-b-1 border-sidebarRose rounded-lg hover:bg-searchRose cursor-pointer' className='w-full justify-between cursor-pointer p-3 ' classSinger='text-xs font-normal' classIcon='flex flex-1 justify-end' classNameMore='w-10 h-10' />
                       ))
                     }
@@ -82,7 +110,9 @@ function ZingChart() {
                   </div>
                   <Container classContainer=''>
                     {
-                      data.slice(0, showMusicKpop).map((item, index) => (
+                      isLoading
+                      ? (<SkeletonHomeMusic listMusic={5} />)
+                      : data.slice(0, showMusicKpop).map((item, index) => (
                         <ItemMusic key={index} item={item} number={index} isIcon isNumberRank isTimeString classTitle='line-clamp-1' classWrap='flex item-center border-b-1 border-sidebarRose rounded-lg hover:bg-searchRose cursor-pointer' className='w-full justify-between cursor-pointer p-3 ' classSinger='text-xs font-normal' classIcon='flex flex-1 justify-end' classNameMore='w-10 h-10' />
                       ))
                     }

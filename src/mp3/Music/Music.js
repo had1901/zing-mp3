@@ -637,15 +637,15 @@ export const Chills = [
       },
 
       {
-        thumb: '/imgMain/img3.webp',
+        thumb: 'imgMain/img3.webp',
         desc: 'Thả mình vào những giai điệu V-Pop nhẹ nhàng',
       },
       {
-        thumb: '/imgMain/img4.webp',
+        thumb: 'imgMain/img4.webp',
         desc: 'Ký ức ùa về cùng những giọng ca rất đỗi mộc mạc',
       },
       {
-        thumb: '/imgMain/img5.webp',
+        thumb: 'imgMain/img5.webp',
         desc: 'Không ồn ào, không vội vàng, cùng thư giãn với âm nhạc Acoustic ngay tại đây',
       },
       

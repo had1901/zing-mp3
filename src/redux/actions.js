@@ -53,6 +53,8 @@ const SET_PLAYING = 'SET_PLAYING'
     }
   }
 
+ 
+
  const actions = {
     setThumbAction,
     openThemeModalAction,
@@ -60,7 +62,7 @@ const SET_PLAYING = 'SET_PLAYING'
     openSidebarRightAction,
     getInfoSongAction,
     autoPlaySongAction,
-    openAccountPopupAction
+    openAccountPopupAction,
   }
 
 
@@ -74,5 +76,5 @@ const SET_PLAYING = 'SET_PLAYING'
   SET_OPEN_SIDEBAR_RIGHT,
   GET_SONG,
   SET_PLAYING,
-  SET_OPEN_ACCOUNT
+  SET_OPEN_ACCOUNT,
 }

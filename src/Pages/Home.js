@@ -29,17 +29,20 @@ import ContainerMain from './../components/ContainerMain';
 
 import { GoChevronRight } from 'react-icons/go';
 import { useSelector } from 'react-redux';
-import Skeleton, {SkeletonTheme} from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { fetching, fetchingMusic } from '../service';
+import SkeletonSwiper from '../components/Skeleton/SkeletonSwiper';
+import SkeletonListenNear from '../components/Skeleton/SkeletonListenNear';
+import SkeletonHomeMusic from '../components/Skeleton/SkeletonHomeMusic';
 
 
 function Home() {
   const state = useSelector((state) => state.backgroundReducer.backgroundBody)
   const stateSidebar = useSelector((state) => state.openSidebarRightReducer)
   const [activeTab, setActiveTab] = useState('All')
-  const [itemSlideScreen, setItemSlideScreen] = useState(4)
+  const [itemSlideScreen, setItemSlideScreen] = useState(3)
   const [data, setData] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
   // Handle active tab
   const tabTitles = [
     {
@@ -70,7 +73,7 @@ function Home() {
     navigation: true,
     pagination: { clickable: true },
     autoplay: {delay: 3000, disableOnInteraction: false },
-    className: 'w-full xl:h-fit lg:h-fit select-none',
+    className: 'w-full md:h-fit sm:h-52 xs:h-44 select-none',
   }
 
   // Cấu hình react-slick
@@ -95,6 +98,9 @@ function Home() {
 
   useEffect(() => {
     fetching(fetchingMusic, activeTab, setData)
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 800)
   },[activeTab])
 
   // Tính toán break-point để hiển thị số lượng slide
@@ -119,23 +125,29 @@ function Home() {
   return (
     <ContainerMain>    
         {/* <Particle />  */}
-        <div className={`${state ? '' : 'bg-primary'}`}>        
-              <Swiper {...swiperProps}>
-                  {
-                    Images.map((item, index) => (
-                      <SwiperSlide key={index} className='md:!h-fit sm:!h-52 xs:!h-44' >
-                        <SlideImage item={item}/>
-                      </SwiperSlide>
-                    ))
-                  }
-              </Swiper>  
-
+        <div className={`${state ? '' : 'bg-primary'}`}>  
+                <Swiper {...swiperProps}>
+                    {
+                      Images.map((item, index) => (
+                        <SwiperSlide key={index} className='md:!h-fit sm:!h-fit xs:!h-fit' >
+                        {
+                          isLoading 
+                          ? (<SkeletonSwiper />)
+                          : (<SlideImage item={item}/>)
+                        }
+                        </SwiperSlide>
+                      ))
+                    }
+                  </Swiper>
+                
               <Title title='Gần đây' classNameMore='lg:mt-12 md:mt-8 xs:mt-4 xs:mb-3 sm:mb-5 mt-10 sm:text-xl xs:text-md capitalize'/>   
               <div className='flex sm:overscroll-x-none xs:overflow-x-auto scroll-home md:gap-x-6 xs:gap-x-2 ' >
                   {
-                    Chills.map((item, index) => (
+                    isLoading 
+                    ? (<SkeletonListenNear />)
+                    : (Chills.map((item, index) => (
                         <Content key={index} description={item.card[0].desc} dataThumb={item.card[0].thumb} classNameChild='lazy-load ' classNameParent='lg:w-[199px] lg:h-[250px] xs:w-20 xs:h-20 shrink-0' classNameMore='line-clamp-2' classWrapImg='lg:px-3 xs:px-1 xs:first:pl-0 xs:last:pr-0 ' classOurImg='lg:max-h-[199px]'/>                
-                      ))     
+                      )))    
                   }
           
               </div>  
@@ -150,9 +162,11 @@ function Home() {
                 </div>
                 <section className='grid xl:grid-cols-3 lg:grid-cols-2 sm:grid-cols-1 mt-4'>
                   {
-                    data.map((item, index) => (
-                      <ItemMusic key={index} item={item} isDate className='w-full rounded-lg hover:bg-searchRose' classWrap='flex justify-between' classSinger='text-sm' classNameMore='w-16 h-16' />
-                    ))
+                    isLoading 
+                    ? (<SkeletonHomeMusic />)
+                    : (data.map((item, index) => (
+                      <ItemMusic key={index} item={item} isDate className='w-full rounded-md hover:bg-searchRose' classWrap='flex justify-between' classSinger='text-sm' classNameMore='w-16 h-16' />
+                      )))
                   }
                 </section>
               </Content>
@@ -235,32 +249,32 @@ function Home() {
                 }
               </Content>
 
-              <Title title='Radio Nổi Bật' classNameMore='text-xl mb-5 mt-14 capitalize ' />
-              <Content classNameParent='slider-container '>
-                <Slider {...settings2}>
-                  {
-                    Musics.slice(0, 14).map((music, index) => (
-                      <ItemImage key={index} classNameParent='flex-shrink-0 '>
-                        <div className={`${stateSidebar.isOpen ? 'h-[167px]' : 'h-[200px]'} relative max-w-200px transition-all duration-300`}>
-                          <img src={`../../mp3/${music.thumb}`} alt={music.name} className='w-full h-full rounded-full object-cover border-4 border-red-600'/>
-                          <img src={`../../mp3/${music.thumb}`} alt={music.name} className='absolute bottom-0 right-0 w-16 h-16 rounded-full border-black object-cover border-2' />
-                          <span className='absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-6 text-center rounded-md text-white bg-red-500 capitalize '>Live</span>
-                        </div>
-                        <h2 className='mt-4 text-center font-semibold'>{music.singer}</h2>
-                        <p className='text-center text-xs text-gray-400 font-medium'>
-                          {music.listening}
-                          <span className='ml-1 '>đang nghe</span>
-                        </p>
-                      </ItemImage>
-                    ))
-                  }
-                </Slider>
-              </Content>
+              <div className='xs:hidden xl:block'>
+                <Title title='Radio Nổi Bật' classNameMore='text-xl mb-5 mt-14 capitalize ' />
+                <Content classNameParent='slider-container '>
+                  <Slider {...settings2} >
+                    {
+                      Musics.slice(0, 14).map((music, index) => (
+                        <ItemImage key={index} classNameParent='flex flex-col'>
+                          <div className={`${stateSidebar.isOpen ? 'h-[167px]' : 'h-full'} flex-shrink-0 relative transition-all duration-300 rounded-full`}>
+                            <img src={`../../mp3/${music.thumb}`} alt={music.name} className='w-full h-full rounded-full object-cover border-4 border-red-600'/>
+                            <img src={`../../mp3/${music.thumb}`} alt={music.name} className='absolute bottom-0 right-0 w-16 h-16 rounded-full border-black object-cover border-2' />
+                            <span className='absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-6 text-center rounded-md text-white bg-red-500 capitalize '>Live</span>
+                          </div>
+                          <h2 className='mt-4 text-center font-semibold'>{music.singer}</h2>
+                          <p className='text-center text-xs text-gray-400 font-medium'>
+                            {music.listening}
+                            <span className='ml-1 '>đang nghe</span>
+                          </p>
+                        </ItemImage>
+                      ))
+                    }
+                  </Slider>
+                </Content>
+              </div>
 
               <Content classNameParent='mt-14'>
                 <Title title='Đối tác âm nhạc' classNameMore='mb-5 uppercase tracking-widest text-xs md:font-semibold' classNameParent='text-center ' className='' />
-                {/* <img src={img2} alt='img-partner'/> */}
-
                 <ul className='flex items-center justify-evenly flex-wrap gap-x-4 gap-y-6'>
                   {
                     imgPartner.map((item, index) => (

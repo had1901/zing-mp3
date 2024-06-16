@@ -30,7 +30,7 @@ function SearchBar() {
   const [history, setHistory] = useState([location.pathname])
   const [toggle, setToggle] = useState(false)
   const [thumb, setThumb] = useState()
-
+  console.log(location)
 
   const handleBack = (e) => {
     e.stopPropagation()
@@ -42,24 +42,24 @@ function SearchBar() {
 
   const handleNext = (e) => {
     e.stopPropagation()
-    // const currentIndex = history.indexOf(location.pathname)
-    // if(currentIndex < history.length - 1) {
-    // }  
     navigate(1)
   }
 
   const handleBackGroundGlobal = (item) => {
     setThumb(item)
     dispatch(actions.setThumbAction(item))
-    // dispatch(middleware.setThumbMiddleware(item))
   }
 
   const handleCloseThemeModal = () => {
     dispatch(actions.openThemeModalAction(false))
   }
+
   const handleOpenAccount = () => {
-    // dispatch(actions.openAccountPopupAction(false))
-    setToggle(!toggle)
+    if(location.pathname === '/upload') {
+      setToggle(false)
+    } else {
+      setToggle(!toggle)
+    }
   }
 
   useEffect(() => {
@@ -70,16 +70,6 @@ function SearchBar() {
       return prevHistory
     })
   },[location])
-
-  useEffect(() => {
-    document.body.style.backgroundColor = `${thumb ? '' : 'bg-primary'}`
-    document.body.style.backgroundImage = `url('/mp3/${thumb?.link}')`
-    document.body.style.backgroundRepeat = 'no-repeat'
-    document.body.style.backgroundSize = 'cover'
-    document.body.style.backgroundPosition = ''
-    document.body.style.backgroundAttachment = 'fixed'
-    document.body.classList.add('body-animate')
-}, [thumb])
 
   return (
     <div className='w-full'>
@@ -108,7 +98,7 @@ function SearchBar() {
           </span>
       </Modal> 
 
-      <div className={`fixed ${state.backgroundSearchBar} ${stateSidebar.isOpen ? 'pr-[calc(2.9%_+_330px)]' : 'pr-2%9'} pl-2%9 flex justify-between gap-x-4 xl:left-60 xs:left-0 right-0 z-30 items-center text-white select-none transition-all duration-300`}>       
+      <div className={`fixed ${stateSidebar.isOpen ? 'pr-[calc(2.9%_+_330px)]' : 'pr-2%9'} pl-2%9 flex justify-between gap-x-4 xl:left-60 xs:left-0 right-0 z-30 items-center text-white select-none transition-all duration-300`}>       
               <div className=' flex w-full xs:justify-between'>
               <BtnRadius props='xl:hidden sm:block flex items-center justify-center hover:bg-transparent' onClick={() => context.handleActiveSidebar()}>
                 <SlSettings className={`${context.iconSetting} m-auto w-4 min-h-32 object-cover`}/>
@@ -124,7 +114,7 @@ function SearchBar() {
                   </div>
                   <div className='flex items-center '>
                     <div className='flex items-center justify-center gap-1 relative '>
-                      <InputSearch className={`${state.activeTab} outline-none rounded-full h-10 lg:w-440 sm:w-240 xs:w-120 pl-11 xs: pr-5 leading-10 ${context.inputPlaceHolder} text-white text-sm`}/>
+                      <InputSearch className={`${state.activeTab} ${context.isFocus ? 'rounded-t-xl' : 'rounded-full'}  outline-none h-10 lg:w-440 sm:w-240 xs:w-120 pl-11 xs: pr-5 leading-10 text-white text-sm`}/>
                       <BtnRadius props='absolute left-0 top-2/4 px-3 -translate-y-2/4 hover:bg-transparent text-xl flex items-center'>
                         <BsSearch className={`${state.textColor}`} />
                       </BtnRadius>
@@ -133,15 +123,15 @@ function SearchBar() {
                 </div>
                 <div className='flex items-center gap-3'>
                   <div className='flex items-center justify-center gap-1 xl:min-w-190 xl:block sm:max-w-190 xs:hidden'>
-                    <BtnRadius ref={context.buttonDownLoadRef} props={`${context.btnDownLoad} ${state.backgroundUpdateAccount} flex min-h-40 items-center gap-2 px-5 text-sm text-zinc-400 hover:text-white`}>
+                    <BtnRadius props={`${state.backgroundUpdateAccount} flex min-h-40 items-center gap-2 px-5 text-sm text-zinc-400 hover:text-white`}>
                       <FiDownload className='text-white' />
                       <span className={`lg:block xs:hidden text-white`}>Tải bản Windows</span>
                     </BtnRadius>
                   </div>
                   <div className='relative group/popup flex items-center justify-center gap-1'>
-                    <BtnRadius props={`${context.btnDownLoad} p-3`}>
-                      <SlSettings className={`${context.iconSetting} w-4 h-4 object-cover`}/>
-                      <TogglePopup refElement={context.sectionElement} classNameAdd={`${state.backgroundPopupSetting} absolute group-hover/popup:block rounded-sm top-[120%] right-0 after:w-1/4 after:h-4 after:bg-transparent after:-top-4 after:absolute after:right-0`} />
+                    <BtnRadius props='p-3'>
+                      <SlSettings className='w-4 h-4 object-cover'/>
+                      <TogglePopup classNameAdd={`${state.backgroundPopupSetting} absolute group-hover/popup:block rounded-sm top-[120%] right-0 after:w-1/4 after:h-4 after:bg-transparent after:-top-4 after:absolute after:right-0`} />
                     </BtnRadius>
                   </div>
                   <div className=''>

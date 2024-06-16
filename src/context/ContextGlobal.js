@@ -3,13 +3,20 @@ import { useState, useRef, useEffect, createContext, useCallback } from "react";
 const Context = createContext()
 
 function ContextProvider({ children }) {
-  const [theme, setTheme] = useState('dark')
   const [songInitial, setSongInitial] = useState([])
   const [infoMusic, setInfoMusic] = useState([])
+  const [checkScroll, setCheckScroll] = useState()
+  const [isActive, setIsActive] = useState(false)
+  const [isActiveSidebar, setIsActiveSidebar] = useState(false)
+  const [activeAudio, setActiveAudio] = useState(false)
+  const [isFocus, setIsFocus] = useState(false)
+
+
   const [listPlay, setListPlay] = useState(() => {
     let songPlaying = JSON.parse(localStorage.getItem('listPlay'))
     return songPlaying || songInitial[0]
   })
+
   const [songListen, setSongListen] = useState(() => {
     let stores = JSON.parse(localStorage.getItem('songListen'))
     if(stores) {
@@ -17,32 +24,11 @@ function ContextProvider({ children }) {
     }
     return []
   })
-  console.log(songListen)
 
 
-  
-
-  const [checkScroll, setCheckScroll] = useState()
-  const [isActive, setIsActive] = useState(false)
-  const [isActiveSidebar, setIsActiveSidebar] = useState(false)
-  const [activeAudio, setActiveAudio] = useState(false)
-
-
-
-  const elementContainer = useRef()
-  const buttonRef = useRef()
-  const searchRef = useRef()
-  const divRef = useRef()
-  const sectionRef = useRef()
-  const sidebarRef = useRef()
-  const buttonDownLoadRef = useRef()
 
   const handleChangeThumb = () => {
     setIsActive(!isActive)
-  }
-
-  const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark')
   }
 
   const handleListenNear = (item) => {
@@ -59,7 +45,6 @@ function ContextProvider({ children }) {
           return songNew
         }
       return prev
-     
     })
   }
   
@@ -67,53 +52,45 @@ function ContextProvider({ children }) {
   const handleActiveSidebar = () => {
     if(isActiveSidebar === true) {
       setIsActiveSidebar(false)
-      console.log('day la dong',isActiveSidebar)
     } else {
       setIsActiveSidebar(true)
-      console.log('day la mo',isActiveSidebar)
     }
   }
 
+  const handleInputSearch = (boo) => {
+    setIsFocus(boo)
+  }
   
 
   const value = {
-    theme,
     infoMusic,
-    elementContainer,
-    buttonRef,
-    sidebarRef,
-    searchRef,
-    sectionRef,
-    divRef,
-    buttonDownLoadRef,
-
     isActive,
     isActiveSidebar,
     activeAudio,
     songInitial,
     listPlay,
     songListen,
-
+    isFocus,
     checkScroll,
 
-    toggleTheme,
     handleChangeThumb,
     handleActiveSidebar,
     setActiveAudio,
     handleListenNear,
+    handleInputSearch,
   }
 
   
 
-  useEffect(() => {
-    window.addEventListener('scroll', () => {
-      if(window.scrollY > 0) {
-        setCheckScroll(window.scrollY)
-      } else {
-        setCheckScroll('')
-      }
-    })
-  }, [])
+  // useEffect(() => {
+  //   window.addEventListener('scroll', () => {
+  //     if(window.scrollY > 0) {
+  //       setCheckScroll(window.scrollY)
+  //     } else {
+  //       setCheckScroll('')
+  //     }
+  //   })
+  // }, [])
 
   
 

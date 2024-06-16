@@ -8,19 +8,25 @@ import BtnRadius from './../components/BtnRadius';
 import { GoHeart, GoHeartFill } from 'react-icons/go';
 import { useDispatch } from 'react-redux';
 import { actions } from '../redux/actions';
-import Account from './../components/Account';
+import { fetching, fetchingMusic } from '../service';
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import SkeletonMusic from '../components/Skeleton/SkeletonMusic';
+import SkeletonImages from '../components/Skeleton/SkeletonImages';
+import { motion } from "framer-motion"
+
 
 function Libraries() {
   const [dataMusic, setDataMusic] = useState([])
+  console.log(dataMusic)
   const [activeHeart, setActiveHeart] = useState(false)
   const [activeTab, setActiveTab] = useState('Yêu thích')
   const [activeId, setActiveId] = useState()
   const [activeTab2, setActiveTab2] = useState('Bài hát')
+  const [path, setPath] = useState('mp3')
   const dispatch = useDispatch()
-
-  const API_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://zing-mp3-had.vercel.app/mp3' 
-  : 'http://localhost:3333/mp3';
+  const [isLoading, setIsLoading] = useState(true)
+  
   const buttons1 = [
     'Bài hát',
     'Album',
@@ -55,17 +61,12 @@ function Libraries() {
     setActiveTab2(btn)
   }
   useEffect(() => {
-    const fetching = () => {
-      axios.get('https://json-server-mp3.onrender.com/mp3')
-        .then(response => setDataMusic(response.data))
-        
-        .catch(function (error) {
-          console.log(error);
-        })
-        
-    }
-    fetching()
-  },[API_URL])
+    fetching(fetchingMusic, path, setDataMusic)
+    setTimeout(() => {
+      setIsLoading(false)
+    },800)
+    
+  },[path])
 
   return (
     <ContainerMain className='flex justify-center w-full text-white'>
@@ -80,19 +81,27 @@ function Libraries() {
             <HiPlusSmall className=''/>
           </BtnRadius>
         </h2>
-        <ul className='flex items-center justify-between text-white mt-5'>
+        <motion.ul 
+          className='flex item-center justify-between text-white mt-5'
+        >
           {
-            dataMusic.slice(0,5).map((item, index) => (
-              <li key={index} className='w-[290px] h-[290px] flex-shrink-0'>
-                <a href='/' className='block h-full'>
-                  <img src={`/mp3/imgMusic/${item.information.thumb}`} alt='img' className='w-full h-full object-cover rounded-md' />
-                  <h3 className='text-sm font-medium mt-2'>{item.name.song}</h3>
-                  <p className='text-xs text-[#ffffff80] mt-1'>{item.name.singer}</p>
-                </a>
-              </li>
-            ))
+            isLoading && dataMusic.length > 0
+            ? (<SkeletonImages listMusic={5} />)
+            : (dataMusic.slice(0,5).map((item, index) => (
+                <motion.li key={index} className='w-[290px] h-[290px] flex-shrink-0'
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1}}
+                  transition={{ duration: 0.8 }}
+                  >
+                    <a href='/' className='block h-full'>
+                      <img src={`/mp3/imgMusic/${item.information.thumb}`} alt='img' className='w-full h-full object-cover rounded-md' />
+                      <h3 className='text-sm font-medium mt-2'>{item.name.song || <Skeleton />}</h3>
+                      <p className='text-xs text-[#ffffff80] mt-1'>{item.name.singer || <Skeleton />}</p>
+                    </a>
+                </motion.li>
+              ))) 
           }
-        </ul>
+        </motion.ul>
         <div className='flex items-center gap-7 uppercase text-sm font-medium text-white mt-[96px]'>
           {
             buttons1.map((btn, index) => (
@@ -127,7 +136,9 @@ function Libraries() {
           </div>
           <ul className='text-white mt-4 -mx-3'>
             {
-              dataMusic.map(song => (
+              isLoading && dataMusic.length > 0
+              ? (<SkeletonMusic listMusic={dataMusic.length} time />)
+              : (dataMusic.map(song => (
                   <li key={song.id} className='px-2 py-2 hover:bg-sidebarRose hover:border-transparent rounded-sm border-t-1 border-b-1 border-[#ffffff0d]' onClick={() => handleGetInfoMusic(song)}>
                     <a href='/' className='flex items-center' onClick={handleClick}>
                       <div className='flex items-center gap-3 w-1/2'>
@@ -136,12 +147,12 @@ function Libraries() {
                           <img src={`/mp3/imgMusic/${song.information.thumb}`} alt='img' className='w-full h-full object-cover' />
                         </div>
                         <div className='capitalize'>
-                          <h3 className='text-sm font-medium'>{song.name.song}</h3>
-                          <p className='text-xs text-[#ffffff80]'>{song.name.singer}</p>
+                          <h3 className='text-sm font-medium'>{song.name.song || <Skeleton />}</h3>
+                          <p className='text-xs text-[#ffffff80]'>{song.name.singer || <Skeleton />}</p>
                         </div>
                       </div>
                       <div className='flex-1 capitalize text-xs text-[#ffffff80]'>
-                        <p>{song.information.album}</p>
+                        <p>{song.information.album || <Skeleton />}</p>
                       </div>
                       <div className='flex items-center gap-4 text-xs text-[#ffffff80]'>
                         <div onClick={(e) => handleHeart(e, song.id)}> 
@@ -152,8 +163,9 @@ function Libraries() {
                         <span>05:02</span>
                       </div>
                     </a>
-                  </li>
-              ))
+                  </li>)
+                ))
+            
             }
           </ul>
         </div>

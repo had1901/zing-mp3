@@ -6,7 +6,7 @@ import { BrowserRouter as Router  } from 'react-router-dom'
 import { ContextProvider } from './context/ContextGlobal';
 import { Provider as ReduxProvider } from 'react-redux';
 import store from './redux/stores';
-
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

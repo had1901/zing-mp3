@@ -255,25 +255,28 @@ const getInfoSongReducer = (state = initInfoSong, action) => {
     }
 }
 
+
+
+
 // Middleware reducers
-const setThumbMiddleware = (thumb) => {
-  return (dispatch) => {
-    new Promise((resolve) => {
+// const setThumbMiddleware = (thumb) => {
+//   return (dispatch) => {
+//     new Promise((resolve) => {
       
-        document.body.style.backgroundColor = `${thumb ? '' : 'bg-primary'}`
-        document.body.style.backgroundImage = `url('/mp3/${thumb?.link}')`
-        document.body.style.backgroundRepeat = 'no-repeat'
-        document.body.style.backgroundSize = 'cover'
-        document.body.style.backgroundPosition = ''
-        document.body.style.backgroundAttachment = 'fixed'
-        document.body.classList.add('body-animate')
-        resolve()
+//         document.body.style.backgroundColor = `${thumb ? '' : 'bg-primary'}`
+//         document.body.style.backgroundImage = `url('/mp3/${thumb?.link}')`
+//         document.body.style.backgroundRepeat = 'no-repeat'
+//         document.body.style.backgroundSize = 'cover'
+//         document.body.style.backgroundPosition = ''
+//         document.body.style.backgroundAttachment = 'fixed'
+//         document.body.classList.add('body-animate')
+//         resolve()
       
-    }).then(() => {
-      dispatch(actions.setThumbAction(thumb))
-    })
-  }
-}
+//     }).then(() => {
+//       dispatch(actions.setThumbAction(thumb))
+//     })
+//   }
+// }
 
 
   // Combine Reducers
@@ -287,7 +290,7 @@ const rootReducer = combineReducers({
 
   // Middleware functions
 const middleware = {
-    setThumbMiddleware,
+    // setThumbMiddleware,
 }
 
 export { middleware }

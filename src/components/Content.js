@@ -4,9 +4,10 @@ import { PiPlayCircleLight } from 'react-icons/pi'
 import { IoIosMore } from 'react-icons/io'
 import BtnRadius from './BtnRadius'
 
-import Skeleton, {SkeletonTheme} from 'react-loading-skeleton'
+import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { useSelector } from 'react-redux'
+import { motion, AnimatePresence } from "framer-motion"
 
 function Content({ onClick, ...props }) {
   const [isLove, setIsLove] = useState(false)
@@ -45,19 +46,24 @@ function Content({ onClick, ...props }) {
 
     return () => observer.disconnect();
   }, [])
+
   const handleBtnLove = () => {
     setIsLove(!isLove)
   }
+  
   return (
-    <SkeletonTheme baseColor="#a6a6a6" highlightColor="#56595b">
-      <div className={`${state.textColor} ${props.classNameParent}`}>
+      <motion.div className={`${state.textColor} ${props.classNameParent}`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1}}
+      >
         {props.children ? props.children : 
           <div className={`w-full ${props.classWrapImg}`}>
               {
                 <div className={`${props.classOurImg} cursor-pointer relative rounded-xl overflow-hidden group/parent`}>
                   <img 
                     data={props.dataThumb}
-                    src={`./mp3${props.thumb }`} 
+                    src={`./mp3${props.thumb || <Skeleton />}`} 
                     alt='img' 
                     className={`w-full object-cover block rounded-xl group-hover/parent:scale-110 delay-75 select-none ${props.classNameChild}`}   
                     onClick={onClick}
@@ -74,19 +80,11 @@ function Content({ onClick, ...props }) {
                     </BtnRadius>
                   </div>   
                 </div>     
-                
-                
               }     
-            {/* {
-                isLoading
-              ?
-              : 
-            } */}
             <p className={`my-2 text-sm text-gray-400 font-medium ${props.classNameMore}`}>{props.description || <Skeleton />}</p>
           </div>
         }
-      </div>
-    </SkeletonTheme>
+      </motion.div>
   )
 }
 

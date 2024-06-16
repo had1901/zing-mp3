@@ -16,6 +16,7 @@ import { actions } from '../redux/actions';
 
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import { motion, AnimatePresence } from "framer-motion"
 
 function ItemMusic({ onClick, ...props }) {
   const iconRef = useRef(null)
@@ -64,7 +65,11 @@ function ItemMusic({ onClick, ...props }) {
   },[])
   
   return (
-        <section id={props.item?.id} className={props.classWrap}>
+        <motion.section id={props.item?.id} className={props.classWrap}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
           {
             props.isNumberRank 
             &&
@@ -151,7 +156,7 @@ function ItemMusic({ onClick, ...props }) {
                   }
                 </div>
           </div>
-        </section>
+        </motion.section>
   )
 }
 
