@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { Context } from '../context/ContextGlobal'
 import BtnRadius from './BtnRadius'
 import { BsArrowLeft, BsArrowRight, BsPatchCheckFill, BsSearch } from 'react-icons/bs'
@@ -21,6 +21,7 @@ import Account from './Account'
 
 function SearchBar() {
   const context = useContext(Context)
+  const navRef = useRef()
   const state = useSelector((state)  => state.backgroundReducer)
   const stateTheme = useSelector((state)  => state.openThemeModalReducer)
   const stateSidebar = useSelector((state)  => state.openSidebarRightReducer)
@@ -29,8 +30,10 @@ function SearchBar() {
   const location = useLocation()
   const [history, setHistory] = useState([location.pathname])
   const [toggle, setToggle] = useState(false)
-  const [thumb, setThumb] = useState()
+  const [checkScroll, setCheckScroll] = useState()
+
   console.log(location)
+  console.log(checkScroll)
 
   const handleBack = (e) => {
     e.stopPropagation()
@@ -46,7 +49,6 @@ function SearchBar() {
   }
 
   const handleBackGroundGlobal = (item) => {
-    setThumb(item)
     dispatch(actions.setThumbAction(item))
   }
 
@@ -70,6 +72,21 @@ function SearchBar() {
       return prevHistory
     })
   },[location])
+
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if(window.scrollY   ) {
+        setCheckScroll(window.scrollY)
+      } else {
+        setCheckScroll('')
+      }
+    }
+      window.addEventListener('scroll', handleScroll )
+
+      return () => window.removeEventListener('scroll', handleScroll )
+  }, [])
+
 
   return (
     <div className='w-full'>
@@ -98,7 +115,7 @@ function SearchBar() {
           </span>
       </Modal> 
 
-      <div className={`fixed ${stateSidebar.isOpen ? 'pr-[calc(2.9%_+_330px)]' : 'pr-2%9'} pl-2%9 flex justify-between gap-x-4 xl:left-60 xs:left-0 right-0 z-30 items-center text-white select-none transition-all duration-300`}>       
+      <div ref={navRef} className={`fixed ${stateSidebar.isOpen ? 'pr-[calc(2.9%_+_330px)]' : 'pr-2%9'} ${checkScroll ? `${state.bgNavBar} backdrop-blur-[50px] shadow-navbar` : ''} pl-2%9 flex justify-between gap-x-4 xl:left-60 xs:left-0 right-0 z-30 items-center text-white select-none transition-all duration-300`}>       
               <div className=' flex w-full xs:justify-between'>
               <BtnRadius props='xl:hidden sm:block flex items-center justify-center hover:bg-transparent' onClick={() => context.handleActiveSidebar()}>
                 <SlSettings className={`${context.iconSetting} m-auto w-4 min-h-32 object-cover`}/>
@@ -114,7 +131,7 @@ function SearchBar() {
                   </div>
                   <div className='flex items-center '>
                     <div className='flex items-center justify-center gap-1 relative '>
-                      <InputSearch className={`${state.activeTab} ${context.isFocus ? 'rounded-t-xl' : 'rounded-full'}  outline-none h-10 lg:w-440 sm:w-240 xs:w-120 pl-11 xs: pr-5 leading-10 text-white text-sm`}/>
+                      <InputSearch className={`${state.activeTab} ${context.isFocus ? `${state.backgroundModel} rounded-t-xl` : 'rounded-full'}  outline-none h-10 lg:w-440 sm:w-240 xs:w-120 pl-11 xs: pr-5 leading-10 text-white text-sm`}/>
                       <BtnRadius props='absolute left-0 top-2/4 px-3 -translate-y-2/4 hover:bg-transparent text-xl flex items-center'>
                         <BsSearch className={`${state.textColor}`} />
                       </BtnRadius>

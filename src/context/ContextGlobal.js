@@ -5,7 +5,6 @@ const Context = createContext()
 function ContextProvider({ children }) {
   const [songInitial, setSongInitial] = useState([])
   const [infoMusic, setInfoMusic] = useState([])
-  const [checkScroll, setCheckScroll] = useState()
   const [isActive, setIsActive] = useState(false)
   const [isActiveSidebar, setIsActiveSidebar] = useState(false)
   const [activeAudio, setActiveAudio] = useState(false)
@@ -71,7 +70,6 @@ function ContextProvider({ children }) {
     listPlay,
     songListen,
     isFocus,
-    checkScroll,
 
     handleChangeThumb,
     handleActiveSidebar,
@@ -82,15 +80,7 @@ function ContextProvider({ children }) {
 
   
 
-  // useEffect(() => {
-  //   window.addEventListener('scroll', () => {
-  //     if(window.scrollY > 0) {
-  //       setCheckScroll(window.scrollY)
-  //     } else {
-  //       setCheckScroll('')
-  //     }
-  //   })
-  // }, [])
+  
 
   
 

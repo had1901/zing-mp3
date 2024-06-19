@@ -32,6 +32,7 @@ const initBackground = {
     textActiveTabColor: 'text-white',
     bgHover: 'bg-[#0000000d]',
     bgSidebarLeft: 'bg-[#ffffff0d]',
+    bgNavBar: 'bg-[#170f23cc]',
     
 }
 const initActiveNavigate = {
@@ -91,7 +92,8 @@ const backgroundReducer = (state = initBackground, action) => {
             textColor: 'text-[#DADADA]',
             backgroundModel: 'bg-blueRose',
             backgroundUpdateAccount: 'bg-[#3560f5]',
-            textActiveTabColor: 'text-white'
+            textActiveTabColor: 'text-white',
+            bgNavBar: 'bg-[#061c4fcc]'
           }
         case 'Lisa':
           return {
@@ -105,7 +107,9 @@ const backgroundReducer = (state = initBackground, action) => {
             textColor: 'text-[#1a1a1a]',
             backgroundModel: 'bg-[#f9e6e2]',
             backgroundUpdateAccount: 'bg-[#d14781]',
-            textActiveTabColor: 'text-[#d14781]'
+            textActiveTabColor: 'text-[#d14781]',
+            bgNavBar: 'bg-[#f1ddd8cc]'
+            
           }
         case 'Jennie':
           return {
@@ -119,7 +123,9 @@ const backgroundReducer = (state = initBackground, action) => {
             textColor: 'text-[#1a1a1a]',
             backgroundModel: 'bg-[#cac6dd]',
             backgroundUpdateAccount: 'bg-[#8919ae]',
-            textActiveTabColor: 'text-[#2a5e6b]'
+            textActiveTabColor: 'text-[#2a5e6b]',
+            bgNavBar: 'bg-[#bbb9c4cc]'
+            
           }
         case 'Jisoo':
           return {
@@ -133,7 +139,9 @@ const backgroundReducer = (state = initBackground, action) => {
             textColor: 'text-[#1a1a1a]',
             backgroundModel: 'bg-[#ffffff]',
             backgroundUpdateAccount: 'bg-[#8919ae]',
-            textActiveTabColor: 'text-[#2a5e6b]'
+            textActiveTabColor: 'text-[#2a5e6b]',
+            bgNavBar: 'bg-[#ffffffcc]'
+            
           }
         case 'IU':
           return {
@@ -147,7 +155,9 @@ const backgroundReducer = (state = initBackground, action) => {
             textColor: 'text-[#1a1a1a]',
             backgroundModel: 'bg-[#efedeb]',
             backgroundUpdateAccount: 'bg-[#c24793]',
-            textActiveTabColor: 'text-[#2a5e6b]'
+            textActiveTabColor: 'text-[#2a5e6b]',
+            bgNavBar: 'bg-[#e6e1decc]'
+            
           }
         case 'Eiffel':
           return {
@@ -161,7 +171,9 @@ const backgroundReducer = (state = initBackground, action) => {
             textColor: 'text-textEiffel',
             backgroundModel: 'bg-[#363636]',
             backgroundUpdateAccount: 'bg-[#9b4de0]',
-            textActiveTabColor: 'text-white'
+            textActiveTabColor: 'text-white',
+            bgNavBar: 'bg-[#282828cc]'
+            
           }
         case 'London':
           return {
@@ -175,7 +187,9 @@ const backgroundReducer = (state = initBackground, action) => {
             textColor: 'text-[#1a1a1a]',
             backgroundModel: 'bg-[#173b45]',
             backgroundUpdateAccount: 'bg-[#8d22c3]',
-            textActiveTabColor: 'text-[#2a5e6b]'
+            textActiveTabColor: 'text-[#2a5e6b]',
+            bgNavBar: 'bg-[#0f1a2ecc]'
+            
           }
         default:
           return state

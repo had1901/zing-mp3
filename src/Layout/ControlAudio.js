@@ -20,6 +20,8 @@ import { BiPlus } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../redux/actions';
 import { fetching, fetchingMusic } from '../service';
+import usePictureInPicture from 'react-use-pip'
+import ReactPlayer from 'react-player'
 
 const ControlAudio = memo(() => {
   const audio = useRef()
@@ -27,6 +29,7 @@ const ControlAudio = memo(() => {
   const inputRangeSong = useRef()
   const clickSetTimeAudioRef = useRef()
   const ref = useRef()
+  const videoRef = useRef()
   const context = useContext(Context)
   const step = 0.01
 
@@ -56,8 +59,10 @@ const ControlAudio = memo(() => {
 
   const stateSong = useSelector(state => state.getInfoSongReducer)
   const dispatch = useDispatch()
+  // const [pipMode, setPipMode] = useState(false);
+  const {isPictureInPictureActive, isPictureInPictureAvailable, togglePictureInPicture} = usePictureInPicture(videoRef)
 
-  
+
   // Hàm update thời lượng khi bài hát đang phát
   const handleTimeUpdateAudio = useCallback(() => {
       if(audio.current) {
@@ -197,7 +202,12 @@ const ControlAudio = memo(() => {
     setValueInputSong(percentValue)
     inputRangeSong.current.style.background = color
   }
-
+  const handlePictureInPicture = (e) => {
+    e.stopPropagation()
+    // setPipMode(true)
+    togglePictureInPicture(!isPictureInPictureActive)
+    console.log(isPictureInPictureActive ? 'Disable' : 'Enable')
+  }
   // Xử lý tăng giảm âm lượng
   const handleChangeInputRangeVolume = useCallback((e) => {
     e.stopPropagation()
@@ -311,6 +321,7 @@ const ControlAudio = memo(() => {
           <div className='flex items-center mx-4 gap-1 text-white'> 
 
           <audio 
+            // pip={pipMode}
             ref={audio} 
             src={`/mp3/Music/${stateSong.nextSong || stateSong.prevSong ? (data[currentSongIndex].information.path) : (stateSong.infoSong.song.information.path)}`} 
             volume={valueVolume} 
@@ -320,7 +331,7 @@ const ControlAudio = memo(() => {
             controls 
             onTimeUpdate={handleTimeUpdateAudio}
           />     
-
+          <video hidden src='/mp3/night-rainny.mp4' poster={`/mp3/imgMusic/${stateSong.infoSong.song.information.thumb}`} ref={videoRef} />
             <BtnRadius onClick={(e) => handleHeart(e)}> 
               {
                 activeHeart  ? (<GoHeartFill />) : (<GoHeart />)
@@ -396,8 +407,8 @@ const ControlAudio = memo(() => {
             <BtnRadius onClick={handleStopPropagation}>
               <LiaMicrophoneAltSolid className='flex-1' />
             </BtnRadius>
-            <BtnRadius onClick={handleStopPropagation}>
-              <VscChromeRestore className='flex-1' />
+            <BtnRadius onClick={handlePictureInPicture}>
+              <VscChromeRestore className={`${isPictureInPictureAvailable && 'text-red-300'} flex-1`} />
             </BtnRadius>
             <div className='flex items-center flex-1 gap-1'>
                 <BtnRadius>

@@ -3,16 +3,16 @@ import Skeleton from 'react-loading-skeleton'
 import { motion, AnimatePresence } from "framer-motion"
 
 
-function SkeletonHomeMusic() {
+function SkeletonHomeMusic({ listData }) {
   return (
     <AnimatePresence>
         {
-            Array(12).fill(0).map((_, index) => (
-                <motion.div className='flex  gap-3' key={index}
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
+            Array(listData).fill(0).map((_, index) => (
+                <motion.div className='flex gap-3' key={index}
+                    // initial={{ opacity: 1 }}
+                    animate={{ opacity: 1 }}
                     transition={{ duration: 0.3 }}
-                    exit={{ opacity: 0 }}
+                    exit={{ display: 'none' }}
                 >
                     <Skeleton width={64} height={64}/>
                     <div>

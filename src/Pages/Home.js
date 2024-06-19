@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import '../../src/index.css';
 
 
@@ -34,6 +34,7 @@ import { fetching, fetchingMusic } from '../service';
 import SkeletonSwiper from '../components/Skeleton/SkeletonSwiper';
 import SkeletonListenNear from '../components/Skeleton/SkeletonListenNear';
 import SkeletonHomeMusic from '../components/Skeleton/SkeletonHomeMusic';
+import _ from 'lodash';
 
 
 function Home() {
@@ -43,6 +44,8 @@ function Home() {
   const [itemSlideScreen, setItemSlideScreen] = useState(3)
   const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isFetching, setIsFetching] = useState(false)
+
   // Handle active tab
   const tabTitles = [
     {
@@ -94,14 +97,26 @@ function Home() {
     slidesToShow: 7,
     slidesToScroll: 7,
   }
-
+  const debouceFetch = useCallback(
+    _.debounce(() => {
+      fetching(fetchingMusic, activeTab, setData)
+      setTimeout(() => {
+        setIsFetching(false)
+      }, 800)
+    }, 500), [activeTab, fetchingMusic])
 
   useEffect(() => {
-    fetching(fetchingMusic, activeTab, setData)
+    debouceFetch()
+    setIsFetching(true)
+    
+    return () => debouceFetch.cancel()
+  },[activeTab])
+
+  useEffect(() => {
     setTimeout(() => {
       setIsLoading(false)
     }, 800)
-  },[activeTab])
+  }, [])
 
   // Tính toán break-point để hiển thị số lượng slide
   useEffect(() => {
@@ -162,8 +177,8 @@ function Home() {
                 </div>
                 <section className='grid xl:grid-cols-3 lg:grid-cols-2 sm:grid-cols-1 mt-4'>
                   {
-                    isLoading 
-                    ? (<SkeletonHomeMusic />)
+                    isLoading || isFetching
+                    ? (<SkeletonHomeMusic listData={data.length}/>)
                     : (data.map((item, index) => (
                       <ItemMusic key={index} item={item} isDate className='w-full rounded-md hover:bg-searchRose' classWrap='flex justify-between' classSinger='text-sm' classNameMore='w-16 h-16' />
                       )))

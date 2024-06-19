@@ -30,7 +30,7 @@ function GlobalPage() {
   },[thumb])
 
   return (
-    <div className='h-full' ref={ref}>
+    <div ref={ref}>
         <GlobalLayout>
           <Outlet/>
         </GlobalLayout>

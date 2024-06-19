@@ -68,7 +68,7 @@ function ItemMusic({ onClick, ...props }) {
         <motion.section id={props.item?.id} className={props.classWrap}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.5 }}
         >
           {
             props.isNumberRank 
@@ -93,7 +93,7 @@ function ItemMusic({ onClick, ...props }) {
               }
             </div>)
           }
-          <div className={`relative flex items-center w-32 p-2 ${props.isAlbum ? 'gap-x-2' : 'gap-x-4'} group/item ${props.className}`} onClick={onClick}>
+          <div className={`relative flex w-32 p-2 ${props.isAlbum ? 'gap-x-2' : 'gap-x-4'} group/item ${props.className}`} onClick={onClick}>
                 {
                   props.isAlbum && (<LuMusic className='mr-1'/>)
                 }
@@ -101,7 +101,7 @@ function ItemMusic({ onClick, ...props }) {
                   <img 
                     src={`/mp3/imgMusic/${props.item?.information?.thumb || <Skeleton />}`} 
                     alt={props.item?.name?.song} 
-                    className='w-full h-full group-hover/item:bg-black group-hover/item:opacity-50 block rounded-md object-cover border-black'                
+                    className='w-full h-full group-hover/item:bg-[#00000080] group-hover/item:opacity-50 block rounded-md object-cover border-black'                
                   />
                   {
                     state.infoSong === props.item 
@@ -109,7 +109,7 @@ function ItemMusic({ onClick, ...props }) {
                           {
                             state.activeAudio
                             ? (<img src='./mp3/gifWaveMusic/icon-playing.gif' alt='gif' className='w-1/3 inline-block ' />)
-                            : (<FaPlay className='w-1/3 text-4xl' />)
+                            : (<FaPlay className='w-1/3 text-2xl' />)
                           }                      
                       </div>)
                     :
@@ -117,7 +117,7 @@ function ItemMusic({ onClick, ...props }) {
                   }
                   <FaPlay className={`absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 hidden ${state2.textColor} text-xl group-hover/item:block group-hover/item:opacity-90`}/>
                 </div>
-                <div className={`${props.isAlbum ? 'flex-2' : 'flex-2'} flex flex-col justify-center leading-none  font-semibold`}>
+                <div className={`${props.isAlbum ? 'flex-2' : 'flex-2'} leading-none font-semibold`}>
                   <div className={`flex items-center capitalize ${state2.textColor} text-sm`}>
                     <h4 className={`${props.classTitle}  line-clamp-1`}>{props.item?.name?.song || <Skeleton />}</h4> 
                     <Label title={props.item?.desc?.premium || <Skeleton />} />                

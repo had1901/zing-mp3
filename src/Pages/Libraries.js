@@ -91,7 +91,7 @@ function Libraries() {
                 <motion.li key={index} className='w-[290px] h-[290px] flex-shrink-0'
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1}}
-                  transition={{ duration: 0.8 }}
+                  transition={{ duration: 0.5 }}
                   >
                     <a href='/' className='block h-full'>
                       <img src={`/mp3/imgMusic/${item.information.thumb}`} alt='img' className='w-full h-full object-cover rounded-md' />

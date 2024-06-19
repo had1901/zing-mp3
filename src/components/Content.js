@@ -55,7 +55,7 @@ function Content({ onClick, ...props }) {
       <motion.div className={`${state.textColor} ${props.classNameParent}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1}}
+        transition={{ duration: 0.5 }}
       >
         {props.children ? props.children : 
           <div className={`w-full ${props.classWrapImg}`}>
