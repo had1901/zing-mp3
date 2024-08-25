@@ -29,9 +29,9 @@ function SidebarRight() {
     setActive(num)
   }
 
-   useEffect(() => {
-     fetching(fetchingMusic, path, setData)
-   },[path])
+  //  useEffect(() => {
+  //    fetching(fetchingMusic, path, setData)
+  //  },[path])
 
   return (
     <div className={`${state2.isOpen ? 'translate-x-[0]' : 'translate-x-[100%]'} fixed top-0 right-0 z-40 transition-all duration-500 w-[330px] h-[100%] pb-[90px] bg-transparent border-l-[#ffffff1a] border-l-2 `}>
@@ -40,10 +40,10 @@ function SidebarRight() {
           <button onClick={() => handleActive(1)} className={`${active === 1 ? 'bg-[#6d6875] text-white' : ''} min-w-[100px] rounded-full px-2`}>Danh sách phát</button>
           <button onClick={() => handleActive(2)} className={`${active === 2 ? 'bg-[#6d6875] text-white' : ''} min-w-[100px] rounded-full px-2`}>Nghe gần đây</button>
         </div>
-        <BtnRadius props='bg-[#2f2739]'>
+        <BtnRadius classMore='bg-[#2f2739]'>
           <LuAlarmClock className='text-[16px] '/>
         </BtnRadius>
-        <BtnRadius props='bg-[#2f2739]'>
+        <BtnRadius classMore='bg-[#2f2739]'>
           <IoIosMore className='text-[16px]' />
         </BtnRadius>
       </section>
@@ -53,7 +53,7 @@ function SidebarRight() {
         (<div className='overflow-y-auto'>
           {
             context.songListen?.map((item,index) => (
-              <ItemMusic key={index} item={item} className='w-full rounded-[4px] hover:bg-searchRose py-[6px]' classWrap='flex justify-between' classSinger='text-[12px]' classNameMore='w-10 h-10' classTitle='font-medium'  />
+              <ItemMusic key={index} song={item} className='w-full rounded-[4px] hover:bg-searchRose py-[6px]' classWrap='flex justify-between' classSinger='text-[12px]' classNameMore='w-10 h-10' classTitle='font-medium'  />
             ))
           }
         </div>)
@@ -61,7 +61,7 @@ function SidebarRight() {
         (<>
           <section>
             <div className='px-2'>
-              <ItemMusic item={context.listPlay} className='w-full rounded-[4px] hover:bg-searchRose' classWrap='flex justify-between rounded-[4px] bg-[#9b4de0]' classSinger='text-[12px]' classNameMore='w-10 h-10' classTitle='font-medium'/>
+              <ItemMusic song={context.listPlay} className='w-full rounded-[4px] hover:bg-searchRose' classWrap='flex justify-between rounded-[4px] bg-[#9b4de0]' classSinger='text-[12px]' classNameMore='w-10 h-10' classTitle='font-medium'/>
             </div>
             <div className='text-white text-sm px-2 pt-[18px] pb-[15px]'>
               <h3>Tiếp theo</h3>
@@ -71,7 +71,7 @@ function SidebarRight() {
           <section className='grid xl:grid-cols-1 h-[calc(100%_-_90px)] overflow-y-scroll px-2 '>
               {
                 data.map((item, index) => (
-                  <ItemMusic key={index} item={item} className='w-full rounded-[4px] hover:bg-searchRose py-[6px]' classWrap='flex justify-between' classSinger='text-[12px]' classNameMore='w-10 h-10' classTitle='font-medium'  />
+                  <ItemMusic key={index} song={item} className='w-full rounded-[4px] hover:bg-searchRose py-[6px]' classWrap='flex justify-between' classSinger='text-[12px]' classNameMore='w-10 h-10' classTitle='font-medium'  />
                 ))
               }
           </section>

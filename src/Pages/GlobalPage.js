@@ -1,20 +1,12 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, {  useEffect, useRef } from 'react'
 import GlobalLayout from '../layout/GlobalLayout'
 import { Outlet } from 'react-router-dom'
-import { Context } from '../context/ContextGlobal'
-import { useDispatch, useSelector } from 'react-redux'
-import { middleware } from '../redux/reducer'
+import { useSelector } from 'react-redux'
 
 function GlobalPage() {
-  const dispatch = useDispatch()
   const thumb = useSelector((state) => state.backgroundReducer.backgroundBody)
-  console.log(thumb)
   const ref = useRef()
 
-  // useEffect(() => {
-  //   dispatch(middleware.setThumbMiddleware(context.thumb))  
-  // },[context.thumb, dispatch])
-  
   useEffect(() => {
     let element = ref.current
     if(thumb) {

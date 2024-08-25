@@ -15,9 +15,9 @@ function ListMusic({ className }) {
     setItemShow(itemShow + 10)
   }
 
-  useEffect(() => {
-    fetching(fetchingMusic, path, setData)
-  },[path])
+  // useEffect(() => {
+  //   fetching(fetchingMusic, path, setData)
+  // },[path])
 
   return (
     <section className={className}>

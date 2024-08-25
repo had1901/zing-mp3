@@ -69,13 +69,13 @@ function Content({ onClick, ...props }) {
                     onClick={onClick}
                   /> 
                   <div className='hidden items-center text-xl absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 justify-center gap-4 group-hover/parent:flex'>
-                    <BtnRadius props='p-3 hover:bg-bgOpacity' onClick={handleBtnLove}>
+                    <BtnRadius classMore='p-3 hover:bg-bgOpacity' onClick={handleBtnLove}>
                       {
                         isLove ? (<GoHeartFill />) : (<GoHeart />)
                       }
                     </BtnRadius>
                     <PiPlayCircleLight className='text-6xl' />
-                    <BtnRadius props='p-2 hover:bg-bgOpacity'>
+                    <BtnRadius classMore='p-2 hover:bg-bgOpacity'>
                       <IoIosMore className='text-2xl' />
                     </BtnRadius>
                   </div>   

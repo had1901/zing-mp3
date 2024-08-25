@@ -8,6 +8,9 @@ const SET_NAVIGATE = 'SET_NAVIGATE'
 const SET_OPEN_SIDEBAR_RIGHT = 'SET_OPEN_SIDEBAR_RIGHT'
 const GET_SONG = 'GET_SONG'
 const SET_PLAYING = 'SET_PLAYING'
+const SET_USER = 'SET_USER'
+const SET_PATH = 'SET_PATH'
+
 
 // Actions
  const setThumbAction = (thumb) => {
@@ -52,6 +55,18 @@ const SET_PLAYING = 'SET_PLAYING'
         payload: payload
     }
   }
+  const userLoginAction = (payload) => {
+    return {
+        type: SET_USER,
+        payload: payload
+    }
+  }
+  const pathAction= (payload) => {
+    return {
+        type: SET_PATH,
+        payload: payload
+    }
+  }
 
  
 
@@ -63,6 +78,8 @@ const SET_PLAYING = 'SET_PLAYING'
     getInfoSongAction,
     autoPlaySongAction,
     openAccountPopupAction,
+    userLoginAction,
+    pathAction
   }
 
 
@@ -77,4 +94,6 @@ const SET_PLAYING = 'SET_PLAYING'
   GET_SONG,
   SET_PLAYING,
   SET_OPEN_ACCOUNT,
+  SET_USER,
+  SET_PATH
 }

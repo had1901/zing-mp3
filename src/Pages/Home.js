@@ -35,30 +35,34 @@ import SkeletonSwiper from '../components/Skeleton/SkeletonSwiper';
 import SkeletonListenNear from '../components/Skeleton/SkeletonListenNear';
 import SkeletonHomeMusic from '../components/Skeleton/SkeletonHomeMusic';
 import _ from 'lodash';
+import axios from 'axios';
+import instance from '../service/config';
 
 
 function Home() {
   const state = useSelector((state) => state.backgroundReducer.backgroundBody)
   const stateSidebar = useSelector((state) => state.openSidebarRightReducer)
-  const [activeTab, setActiveTab] = useState('All')
+  const [activeTab, setActiveTab] = useState('all')
   const [itemSlideScreen, setItemSlideScreen] = useState(3)
   const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [isFetching, setIsFetching] = useState(false)
+  const [songs, setSongs] = useState([])
+  const [images, setImages] = useState([])
 
   // Handle active tab
   const tabTitles = [
     {
-      tabTitle: 'All',
+      tabTitle: 'all',
     },
     {
-      tabTitle: 'V-pop',
+      tabTitle: 'v-pop',
     },
     {
-      tabTitle: 'K-pop',
+      tabTitle: 'k-pop',
     },
     {
-      tabTitle: 'US-UK',
+      tabTitle: 'us-uk',
     },
   ]
   
@@ -97,21 +101,42 @@ function Home() {
     slidesToShow: 7,
     slidesToScroll: 7,
   }
-  const debouceFetch = useCallback(
-    _.debounce(() => {
-      fetching(fetchingMusic, activeTab, setData)
-      setTimeout(() => {
-        setIsFetching(false)
-      }, 800)
-    }, 500), [activeTab, fetchingMusic])
+  
+
+  
 
   useEffect(() => {
-    debouceFetch()
-    setIsFetching(true)
-    
-    return () => debouceFetch.cancel()
-  },[activeTab])
+    const debouceFetchImages = 
+      _.debounce(async () => {
+        try {
+          const res = await instance.get('/images/image-slide')
+          setImages(res.data.dt)
+        } catch(e) {
+          console.log(e)
+        } 
+      }, 500)
+    debouceFetchImages()
+    return () =>  debouceFetchImages.cancel()
+  },[])
 
+  useEffect(() => {
+    const debouceFetchSongs = 
+    _.debounce(async () => {
+      setIsFetching(true)
+      try {
+        const res = await instance.post('/music/songs', { genre: activeTab })
+        setSongs(res.data.dt)
+      } catch(e) {
+        console.log(e)
+      } finally {
+        setIsFetching(false)
+      }
+    }, 500)
+    debouceFetchSongs()
+    return () => debouceFetchSongs.cancel()
+  }, [activeTab])
+
+  
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false)
@@ -143,12 +168,12 @@ function Home() {
         <div className={`${state ? '' : 'bg-primary'}`}>  
                 <Swiper {...swiperProps}>
                     {
-                      Images.map((item, index) => (
+                      images.map((image, index) => (
                         <SwiperSlide key={index} className='md:!h-fit sm:!h-fit xs:!h-fit' >
                         {
                           isLoading 
                           ? (<SkeletonSwiper />)
-                          : (<SlideImage item={item}/>)
+                          : (<SlideImage image={image}/>)
                         }
                         </SwiperSlide>
                       ))
@@ -178,9 +203,14 @@ function Home() {
                 <section className='grid xl:grid-cols-3 lg:grid-cols-2 sm:grid-cols-1 mt-4'>
                   {
                     isLoading || isFetching
-                    ? (<SkeletonHomeMusic listData={data.length}/>)
-                    : (data.map((item, index) => (
+                    ? (<SkeletonHomeMusic listData={songs.length}/>)
+                    : 
+                    /* (data.map((item, index) => (
                       <ItemMusic key={index} item={item} isDate className='w-full rounded-md hover:bg-searchRose' classWrap='flex justify-between' classSinger='text-sm' classNameMore='w-16 h-16' />
+                      ))) */
+
+                      (songs.length > 0 && songs.map((song, index) => (
+                      <ItemMusic key={index} song={song} isDate className='w-full rounded-md hover:bg-searchRose' classWrap='flex justify-between' classSinger='text-sm' classNameMore='w-16 h-16' />
                       )))
                   }
                 </section>

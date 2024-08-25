@@ -9,15 +9,16 @@ function ContextProvider({ children }) {
   const [isActiveSidebar, setIsActiveSidebar] = useState(false)
   const [activeAudio, setActiveAudio] = useState(false)
   const [isFocus, setIsFocus] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
 
   const [listPlay, setListPlay] = useState(() => {
-    let songPlaying = JSON.parse(localStorage.getItem('listPlay'))
+    let songPlaying = JSON.parse(localStorage.getItem('listPlaying'))
     return songPlaying || songInitial[0]
   })
 
   const [songListen, setSongListen] = useState(() => {
-    let stores = JSON.parse(localStorage.getItem('songListen'))
+    let stores = JSON.parse(localStorage.getItem('songListenNear'))
     if(stores) {
       return stores
     }
@@ -30,17 +31,18 @@ function ContextProvider({ children }) {
     setIsActive(!isActive)
   }
 
-  const handleListenNear = (item) => {
-    setListPlay(item) 
-    localStorage.setItem('listPlay', JSON.stringify(item))
+  const handleListenNear = (song) => {
+    console.log('song-context', song)
+    setListPlay(song) 
+    localStorage.setItem('listPlaying', JSON.stringify(song))
     setSongListen(prev => {
         if(!Array.isArray(prev)) {
           return prev = []
         }
-        const prevSong = prev.some(pre => pre.information.path === item.information.path && pre.name.song === item.name.song)
+        const prevSong = prev.some(pre => pre.url === song.url && pre.title === song.title)
         if(prev === undefined || null || !prevSong) {
-          let songNew = [...prev, item]
-          localStorage.setItem('songListen', JSON.stringify(songNew))
+          let songNew = [...prev, song]
+          localStorage.setItem('songListenNear', JSON.stringify(songNew))
           return songNew
         }
       return prev
@@ -70,12 +72,14 @@ function ContextProvider({ children }) {
     listPlay,
     songListen,
     isFocus,
+    isLoading,
 
     handleChangeThumb,
     handleActiveSidebar,
-    setActiveAudio,
     handleListenNear,
     handleInputSearch,
+    setActiveAudio,
+    setIsLoading
   }
 
   

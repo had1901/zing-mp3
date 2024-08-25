@@ -19,12 +19,12 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { motion, AnimatePresence } from "framer-motion"
 
 function ItemMusic({ onClick, ...props }) {
+  
   const iconRef = useRef(null)
   const context = useContext(Context)
   const [activeHeart, setActiveHeart] = useState(false)
   const [random, setRandom] = useState(0)
   const [textstroke, setTextstroke] = useState('text-stroke-any')
-
   const state = useSelector(state => state.getInfoSongReducer)
   const state2 = useSelector(state => state.backgroundReducer)
   const dispatch = useDispatch()
@@ -33,15 +33,15 @@ function ItemMusic({ onClick, ...props }) {
     setActiveHeart(!activeHeart)
   }
   
-  const handleGetInfoMusic = (item) => {
+  const handleGetInfoMusic = (song) => {
     dispatch(actions.getInfoSongAction({ 
-      song: item, 
+      song: song, 
       activeAudio: true, 
       autoPlay: true,
       prevSong: false,
       nextSong: false
     }))
-    context.handleListenNear(item)
+    context.handleListenNear(song)
   }
 
   useEffect(() => {
@@ -63,9 +63,13 @@ function ItemMusic({ onClick, ...props }) {
   useEffect(() => {
     setRandom(Math.floor(Math.random() * 100))
   },[])
-  
+
+  if(!props.song) {
+    return <p>Loading...</p>
+  }
+
   return (
-        <motion.section id={props.item?.id} className={props.classWrap}
+        <motion.section id={props.song?.id} className={props.classWrap}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -97,14 +101,15 @@ function ItemMusic({ onClick, ...props }) {
                 {
                   props.isAlbum && (<LuMusic className='mr-1'/>)
                 }
-                <div className={`relative group/parent cursor-pointer ${props.classNameMore}`} onClick={() => handleGetInfoMusic(props.item)}>
+                <div className={`relative group/parent cursor-pointer ${props.classNameMore}`} onClick={() => handleGetInfoMusic(props.song)}>
                   <img 
-                    src={`/mp3/imgMusic/${props.item?.information?.thumb || <Skeleton />}`} 
-                    alt={props.item?.name?.song} 
+                    // src={`/mp3/imgMusic/${props.song?.information?.thumb || <Skeleton />}`} 
+                    src={`${props.song?.thumbnail || 'https://res.cloudinary.com/mp3-img/image/upload/v1723920725/img13_liunio.webp'}`} 
+                    alt={props.song?.title} 
                     className='w-full h-full group-hover/item:bg-[#00000080] group-hover/item:opacity-50 block rounded-md object-cover border-black'                
                   />
                   {
-                    state.infoSong === props.item 
+                    state.song === props.song 
                     ?(<div className='w-full h-full flex items-center justify-center text-center absolute z-10 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-musicBgColor shadow-musicShadow rounded-md'>                      
                           {
                             state.activeAudio
@@ -119,17 +124,17 @@ function ItemMusic({ onClick, ...props }) {
                 </div>
                 <div className={`${props.isAlbum ? 'flex-2' : 'flex-2'} leading-none font-semibold`}>
                   <div className={`flex items-center capitalize ${state2.textColor} text-sm`}>
-                    <h4 className={`${props.classTitle}  line-clamp-1`}>{props.item?.name?.song || <Skeleton />}</h4> 
-                    <Label title={props.item?.desc?.premium || <Skeleton />} />                
+                    <h4 className={`${props.classTitle}  line-clamp-1`}>{props.song?.title || <Skeleton />}</h4> 
+                    <Label title={props.song?.desc?.premium || <Skeleton />} />                
                   </div>
                   <div>
-                    <Link to='./zingchart' className={`${state2.textColor} inline hover:underline hover:text-violet ${props.classSinger}`}>{props.item?.name?.singer}</Link>
+                    <Link to='/zingchart' className={`${state2.textColor} inline hover:underline hover:text-violet ${props.classSinger}`}>{props.song?.artist}</Link>
                   </div>
-                  {props.isDate && <span className={`text-xs ${state2.textColor}`}>{props.item?.desc?.date || <Skeleton />}</span>}
+                  {props.isDate && <span className={`text-xs ${state2.textColor}`}>{props.song?.releaseDate || <Skeleton />}</span>}
                 </div>
                 <div className={`${props.isAlbum ? 'flex-2 text-xs text-[#ffffff80]' : '' }`}>
                   {
-                    props.isAlbum && (<p>{props.item?.information?.album}</p>)
+                    props.isAlbum && (<p>{props.song?.album}</p>)
                   }
                 </div>
                 {props.children}
@@ -152,7 +157,7 @@ function ItemMusic({ onClick, ...props }) {
                   {
                     props.isTimeString 
                     &&
-                    <span className='min-w-[40px] flex-1 text-xs text-textZingchart font-normal group-hover/item:hidden'>{props.item?.timeString}</span>
+                    <span className='min-w-[40px] flex-1 text-xs text-textZingchart font-normal group-hover/item:hidden'>{props.song?.duration}</span>
                   }
                 </div>
           </div>

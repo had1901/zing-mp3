@@ -12,6 +12,9 @@ import SkeletonMusic from '../components/Skeleton/SkeletonMusic';
 import SkeletonHomeMusic from './../components/Skeleton/SkeletonHomeMusic';
 import Skeleton from 'react-loading-skeleton';
 import { motion, AnimatePresence } from "framer-motion"
+import { verifyUser } from '../api/verifyToken';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 
 function ZingChart() {
@@ -21,6 +24,8 @@ function ZingChart() {
   const [data, setData] = useState([])
   const [path, setPath] = useState('mp3')
   const [isLoading, setIsLoading] = useState(true)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleShowMusicVN = () => {
     setShowMusicVN(showMusicVN + 5)
@@ -32,12 +37,16 @@ function ZingChart() {
     setShowMusicKpop(showMusicKpop + 5)
   }
   
+  // useEffect(() => {
+  //   fetching(fetchingMusic, path, setData)
+  //   setTimeout(() => {
+  //     setIsLoading(false)
+  //   },800)
+  // },[path])
+
   useEffect(() => {
-    fetching(fetchingMusic, path, setData)
-    setTimeout(() => {
-      setIsLoading(false)
-    },800)
-  },[path])
+    verifyUser('/auth/zing-chart', dispatch, navigate)
+  }, [dispatch, navigate])
 
   return (
     <ContainerMain>
@@ -77,7 +86,7 @@ function ZingChart() {
                       isLoading
                       ? (<SkeletonHomeMusic listMusic={5} />)
                       : data.slice(0, showMusicVN).map((item, index) => (
-                        <ItemMusic key={index} item={item} number={index} isIcon isNumberRank isTimeString classTitle='line-clamp-1' classWrap='flex item-center border-b-1 border-sidebarRose rounded-lg hover:bg-searchRose cursor-pointer' className='w-full justify-between cursor-pointer p-3 ' classSinger='text-xs font-normal' classIcon='flex flex-1 justify-end' classNameMore='w-10 h-10' />
+                        <ItemMusic key={index} song={item} number={index} isIcon isNumberRank isTimeString classTitle='line-clamp-1' classWrap='flex item-center border-b-1 border-sidebarRose rounded-lg hover:bg-searchRose cursor-pointer' className='w-full justify-between cursor-pointer p-3 ' classSinger='text-xs font-normal' classIcon='flex flex-1 justify-end' classNameMore='w-10 h-10' />
                       ))
                     }
                     <div className='flex justify-center text-center mt-4'>
@@ -95,7 +104,7 @@ function ZingChart() {
                       isLoading
                       ? (<SkeletonHomeMusic listMusic={5} />)
                       : data.slice(0, showMusicUSUK).map((item, index) => (
-                        <ItemMusic key={index} item={item} number={index} isIcon isNumberRank isTimeString classTitle='line-clamp-1' classWrap='flex item-center border-b-1 border-sidebarRose rounded-lg hover:bg-searchRose cursor-pointer' className='w-full justify-between cursor-pointer p-3 ' classSinger='text-xs font-normal' classIcon='flex flex-1 justify-end' classNameMore='w-10 h-10' />
+                        <ItemMusic key={index} song={item} number={index} isIcon isNumberRank isTimeString classTitle='line-clamp-1' classWrap='flex item-center border-b-1 border-sidebarRose rounded-lg hover:bg-searchRose cursor-pointer' className='w-full justify-between cursor-pointer p-3 ' classSinger='text-xs font-normal' classIcon='flex flex-1 justify-end' classNameMore='w-10 h-10' />
                       ))
                     }
                     <div className='flex justify-center text-center mt-4'>
@@ -113,7 +122,7 @@ function ZingChart() {
                       isLoading
                       ? (<SkeletonHomeMusic listMusic={5} />)
                       : data.slice(0, showMusicKpop).map((item, index) => (
-                        <ItemMusic key={index} item={item} number={index} isIcon isNumberRank isTimeString classTitle='line-clamp-1' classWrap='flex item-center border-b-1 border-sidebarRose rounded-lg hover:bg-searchRose cursor-pointer' className='w-full justify-between cursor-pointer p-3 ' classSinger='text-xs font-normal' classIcon='flex flex-1 justify-end' classNameMore='w-10 h-10' />
+                        <ItemMusic key={index} song={item} number={index} isIcon isNumberRank isTimeString classTitle='line-clamp-1' classWrap='flex item-center border-b-1 border-sidebarRose rounded-lg hover:bg-searchRose cursor-pointer' className='w-full justify-between cursor-pointer p-3 ' classSinger='text-xs font-normal' classIcon='flex flex-1 justify-end' classNameMore='w-10 h-10' />
                       ))
                     }
                     <div className='flex justify-center text-center mt-4'>

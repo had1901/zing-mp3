@@ -8,12 +8,14 @@ import BtnRadius from './../components/BtnRadius';
 import { GoHeart, GoHeartFill } from 'react-icons/go';
 import { useDispatch } from 'react-redux';
 import { actions } from '../redux/actions';
-import { fetching, fetchingMusic } from '../service';
+import { fetching, fetchingMusic, handleLogout, refreshNewToken, verifyAccessToken } from '../service';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import SkeletonMusic from '../components/Skeleton/SkeletonMusic';
 import SkeletonImages from '../components/Skeleton/SkeletonImages';
 import { motion } from "framer-motion"
+import { useNavigate } from 'react-router-dom';
+import { verifyUser } from '../api/verifyToken';
 
 
 function Libraries() {
@@ -25,6 +27,7 @@ function Libraries() {
   const [activeTab2, setActiveTab2] = useState('Bài hát')
   const [path, setPath] = useState('mp3')
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
   
   const buttons1 = [
@@ -54,6 +57,7 @@ function Libraries() {
       nextSong: false
     }))
   }
+
   const handleActive = (btn) => {
     setActiveTab(btn)
   }
@@ -67,6 +71,10 @@ function Libraries() {
     },800)
     
   },[path])
+
+  useEffect(() => {
+    verifyUser('/auth/libraries', dispatch, navigate)
+  }, [dispatch, navigate])
 
   return (
     <ContainerMain className='flex justify-center w-full text-white'>

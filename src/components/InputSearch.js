@@ -28,7 +28,7 @@ function InputSearch({ className }) {
     _.debounce((value) => {
       if(value && value.length > 0) {
         const newDataFilter = _.filter(data, (item) => {
-        const songs = item.name.song.toLowerCase()
+          const songs = item.name.song.toLowerCase()
           return _.includes(songs, value.toLowerCase()) 
         })
         setNewData(newDataFilter)
@@ -43,9 +43,9 @@ function InputSearch({ className }) {
 
   }
 
-  useEffect(() => {
-    fetching(fetchingMusic, 'mp3', setData)
-  }, [])
+  // useEffect(() => {
+  //   fetching(fetchingMusic, 'mp3', setData)
+  // }, [])
 
   useEffect(() => {
     debounceSearch(search)

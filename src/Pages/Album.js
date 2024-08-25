@@ -46,19 +46,19 @@ function Album() {
             <p className='px-[6px] text-xs text-[#ffffff80] leading-[21px]'>Cập nhật: 28/03/2024</p>
             <p className='px-[6px] text-xs text-[#ffffff80] leading-[21px]'>{data[0]?.name?.singer}</p>
             <p className='px-[6px] text-xs text-[#ffffff80] leading-[21px]'>22k người yêu thích</p>
-            <BtnRadius props={`min-h-40 items-center gap-2 px-5 mt-4 text-sm text-zinc-400 hover:bg-transparent`}>
+            <BtnRadius classMore={`min-h-40 items-center gap-2 px-5 mt-4 text-sm text-zinc-400 hover:bg-transparent`}>
               <span className={`flex justify-center items-center gap-3 min-w-[200px] h-[40px] uppercase rounded-full bg-[#ffffff0d] ${context.iconDownLoad}`}>
                 <FaPlay /> 
                 <span>Tiếp tục phát</span>
               </span>
             </BtnRadius>
             <div className='flex gap-4 mt-4 justify-center items-center'>
-            <BtnRadius onClick={(e) => handleHeart(e)} props='bg-[#ffffff0d]'>
+            <BtnRadius classMore='bg-[#ffffff0d]' onClick={(e) => handleHeart(e)} >
                 {
                   activeHeart  ? (<GoHeartFill />) : (<GoHeart />)
                 }
               </BtnRadius>
-              <BtnRadius props='bg-[#ffffff0d]'>
+              <BtnRadius classMore='bg-[#ffffff0d]'>
                 <IoIosMore />
               </BtnRadius>
             </div>
@@ -80,7 +80,7 @@ function Album() {
               { 
                 data.map((item, index) => (
                   <div key={index} className='flex items-center'>
-                    <ItemMusic key={index} isAlbum isTimeString item={item} className='w-full rounded-[4px] hover:bg-searchRose cursor-pointer' classWrap='flex flex-1 justify-between rounded-[4px] border-b-1 border-b-[#ffffff1a]' classSinger='text-[12px]' classNameMore='w-10 h-10' classTitle='font-medium'/> 
+                    <ItemMusic key={index} isAlbum isTimeString song={item} className='w-full rounded-[4px] hover:bg-searchRose cursor-pointer' classWrap='flex flex-1 justify-between rounded-[4px] border-b-1 border-b-[#ffffff1a]' classSinger='text-[12px]' classNameMore='w-10 h-10' classTitle='font-medium'/> 
                   </div>                     
                 )) 
               }

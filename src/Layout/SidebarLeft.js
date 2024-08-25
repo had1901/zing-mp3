@@ -16,7 +16,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const menuSidebar1 = [
   {
-    link:'/libraries',
+    link:'/auth/libraries',
     icon: RiFolderMusicLine,
     title: 'Thư viện',
   },
@@ -26,7 +26,7 @@ const menuSidebar1 = [
     title: 'Khám phá',
   },
   {
-    link:'/zing-chart',
+    link:'/auth/zing-chart',
     icon: AiOutlinePieChart,
     title: '#zingchart',
   },

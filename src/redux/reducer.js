@@ -4,10 +4,13 @@ import {
   SET_BACKGROUND,  
   SET_OPEN_MODAL,
   SET_OPEN_ACCOUNT,
+  SET_USER,
   SET_NAVIGATE,
   SET_OPEN_SIDEBAR_RIGHT,
   GET_SONG,
+  SET_PATH,
 } from './actions';
+import { generatePath } from 'react-router-dom';
 
 // Initial
 const initActive = {
@@ -43,35 +46,36 @@ const initOpenSidebarRight = {
   isOpen: false
 }
 const initInfoSong = {
-  infoSong: {
-    song: {
-      id: 9, 
-      information: {
-          thumb: 'life-goes-on.png' ,
-          path: 'Life-Goes-On-BTS.mp3',
-          album: 'US-UK',
-          durationTime: '3260' 
-        },
-      name: { 
-          song: 'Life Go On',
-          singer: 'BTS'
-        },
-      desc: {
-          category: 'US-UK',
-          country: 'USA' ,
-          date: 'Hôm nay' ,
-          releaseDate: 2020,
-          premium: 'premium',
-          views: 1200000000,
-          listening: 50
-        }
-    }
+  song: {
+    id: null,
+    albumId: null,
+    artistId: null,
+    genreId: null,
+    title: null,
+    artist: null,
+    composer: null,
+    album: null,
+    genre: null,
+    releaseDate: null,
+    duration: null,
+    url: null
   },
+ 
   listenNear: '',
   activeAudio: false,
   autoPlay: false,
   prevSong: false,
   nextSong: false, 
+}
+const initUser= {
+  username: '',
+  group: '',
+  avatarUrl: '',
+  isLogging: false,
+}
+
+const initPath = {
+  path: ['/'],
 }
 
 
@@ -243,9 +247,7 @@ const getInfoSongReducer = (state = initInfoSong, action) => {
       if(action.payload.song) {
         return {
           ...state,
-          infoSong: {
-            song: action.payload.song
-          },
+          song: action.payload.song,
           listenNear: action.payload.song,
           activeAudio: action.payload.activeAudio,
           autoPlay: action.payload.autoPlay,
@@ -264,6 +266,31 @@ const getInfoSongReducer = (state = initInfoSong, action) => {
         
       }
       return state
+    default:
+      return state
+    }
+}
+const setUserReducer = (state = initUser, action) => {
+  switch (action.type) {
+    case SET_USER:
+      return {
+          ...state,
+          username: action.payload.username || '',
+          group: action.payload.group || '',
+          isLogging: action.payload.isLogging,
+          avatarUrl: action.payload.avatarUrl
+      }
+    default:
+      return state
+    }
+}
+const pathReducer = (state = initPath, action) => {
+  switch (action.type) {
+    case SET_PATH:
+      return {
+          ...state,
+          path: [...state.path, action.payload.path],
+      }
     default:
       return state
     }
@@ -300,12 +327,9 @@ const rootReducer = combineReducers({
     activeNavigateReducer,
     openSidebarRightReducer,
     getInfoSongReducer,
+    setUserReducer,
+    pathReducer
 })
 
-  // Middleware functions
-const middleware = {
-    // setThumbMiddleware,
-}
 
-export { middleware }
 export default rootReducer

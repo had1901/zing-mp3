@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { memo, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 
@@ -22,6 +23,8 @@ import { actions } from '../redux/actions';
 import { fetching, fetchingMusic } from '../service';
 import usePictureInPicture from 'react-use-pip'
 import ReactPlayer from 'react-player'
+import axios from 'axios';
+import instance from '../service/config';
 
 const ControlAudio = memo(() => {
   const audio = useRef()
@@ -35,13 +38,14 @@ const ControlAudio = memo(() => {
 
   const navigate = useNavigate()
   const [data, setData] = useState([])
-  const [path, setPath] = useState('mp3')
+  // const [newData, setNewData] = useState(data)
+  const [initMusic, setInitMusic] = useState(null)
   
+  const [path, setPath] = useState('mp3')
   const [prevVolume, setPrevVolume] = useState(0.5)
   const [valueInputSong, setValueInputSong] = useState(0)
   const [minValueInputSong, setMinValueInputSong] = useState(0)
   const [maxValueInputSong, setMaxValueInputSong] = useState(100)
-
   const [valueVolume, setValueVolume] = useState(0.5)
   const [minVolume, setMinVolume] = useState(0)
   const [maxVolume, setMaxVolume] = useState(1)
@@ -53,21 +57,33 @@ const ControlAudio = memo(() => {
   const [totalTime, setTotalTime] = useState(0)
   const [currentSongIndex, setCurrentSongIndex] = useState(0)
   const [isRandom, setIsRandom] = useState(false)
+  const [duration, setDuration] = useState(null)
+  console.log('duration ===', duration)
 
   const state = useSelector(state => state.backgroundReducer)
   const thumb = useSelector((state) => state.backgroundReducer.backgroundBody)
-
+  console.log('currentSongIndex ===', currentSongIndex)
   const stateSong = useSelector(state => state.getInfoSongReducer)
   const dispatch = useDispatch()
-  // const [pipMode, setPipMode] = useState(false);
-  const {isPictureInPictureActive, isPictureInPictureAvailable, togglePictureInPicture} = usePictureInPicture(videoRef)
+  console.log('stateSong', stateSong)
+  
+  const {isPictureInPictureActive, isPictureInPictureAvailable, togglePictureInPicture} = usePictureInPicture(audio, {
+    onEnterPictureInPicture: (e) => {
+      console.log('enter-pip: ',e)
+    },
+    onLeavePictureInPicture: (e) => {
+      console.log('leave-pip: ',e)
+    }
+  })
 
+  
 
+  
   // Hàm update thời lượng khi bài hát đang phát
   const handleTimeUpdateAudio = useCallback(() => {
       if(audio.current) {
         const duration = audio.current.duration // Lấy ra tổng thời gian của bài hát
-        const currentTime = audio.current.currentTime // Lấ  ra thời gian hiện tại của bài hát ( đang phát )
+        const currentTime = audio.current.currentTime // Lấy ra thời gian hiện tại của bài hát ( đang phát )
         if(!isNaN(currentTime) && !isNaN(duration)) {
           setCurTime((currentTime / duration) * 100) 
           convertSecondsToTotalTime(Math.floor(duration))    
@@ -80,13 +96,13 @@ const ControlAudio = memo(() => {
   // Tính toán chuyển đổi TỔNG thời lượng của bài bát sang định dạng thời gian (00:00)
   const convertSecondsToTotalTime = (seconds) => {
     // Chia số giây thành phần phút và phần giây
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
+    const minutes = Math.floor(seconds / 60)
+    const remainingSeconds = seconds % 60
     // Định dạng phần phút và phần giây thành chuỗi với đủ số chữ số
-    const minutesString = String(minutes).padStart(2, '0');
-    const secondsString = String(remainingSeconds).padStart(2, '0');
+    const minutesString = String(minutes).padStart(2, '0')
+    const secondsString = String(remainingSeconds).padStart(2, '0')
     // Kết hợp thành biểu thức thời gian dạng "00:00 phút
-    const timeExpression = `${minutesString}:${secondsString}`;
+    const timeExpression = `${minutesString}:${secondsString}`
 
     return setTotalTime(timeExpression);
   }
@@ -106,78 +122,86 @@ const ControlAudio = memo(() => {
   }
    
   // Ngăn chặn sự kiện nổi bọt
-  const handleStopPropagation = (e) => {
+  const handleStopPropagation = useCallback((e) => {
     e.stopPropagation()
-  }
+  },[])
 
   // Yêu thích bài hát
-  const handleHeart = (e) => {
+  const handleHeart = useCallback((e) => {
     e.stopPropagation()
     setActiveHeart(!activeHeart)
-  }
+  },[activeHeart])
 
   // Bài hát ngẫu nhiên
-  const handleRandomSong = (e) => {
+  const handleRandomSong = useCallback((e) => {
     e.stopPropagation()
     setIsRandom(!isRandom)
-  }
+  },[isRandom])
 
   // Chuyển bài hát trước đó
   const handlePrevious = useCallback((e) => {
     e.stopPropagation()
     if(isRandom) {
       setCurrentSongIndex(Math.floor(Math.random() * data.length))
-    } else {
-      setCurrentSongIndex(prevIndex => (prevIndex - 1 + data.length) % data.length)
-      dispatch(actions.getInfoSongAction({ prevSong: true }))
-    }
-    dispatch(actions.getInfoSongAction({ activeAudio: true, prevSong: true }))
-  },[isRandom, data.length, dispatch])
+    } 
+    setCurrentSongIndex(prevIndex => {
+      if(prevIndex > data.length) {
+        return prevIndex - 1
+      }
+      return 0
+    })
+    
+    dispatch(actions.getInfoSongAction({...stateSong, activeAudio: true, prevSong: true }))
+  },[isRandom, dispatch])
 
   // Chuyển bài hát tiếp theo
   const handleNext = useCallback((e) => {
     e.stopPropagation()
     if(isRandom) {
       setCurrentSongIndex(Math.floor(Math.random() * data.length))
-    } else {
-      setCurrentSongIndex(prevIndex => (prevIndex + 1) % data.length)
-      dispatch(actions.getInfoSongAction({ nextSong: true }))
-    }
-    dispatch(actions.getInfoSongAction({ activeAudio: true, nextSong: true }))
-  },[isRandom, data.length, dispatch])
+    } 
+    setCurrentSongIndex(prevIndex => {
+      if(prevIndex < data.length) {
+        return prevIndex + 1
+      }
+      return data.length
+    })
+    
+    dispatch(actions.getInfoSongAction({...stateSong, activeAudio: true, prevSong: true }))
+  },[isRandom, dispatch])
 
   // Vòng lặp phát lại bài hát
-  const handleLoop = (e) => {
+  const handleLoop = useCallback((e) => {
     e.stopPropagation()
     setActiveLoop(!activeLoop)
-  }
+  },[activeLoop])
 
   // Điều hướng đến album của bài hát đang phát
-  const handleDetailSong = () => {
-    navigate(`/album/${stateSong.infoSong.song.information.album}`)
-  }
+  const handleDetailSong = useCallback(() => {
+    navigate(`/album/${stateSong.song.album}`)
+  },[navigate, stateSong])
 
   // Đóng mở menu bên phải
-  const handleOpenSidebarRight = (e) => {
+  const handleOpenSidebarRight = useCallback((e) => {
     e.stopPropagation()
     dispatch(actions.openSidebarRightAction(false))
-  }
+  },[dispatch])
 
   // Phát bài hát
-  const handlePlaySong = async (e) => {
+  const handlePlaySong = useCallback(async (e) => {
     e.stopPropagation()
     await handleTimeUpdateAudio()
     await audio.current.play()
     dispatch(actions.getInfoSongAction({ activeAudio: true }))
-  }
+  },[dispatch, handleTimeUpdateAudio])
 
   // Tạm dừng bài hát
-  const handlePauseSong = async (e) => {
+  const handlePauseSong = useCallback(async (e) => {
     e.stopPropagation()
     await handleTimeUpdateAudio()
     await audio.current.pause()
     dispatch(actions.getInfoSongAction({ activeAudio: false }))
-  }
+  },[dispatch, handleTimeUpdateAudio])
 
   // Click set time audio
   const handleClickSetTimeAudio = useCallback((e) => {
@@ -186,14 +210,13 @@ const ControlAudio = memo(() => {
     const offset = e.nativeEvent.offsetX
     const progress = (offset / width) * 100
     audio.current.currentTime = (progress / 100) * timeDuration
-    
   },[])
   
   // Ngăn chặn sự kiện nổi bọt
-  const onStopNavigate = (e) => {
+  const onStopNavigate = useCallback((e) => {
     e.stopPropagation()
     handleDetailSong(e)
-  }
+  },[handleDetailSong])
 
   // Hàm tính toán auto update thanh line chạy cho thời lượng bài hát
   const handleTimeAudio = (currentTime, durationTime) => {   
@@ -202,12 +225,15 @@ const ControlAudio = memo(() => {
     setValueInputSong(percentValue)
     inputRangeSong.current.style.background = color
   }
-  const handlePictureInPicture = (e) => {
+
+  // PiP
+  const handlePictureInPicture = useCallback((e) => {
     e.stopPropagation()
     // setPipMode(true)
     togglePictureInPicture(!isPictureInPictureActive)
     console.log(isPictureInPictureActive ? 'Disable' : 'Enable')
-  }
+  },[togglePictureInPicture, isPictureInPictureActive])
+
   // Xử lý tăng giảm âm lượng
   const handleChangeInputRangeVolume = useCallback((e) => {
     e.stopPropagation()
@@ -222,7 +248,7 @@ const ControlAudio = memo(() => {
   },[])
   
   // Xử lý nút bật - tắt âm lượng -> làm thay đổi input range
-  const handleMutedVolume = (e) => {
+  const handleMutedVolume = useCallback((e) => {
     e.stopPropagation()
     if(mutedVolume === false) {
       setPrevVolume(valueVolume)
@@ -232,21 +258,58 @@ const ControlAudio = memo(() => {
       setValueVolume(prevVolume !== null ? (audio.current.volume = prevVolume) : 0.5)
       setMutedVolume(false)
     }
-  }
+  },[mutedVolume, valueVolume])
+
+  
+  
+  // const onPauseSong = () => {
+  //   console.log('pause---song')
+  //   if(stateSong.prevSong || stateSong.nextSong) {
+  //     return
+  //   }
+  //   dispatch(actions.getInfoSongAction({...stateSong, activeAudio: false}))
+
+  // }
+  // const onPlaySong = () => {
+  //   console.log('play---song')
+  //   if(stateSong.prevSong || stateSong.nextSong) {
+  //     return
+  //   }
+  //   dispatch(actions.getInfoSongAction({...stateSong, activeAudio: true}))
+
+  // }
+
+  // Hàm tính tổng thời gian của audio
+  // useEffect(() => {
+  // const durationAudio = (seconds) => {
+  //   const minutes = Math.floor(seconds / 60)
+  //   const remainingSeconds = seconds % 60
+  //   // Định dạng phần phút và phần giây thành chuỗi với đủ số chữ số
+  //   const minutesString = String(minutes).padStart(2, '0')
+  //   const secondsString = String(remainingSeconds).padStart(2, '0')
+  //   // Kết hợp thành biểu thức thời gian dạng "00:00 phút
+  //   const timeExpression = `${minutesString}:${secondsString}`
+  //   console.log('timeExpression', timeExpression)
+
+  //   return timeExpression
+  // }
+
+  // audio.current.duration && setDuration(durationAudio(Math.floor(audio.current.duration)))
+  // },[audio])
+
 
   // Xử lý thanh input volume khi kéo
-  const changeVolume = useCallback(() => {
-    const handlePercent = (num) => {
-      return (num * 100)
-    }
-    let volumeInputValue = inputVolume.current.value
-    let color = `linear-gradient(90deg, rgb(255,255,255) ${handlePercent(volumeInputValue)}%, rgb(130,130,130) ${handlePercent(volumeInputValue)}%)`
-    inputVolume.current.style.background = color
-  },[])
-  
   useEffect(() => {
+    const changeVolume = () => {
+      const handlePercent = (num) => {
+        return (num * 100)
+      }
+      let volumeInputValue = inputVolume.current.value
+      let color = `linear-gradient(90deg, rgb(255,255,255) ${handlePercent(volumeInputValue)}%, rgb(130,130,130) ${handlePercent(volumeInputValue)}%)`
+      inputVolume.current.style.background = color
+    }
     changeVolume()
-  },[changeVolume, valueVolume])
+  },[valueVolume])
 
   // Xử lý lắng nghe sự kiện bài hát KẾT THÚC
   useEffect(() => {
@@ -263,13 +326,18 @@ const ControlAudio = memo(() => {
         audioElement.removeEventListener('ended', handleAudioEnded)
       }
     }
-  },[dispatch])
+  },[dispatch, stateSong])
 
-  
+  // Lấy danh sách bài hát cho
   useEffect(() => {
-    fetching(fetchingMusic, path, setData)
-  },[path])
+    const fetchingAllSong = async () => {
+      const res = await instance.post('http://localhost:8888/music/songs', { genre: 'all' })
+      setData(res.data.dt)
+    }
+    fetchingAllSong()
+  },[])
 
+  // Thêm CSS styles cho change theme
   useEffect(() => {
     const element = ref.current
     if(thumb) {
@@ -284,21 +352,13 @@ const ControlAudio = memo(() => {
       element.classList.remove(state.backgroundControlAudio)
       element.classList.remove('body-animate')
     }
-  },[thumb])
+  },[thumb, state])
   
-
-  // useEffect(() => {
-  //   const handleLoad = () => {
-  //     window.addEventListener('load', () => {
-  //       if(audio.current) {
-  //         audio.current.pause()
-  //         dispatch(actions.getInfoSongAction({ activeAudio: false }))
-  //         console.log("DOM fully loaded and parsed");
-  //       }
-  //     })
-  //   }
-  //   return () =>  window.removeEventListener('load', handleLoad)
-  // },[dispatch])
+  // Lấy ra bài hát nghe trước đó trong LocalStorange khi truy cập lại App
+  useEffect(() => {
+    const initSong = JSON.parse(localStorage.getItem('listPlaying'))
+    setInitMusic(initSong)
+  },[])
 
   return (
     <section ref={ref} className={` ${state.textColor} h-91 fixed bottom-0 flex justify-center w-full xs:hidden lg:block text-white border-t-1 border-zinc-700 z-50`} >
@@ -307,31 +367,47 @@ const ControlAudio = memo(() => {
           <div className='flex items-center min-w-235 max-w-235'>
             <div className='relative shrink-0'>
               <img 
-                src={`/mp3/imgMusic/${stateSong.nextSong || stateSong.prevSong ? (data[currentSongIndex].information.thumb) : (stateSong.infoSong.song.information.thumb)}`}
+                src={stateSong.song.thumbnail ? stateSong.song.thumbnail : initMusic &&  initMusic.thumbnail}
                 alt='img'
                 className={`w-16 h-16 block object-cover rounded-full ${stateSong.activeAudio && 'animate-spin-rotate'}`}
               />    
                   
             </div>
             <div className='mx-3 flex flex-col '>
-              <h3 className='text-sm font-semibold line-clamp-2'>{stateSong.nextSong || stateSong.prevSong ? (data[currentSongIndex].name.song) : (stateSong.infoSong?.song?.name.song)}</h3>
-              <span className='text-xs text-zinc-500 font-medium'>{stateSong.nextSong || stateSong.prevSong ? (data[currentSongIndex].name.singer) : (stateSong.infoSong?.song?.name.singer)}</span>
+              <h3 className='text-sm font-semibold line-clamp-2'>{stateSong.song.title ? stateSong.song.title : initMusic &&  initMusic.title}</h3>
+              <span className='text-xs text-zinc-500 font-medium'>{stateSong.song.artist ? stateSong.song.artist : initMusic &&  initMusic.artist}</span>
             </div>
           </div>
           <div className='flex items-center mx-4 gap-1 text-white'> 
-
-          <audio 
+          
+          {/* <audio 
             // pip={pipMode}
             ref={audio} 
-            src={`/mp3/Music/${stateSong.nextSong || stateSong.prevSong ? (data[currentSongIndex].information.path) : (stateSong.infoSong.song.information.path)}`} 
+            // src={`${stateSong.nextSong || stateSong.prevSong ? (data[currentSongIndex].url) : (stateSong.song.url)}`} 
+            // volume={valueVolume} 
+            // loop={activeLoop ? true : false} 
+            hidden 
+            // autoPlay={stateSong.song && stateSong.autoPlay ? true : false}
+            // controls 
+            // onTimeUpdate={handleTimeUpdateAudio}
+          />      */}
+          <video 
+            hidden 
+            // ref={videoRef}
+            ref={audio} 
+            src={stateSong.song.url_mp4 ? stateSong.song.url_mp4 : initMusic &&  initMusic.url_mp4} 
             volume={valueVolume} 
             loop={activeLoop ? true : false} 
-            hidden 
-            autoPlay={stateSong.infoSong.song && stateSong.autoPlay ? true : false}
+            autoPlay={stateSong.song && stateSong.autoPlay ? true : false}
             controls 
             onTimeUpdate={handleTimeUpdateAudio}
-          />     
-          <video hidden src='/mp3/night-rainny.mp4' poster={`/mp3/imgMusic/${stateSong.infoSong.song.information.thumb}`} ref={videoRef} />
+            poster={stateSong.song.thumbnail} 
+            // onPause={onPauseSong}
+            // onPlay={onPlaySong}
+            // src='https://res.cloudinary.com/mp3-img/video/upload/v1724206818/noi-nay-co-anh_cc8jb5.mp4' 
+
+          />
+          
             <BtnRadius onClick={(e) => handleHeart(e)}> 
               {
                 activeHeart  ? (<GoHeartFill />) : (<GoHeart />)
@@ -345,13 +421,12 @@ const ControlAudio = memo(() => {
         <div className='min-w-[800px] text-xl mx-auto flex-col items-center justify-center h-full'>
           <div className='flex items-center text-xl justify-center gap-3 h-12 mt-2'>
             <BtnRadius onClick={handleRandomSong}>
-            {console.log('re-render')}
               <LiaRandomSolid className={`${isRandom && 'text-main'}`} />
             </BtnRadius>
             <BtnRadius onClick={handlePrevious}>
               <RxTrackPrevious />
             </BtnRadius>
-            <BtnRadius props='hover:bg-transparent'>
+            <BtnRadius classMore='hover:bg-transparent'>
                 {
                   stateSong.activeAudio
                   ?  (<div className='relative w-[38px] h-[38px] rounded-full border-[1.5px] border-white' onClick={handlePauseSong}>
@@ -434,7 +509,7 @@ const ControlAudio = memo(() => {
               </div>
           </div>
           <span onClick={handleOpenSidebarRight}>
-            <BtnRadius props='bg-gray-700 rounded-sm p-1'>
+            <BtnRadius classMore='bg-gray-700 rounded-sm p-1'>
               <BsMusicNoteList className='flex-1'/>
             </BtnRadius>
           </span>

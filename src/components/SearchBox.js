@@ -8,7 +8,7 @@ import { BsSearch } from 'react-icons/bs'
 function SearchBox({ dataFilter }) {
     const context = useContext(Context)
   const state = useSelector(state  => state.backgroundReducer)
-  console.log(dataFilter)
+//   console.log(dataFilter)
 
   const shuffleArray = (array) => {
     let shuffledArray = array.slice();
@@ -39,7 +39,7 @@ function SearchBox({ dataFilter }) {
             <div className='h-[270px] overflow-y-auto overscroll-y-contain'>
                 {
                     dataFilter.map((item, index) => (
-                        <ItemMusic key={index} item={item} className='w-full rounded-md hover:bg-searchRose' classSinger='text-xs' classNameMore='w-12 h-12'/>
+                        <ItemMusic key={index} song={item} className='w-full rounded-md hover:bg-searchRose' classSinger='text-xs' classNameMore='w-12 h-12'/>
                     ))
                 }
             </div>
