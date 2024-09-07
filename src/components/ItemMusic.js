@@ -4,7 +4,7 @@ import { IoIosMore } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import { FaPlay } from 'react-icons/fa';
 import Label from './Label';
-import { Context } from '../context/ContextGlobal';
+import { Context, useGlobalRef } from '../context/ContextGlobal';
 import { LiaMicrophoneAltSolid } from 'react-icons/lia';
 import BtnRadius from './BtnRadius';
 import { GoHeart, GoHeartFill } from 'react-icons/go';
@@ -19,7 +19,8 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { motion, AnimatePresence } from "framer-motion"
 
 function ItemMusic({ onClick, ...props }) {
-  
+  const { audio, isLoadMetaAudio, setIsLoadMetaAudio, play, setPlay } = useGlobalRef()
+
   const iconRef = useRef(null)
   const context = useContext(Context)
   const [activeHeart, setActiveHeart] = useState(false)
@@ -37,10 +38,24 @@ function ItemMusic({ onClick, ...props }) {
     dispatch(actions.getInfoSongAction({ 
       song: song, 
       activeAudio: true, 
-      autoPlay: true,
-      prevSong: false,
-      nextSong: false
+      isChanged: false
     }))
+    let isPlaying = 
+      audio.current.currentTime > 0 
+      && !audio.current.paused 
+      && !audio.current.ended 
+      && audio.current.readyState > audio.current.HAVE_CURRENT_DATA
+
+    audio.current.currentTime = 0
+    setIsLoadMetaAudio(true)
+    setPlay(true)
+    // if (!isPlaying) {
+      audio.current.load()
+      audio.current.addEventListener('canplay', () => {
+          setIsLoadMetaAudio(false)
+          audio.current.play()
+      })
+    // }
     context.handleListenNear(song)
   }
 
@@ -63,6 +78,7 @@ function ItemMusic({ onClick, ...props }) {
   useEffect(() => {
     setRandom(Math.floor(Math.random() * 100))
   },[])
+
 
   if(!props.song) {
     return <p>Loading...</p>
@@ -112,15 +128,15 @@ function ItemMusic({ onClick, ...props }) {
                     state.song === props.song 
                     ?(<div className='w-full h-full flex items-center justify-center text-center absolute z-10 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-musicBgColor shadow-musicShadow rounded-md'>                      
                           {
-                            state.activeAudio
+                            play
                             ? (<img src='./mp3/gifWaveMusic/icon-playing.gif' alt='gif' className='w-1/3 inline-block ' />)
-                            : (<FaPlay className='w-1/3 text-2xl' />)
+                            : (<FaPlay className='w-1/3 text-xl' />)
                           }                      
                       </div>)
                     :
                       null
                   }
-                  <FaPlay className={`absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 hidden ${state2.textColor} text-xl group-hover/item:block group-hover/item:opacity-90`}/>
+                  <FaPlay className={`absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 hidden ${state2.textColor} ${!props.noBtnPlay ? 'text-xl' : 'text-md'} group-hover/item:block group-hover/item:opacity-90`}/>
                 </div>
                 <div className={`${props.isAlbum ? 'flex-2' : 'flex-2'} leading-none font-semibold`}>
                   <div className={`flex items-center capitalize ${state2.textColor} text-sm`}>
@@ -145,7 +161,7 @@ function ItemMusic({ onClick, ...props }) {
                       <BtnRadius>
                         <LiaMicrophoneAltSolid />
                       </BtnRadius>                   
-                      <BtnRadius onClick={handleHeart}>
+                      <BtnRadius title={activeHeart ? 'Xóa yêu thích' : 'Yêu thích'} placement='top' onClick={handleHeart}>
                         {
                           activeHeart  ? (<GoHeartFill />) : (<GoHeart />)
                         }

@@ -9,6 +9,7 @@ import {
   SET_OPEN_SIDEBAR_RIGHT,
   GET_SONG,
   SET_PATH,
+  GET_LIST_SONG,
 } from './actions';
 import { generatePath } from 'react-router-dom';
 
@@ -60,12 +61,9 @@ const initInfoSong = {
     duration: null,
     url: null
   },
- 
   listenNear: '',
   activeAudio: false,
-  autoPlay: false,
-  prevSong: false,
-  nextSong: false, 
+  isChanged: false, 
 }
 const initUser= {
   username: '',
@@ -73,9 +71,11 @@ const initUser= {
   avatarUrl: '',
   isLogging: false,
 }
-
 const initPath = {
   path: ['/'],
+}
+const initListSong = {
+  listSong: []
 }
 
 
@@ -250,9 +250,7 @@ const getInfoSongReducer = (state = initInfoSong, action) => {
           song: action.payload.song,
           listenNear: action.payload.song,
           activeAudio: action.payload.activeAudio,
-          autoPlay: action.payload.autoPlay,
-          prevSong: action.payload.prevSong,
-          nextSong: action.payload.nextSong,
+          isChanged: action.payload.isChanged,
         }
       }
       
@@ -260,8 +258,7 @@ const getInfoSongReducer = (state = initInfoSong, action) => {
         return {
           ...state,
           activeAudio: action.payload.activeAudio,
-          prevSong: action.payload.prevSong,
-          nextSong: action.payload.nextSong,
+          isChanged: action.payload.isChanged,
         }
         
       }
@@ -290,6 +287,17 @@ const pathReducer = (state = initPath, action) => {
       return {
           ...state,
           path: [...state.path, action.payload.path],
+      }
+    default:
+      return state
+    }
+}
+const getListSongReducer = (state = initListSong, action) => {
+  switch (action.type) {
+    case GET_LIST_SONG:
+      return {
+          ...state,
+          listSong: action.payload,
       }
     default:
       return state
@@ -328,7 +336,8 @@ const rootReducer = combineReducers({
     openSidebarRightReducer,
     getInfoSongReducer,
     setUserReducer,
-    pathReducer
+    pathReducer,
+    getListSongReducer,
 })
 
 

@@ -14,7 +14,7 @@ import Topic from './pages/Topic'
 import Album from './pages/Album'
 import UploadMusic from './pages/UploadMusic'
 import { SkeletonTheme } from 'react-loading-skeleton'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { actions } from './redux/actions'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute'
 import Admin from './pages/Admin';
@@ -23,6 +23,7 @@ import { jwtDecode } from "jwt-decode"
 import Register from './pages/auth/Register'
 import { Spin } from "antd"
 import { Context } from './context/ContextGlobal'
+import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 
 // const usePreviousRoute = () => {
 //     const location = useLocation()
@@ -38,7 +39,9 @@ function App() {
     // const location = usePreviousRoute()
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
     const { isLoading, setIsLoading } = useContext(Context)
+    const queryClient = new QueryClient()
 
     useEffect(() => { 
         const start = async () => {
@@ -84,7 +87,7 @@ function App() {
             isLoading 
             ? <Spin fullscreen={true}/>
             :
-        
+      <QueryClientProvider client={queryClient}>
         <SkeletonTheme baseColor="#6464643d" highlightColor="#0000" duration={2.5}>
             <Routes>
                 <Route path='/' element={<GlobalPage/>}>
@@ -116,6 +119,8 @@ function App() {
                 <Route path='/*' element={<NotFound/>}/>
             </Routes>
         </SkeletonTheme>
+      </QueryClientProvider>
+
     )
 }
 

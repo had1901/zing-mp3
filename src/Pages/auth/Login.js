@@ -41,7 +41,7 @@ function Login() {
   const handleSubmitLogin = async (e) => {
     e.preventDefault()
     try {
-      const { data } = await login('http://localhost:8888/auth/login', user)
+      const { data } = await login('https://be-zmp3.onrender.com/auth/login', user)
       if(data) {
         const userEncoded = jwtDecode(data.dt.access_token)
         if(historyPathname === '/upload' && userEncoded.group.group_name !== 'admin') {

@@ -16,11 +16,13 @@ import SkeletonImages from '../components/Skeleton/SkeletonImages';
 import { motion } from "framer-motion"
 import { useNavigate } from 'react-router-dom';
 import { verifyUser } from '../api/verifyToken';
+import { useGlobalRef } from '../context/ContextGlobal';
 
 
 function Libraries() {
+  const { audio } = useGlobalRef()
   const [dataMusic, setDataMusic] = useState([])
-  console.log(dataMusic)
+
   const [activeHeart, setActiveHeart] = useState(false)
   const [activeTab, setActiveTab] = useState('Yêu thích')
   const [activeId, setActiveId] = useState()
@@ -52,10 +54,11 @@ function Libraries() {
     dispatch(actions.getInfoSongAction({ 
       song: item, 
       activeAudio: true, 
-      autoPlay: true,
-      prevSong: false,
-      nextSong: false
+      isChanged: false,
     }))
+    if(audio.current) {
+      audio.current.play()
+    }
   }
 
   const handleActive = (btn) => {

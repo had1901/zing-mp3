@@ -12,40 +12,33 @@ import { BsMusicNoteList } from 'react-icons/bs';
 import { RxTrackPrevious, RxTrackNext, RxLoop } from 'react-icons/rx';
 
 import BtnRadius from './../components/BtnRadius';
-import { Context } from '../context/ContextGlobal';
-
-import { motion } from "framer-motion"
+import { Context, useGlobalRef } from '../context/ContextGlobal';
 
 import 'react-loading-skeleton/dist/skeleton.css'
 import { BiPlus } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../redux/actions';
-import { fetching, fetchingMusic } from '../service';
 import usePictureInPicture from 'react-use-pip'
-import ReactPlayer from 'react-player'
-import axios from 'axios';
 import instance from '../service/config';
+import { Spin } from "antd"
 
 const ControlAudio = memo(() => {
-  const audio = useRef()
+  const { audio, isLoadMetaAudio, setIsLoadMetaAudio, play, setPlay } = useGlobalRef()
+
   const inputVolume = useRef()
   const inputRangeSong = useRef()
   const clickSetTimeAudioRef = useRef()
   const ref = useRef()
   const videoRef = useRef()
+  const btnPlayRef = useRef()
   const context = useContext(Context)
   const step = 0.01
 
   const navigate = useNavigate()
   const [data, setData] = useState([])
-  // const [newData, setNewData] = useState(data)
-  const [initMusic, setInitMusic] = useState(null)
   
-  const [path, setPath] = useState('mp3')
   const [prevVolume, setPrevVolume] = useState(0.5)
   const [valueInputSong, setValueInputSong] = useState(0)
-  const [minValueInputSong, setMinValueInputSong] = useState(0)
-  const [maxValueInputSong, setMaxValueInputSong] = useState(100)
   const [valueVolume, setValueVolume] = useState(0.5)
   const [minVolume, setMinVolume] = useState(0)
   const [maxVolume, setMaxVolume] = useState(1)
@@ -57,16 +50,14 @@ const ControlAudio = memo(() => {
   const [totalTime, setTotalTime] = useState(0)
   const [currentSongIndex, setCurrentSongIndex] = useState(0)
   const [isRandom, setIsRandom] = useState(false)
-  const [duration, setDuration] = useState(null)
-  console.log('duration ===', duration)
+  const [isChangeSong, setIsChangeSong] = useState(false)
 
   const state = useSelector(state => state.backgroundReducer)
   const thumb = useSelector((state) => state.backgroundReducer.backgroundBody)
-  console.log('currentSongIndex ===', currentSongIndex)
   const stateSong = useSelector(state => state.getInfoSongReducer)
+  const songsSuggest = useSelector(state => state.getListSongReducer.listSong)
   const dispatch = useDispatch()
-  console.log('stateSong', stateSong)
-  
+
   const {isPictureInPictureActive, isPictureInPictureAvailable, togglePictureInPicture} = usePictureInPicture(audio, {
     onEnterPictureInPicture: (e) => {
       console.log('enter-pip: ',e)
@@ -78,7 +69,7 @@ const ControlAudio = memo(() => {
 
   
 
-  
+
   // Hàm update thời lượng khi bài hát đang phát
   const handleTimeUpdateAudio = useCallback(() => {
       if(audio.current) {
@@ -129,8 +120,8 @@ const ControlAudio = memo(() => {
   // Yêu thích bài hát
   const handleHeart = useCallback((e) => {
     e.stopPropagation()
-    setActiveHeart(!activeHeart)
-  },[activeHeart])
+    setActiveHeart(prev => !prev)
+  },[])
 
   // Bài hát ngẫu nhiên
   const handleRandomSong = useCallback((e) => {
@@ -139,36 +130,44 @@ const ControlAudio = memo(() => {
   },[isRandom])
 
   // Chuyển bài hát trước đó
-  const handlePrevious = useCallback((e) => {
+  const handlePrevious = useCallback(async (e) => {
     e.stopPropagation()
     if(isRandom) {
-      setCurrentSongIndex(Math.floor(Math.random() * data.length))
+      setCurrentSongIndex(Math.floor(Math.random() * songsSuggest.length))
     } 
-    setCurrentSongIndex(prevIndex => {
-      if(prevIndex > data.length) {
-        return prevIndex - 1
-      }
-      return 0
-    })
-    
-    dispatch(actions.getInfoSongAction({...stateSong, activeAudio: true, prevSong: true }))
-  },[isRandom, dispatch])
+    if(songsSuggest) {
+      setCurrentSongIndex(prevIndex => {
+        if(prevIndex > 0) {
+          return prevIndex - 1
+        } else {
+          return 0
+        }
+      })
+      audio.current.currentTime = 0
+      setValueInputSong(0)
+      setIsChangeSong(true)
+    }
+  },[isRandom, songsSuggest, dispatch])
 
   // Chuyển bài hát tiếp theo
-  const handleNext = useCallback((e) => {
+  const handleNext = useCallback(async (e) => {
     e.stopPropagation()
     if(isRandom) {
-      setCurrentSongIndex(Math.floor(Math.random() * data.length))
+      setCurrentSongIndex(Math.floor(Math.random() * songsSuggest.length))
     } 
-    setCurrentSongIndex(prevIndex => {
-      if(prevIndex < data.length) {
-        return prevIndex + 1
-      }
-      return data.length
-    })
-    
-    dispatch(actions.getInfoSongAction({...stateSong, activeAudio: true, prevSong: true }))
-  },[isRandom, dispatch])
+    if(songsSuggest) {
+      setCurrentSongIndex(prevIndex => {
+        if(prevIndex < songsSuggest.length - 1) {
+          return prevIndex + 1
+        } else {
+          return prevIndex
+        } 
+      })
+      audio.current.currentTime = 0
+      setValueInputSong(0)
+      setIsChangeSong(true)
+    }
+  },[isRandom, songsSuggest, dispatch])
 
   // Vòng lặp phát lại bài hát
   const handleLoop = useCallback((e) => {
@@ -176,7 +175,7 @@ const ControlAudio = memo(() => {
     setActiveLoop(!activeLoop)
   },[activeLoop])
 
-  // Điều hướng đến album của bài hát đang phát
+  // Điều hướng page album của bài hát đang phát
   const handleDetailSong = useCallback(() => {
     navigate(`/album/${stateSong.song.album}`)
   },[navigate, stateSong])
@@ -190,17 +189,27 @@ const ControlAudio = memo(() => {
   // Phát bài hát
   const handlePlaySong = useCallback(async (e) => {
     e.stopPropagation()
-    await handleTimeUpdateAudio()
-    await audio.current.play()
-    dispatch(actions.getInfoSongAction({ activeAudio: true }))
+    handleTimeUpdateAudio()
+    try {
+        setIsLoadMetaAudio(false)
+        setPlay(true)
+        audio.current.play()
+    } catch (err) {
+      console.log('Audio play', err)
+    }
   },[dispatch, handleTimeUpdateAudio])
 
   // Tạm dừng bài hát
   const handlePauseSong = useCallback(async (e) => {
     e.stopPropagation()
-    await handleTimeUpdateAudio()
-    await audio.current.pause()
-    dispatch(actions.getInfoSongAction({ activeAudio: false }))
+    handleTimeUpdateAudio()
+    try {
+      setIsLoadMetaAudio(false)
+      setPlay(false)
+      audio.current.pause()
+    } catch (err) {
+      console.log('Audio pause', err)
+    }
   },[dispatch, handleTimeUpdateAudio])
 
   // Click set time audio
@@ -229,9 +238,7 @@ const ControlAudio = memo(() => {
   // PiP
   const handlePictureInPicture = useCallback((e) => {
     e.stopPropagation()
-    // setPipMode(true)
     togglePictureInPicture(!isPictureInPictureActive)
-    console.log(isPictureInPictureActive ? 'Disable' : 'Enable')
   },[togglePictureInPicture, isPictureInPictureActive])
 
   // Xử lý tăng giảm âm lượng
@@ -260,8 +267,6 @@ const ControlAudio = memo(() => {
     }
   },[mutedVolume, valueVolume])
 
-  
-  
   // const onPauseSong = () => {
   //   console.log('pause---song')
   //   if(stateSong.prevSong || stateSong.nextSong) {
@@ -297,25 +302,26 @@ const ControlAudio = memo(() => {
   // audio.current.duration && setDuration(durationAudio(Math.floor(audio.current.duration)))
   // },[audio])
 
-
-  // Xử lý thanh input volume khi kéo
+  
+  // Call API
+  // Lấy danh sách bài hát gợi ý
   useEffect(() => {
-    const changeVolume = () => {
-      const handlePercent = (num) => {
-        return (num * 100)
+    const fetchingAllSong = async () => {
+      try {
+        const res = await instance.post('https://be-zmp3.onrender.com/music/songs', { genre: 'all' })
+        setData(res.dt)
+      } catch (e) {
+        console.log(e)
       }
-      let volumeInputValue = inputVolume.current.value
-      let color = `linear-gradient(90deg, rgb(255,255,255) ${handlePercent(volumeInputValue)}%, rgb(130,130,130) ${handlePercent(volumeInputValue)}%)`
-      inputVolume.current.style.background = color
     }
-    changeVolume()
-  },[valueVolume])
-
+    fetchingAllSong()
+  },[])
+  
   // Xử lý lắng nghe sự kiện bài hát KẾT THÚC
   useEffect(() => {
     const audioElement = audio.current
     const handleAudioEnded = () => {
-      dispatch(actions.getInfoSongAction({ activeAudio: false}))
+      setPlay(false)
     }
     if(audioElement) {
       audioElement.addEventListener('ended', handleAudioEnded)
@@ -326,16 +332,7 @@ const ControlAudio = memo(() => {
         audioElement.removeEventListener('ended', handleAudioEnded)
       }
     }
-  },[dispatch, stateSong])
-
-  // Lấy danh sách bài hát cho
-  useEffect(() => {
-    const fetchingAllSong = async () => {
-      const res = await instance.post('http://localhost:8888/music/songs', { genre: 'all' })
-      setData(res.data.dt)
-    }
-    fetchingAllSong()
-  },[])
+  },[dispatch, stateSong, audio.current])
 
   // Thêm CSS styles cho change theme
   useEffect(() => {
@@ -354,28 +351,127 @@ const ControlAudio = memo(() => {
     }
   },[thumb, state])
   
+  // Xử lý volume khi kéo
+  useEffect(() => {
+    const changeVolume = () => {
+      const handlePercent = (num) => {
+        return (num * 100)
+      }
+      let volumeInputValue = inputVolume.current.value
+      let color = `linear-gradient(90deg, rgb(255,255,255) ${handlePercent(volumeInputValue)}%, rgb(130,130,130) ${handlePercent(volumeInputValue)}%)`
+      inputVolume.current.style.background = color
+    }
+    changeVolume()
+  },[valueVolume])
+  
+  // Chuyển bài hát theo index và lưu vào redux store
+  useEffect(() => {
+    const handleCanPlay = () => {
+      setIsLoadMetaAudio(false)
+      setPlay(true)
+      audio.current.play()
+    }
+    audio.current.currentTime = 0
+    if(isChangeSong) {
+      if(audio.current) {
+        setIsLoadMetaAudio(true)
+        audio.current.load()
+        
+        audio.current.addEventListener('canplay', handleCanPlay)
+      }
+      dispatch(actions.getInfoSongAction({
+        ...stateSong, 
+        song: {
+          ...songsSuggest[currentSongIndex]
+        },
+      }))
+      setIsChangeSong(false)
+    }
+    return () => {
+      if (audio.current) {
+        audio.current.removeEventListener('canplay', handleCanPlay)
+      }
+    }
+  } ,[currentSongIndex])
+
   // Lấy ra bài hát nghe trước đó trong LocalStorange khi truy cập lại App
   useEffect(() => {
-    const initSong = JSON.parse(localStorage.getItem('listPlaying'))
-    setInitMusic(initSong)
+    const initSong = localStorage.getItem('listPlaying')
+    if(initSong === 'undefined' || initSong === null) {
+      if(songsSuggest) {
+        dispatch(actions.getInfoSongAction({
+          ...stateSong,
+          song: {
+            ...songsSuggest[0]
+          }
+        }))
+      
+      }
+      console.log('songsSuggest music')
+    } else {
+      try {
+        const parseInitSong = JSON.parse(initSong) 
+        if(parseInitSong && typeof parseInitSong === 'object' && parseInitSong !== null) {
+          dispatch(actions.getInfoSongAction({
+            ...stateSong,
+            song: {
+              ...parseInitSong
+            }
+          }))
+          // setInitMusic(parseInitSong)
+          console.log('try music', parseInitSong)
+        } else {
+          throw new Error('Parsed initSong is not a valid object')
+        }
+      } catch (e) {
+        console.log('catch music', e)
+      }
+    }
+    
   },[])
 
-  return (
+  // useEffect(() => {
+  //   if(audio.current) {
+  //     audio.current.autoplay = false
+  //     audio.current.pause()
+
+  //     const promise = audio.current.play()
+  //     if(promise !== undefined) {
+  //         promise.catch(() => {
+  //             console.log('Bị chặn autoPlay')
+  //             setIsLoadMetaAudio(false)
+  //             setPlay(false)
+  //             audio.current.pause()
+  //             audio.current.currentTime = 0
+  //         })
+  //     }
+  //   }
+  // }, [])
+
+  // useEffect(() => {
+  //   audio.current.addEventListener('play', () => {
+      
+  //   })
+  // }, [])
+
+
+    return (
     <section ref={ref} className={` ${state.textColor} h-91 fixed bottom-0 flex justify-center w-full xs:hidden lg:block text-white border-t-1 border-zinc-700 z-50`} >
       <div className='w-full h-full text-white pr-5 pl-7 mx-auto flex justify-between items-center cursor-pointer' onClick={handleDetailSong}>
         <div className='flex items-center h-full'>
           <div className='flex items-center min-w-235 max-w-235'>
             <div className='relative shrink-0'>
               <img 
-                src={stateSong.song.thumbnail ? stateSong.song.thumbnail : initMusic &&  initMusic.thumbnail}
+                src={stateSong.song.thumbnail && stateSong.song.thumbnail}
                 alt='img'
-                className={`w-16 h-16 block object-cover rounded-full ${stateSong.activeAudio && 'animate-spin-rotate'}`}
+                className={`w-16 h-16 block object-cover rounded-full 
+                  ${audio.current && audio.current.currentTime > 0 && !audio.current.paused && !audio.current.ended && audio.current.readyState > audio.current.HAVE_CURRENT_DATA && 'animate-spin-rotate'}`}
               />    
                   
             </div>
             <div className='mx-3 flex flex-col '>
-              <h3 className='text-sm font-semibold line-clamp-2'>{stateSong.song.title ? stateSong.song.title : initMusic &&  initMusic.title}</h3>
-              <span className='text-xs text-zinc-500 font-medium'>{stateSong.song.artist ? stateSong.song.artist : initMusic &&  initMusic.artist}</span>
+              <h3 className='text-sm font-semibold line-clamp-2'>{stateSong.song.title && stateSong.song.title}</h3>
+              <span className='text-xs text-zinc-500 font-medium'>{stateSong.song.artist && stateSong.song.artist}</span>
             </div>
           </div>
           <div className='flex items-center mx-4 gap-1 text-white'> 
@@ -393,56 +489,57 @@ const ControlAudio = memo(() => {
           />      */}
           <video 
             hidden 
-            // ref={videoRef}
             ref={audio} 
-            src={stateSong.song.url_mp4 ? stateSong.song.url_mp4 : initMusic &&  initMusic.url_mp4} 
+            src={stateSong.song.url_mp4 && stateSong.song.url_mp4} 
             volume={valueVolume} 
             loop={activeLoop ? true : false} 
-            autoPlay={stateSong.song && stateSong.autoPlay ? true : false}
             controls 
+            autoPlay={false}
             onTimeUpdate={handleTimeUpdateAudio}
             poster={stateSong.song.thumbnail} 
+            // ref={videoRef}
+            // autoPlay={stateSong.song && stateSong.autoPlay ? true : false}
             // onPause={onPauseSong}
             // onPlay={onPlaySong}
-            // src='https://res.cloudinary.com/mp3-img/video/upload/v1724206818/noi-nay-co-anh_cc8jb5.mp4' 
 
           />
           
-            <BtnRadius onClick={(e) => handleHeart(e)}> 
-              {
-                activeHeart  ? (<GoHeartFill />) : (<GoHeart />)
-              }
+            <BtnRadius title={activeHeart ? 'Xóa yêu thích' : 'Yêu thích'} placement='top' onClick={handleHeart}> 
+              { activeHeart ? (<GoHeartFill />) : (<GoHeart />) }
             </BtnRadius>
-            <BtnRadius>
+
+            <BtnRadius title='Xem thêm' placement='top'>
               <IoIosMore />
             </BtnRadius>
           </div>
         </div>
         <div className='min-w-[800px] text-xl mx-auto flex-col items-center justify-center h-full'>
           <div className='flex items-center text-xl justify-center gap-3 h-12 mt-2'>
-            <BtnRadius onClick={handleRandomSong}>
+            <BtnRadius title='Phát ngẫu nhiên' placement='top' onClick={handleRandomSong}>
               <LiaRandomSolid className={`${isRandom && 'text-main'}`} />
             </BtnRadius>
             <BtnRadius onClick={handlePrevious}>
               <RxTrackPrevious />
             </BtnRadius>
-            <BtnRadius classMore='hover:bg-transparent'>
+            <BtnRadius title={play ? 'Tạm dừng' : 'Phát bài hát'} placement='top' classMore='hover:bg-transparent'>
                 {
-                  stateSong.activeAudio
+                  play
                   ?  (<div className='relative w-[38px] h-[38px] rounded-full border-[1.5px] border-white' onClick={handlePauseSong}>
-                        <IoIosPause  className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-md'/>
+                        {
+                          isLoadMetaAudio
+                          ? <Spin size='small' className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-md' />
+                          : <IoIosPause  className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-md'/>
+                        }
                      </div>)
-                  :  (<div className='relative w-[38px] h-[38px] rounded-full border-[1.5px] border-white' onClick={handlePlaySong}>
+                  :  (<div ref={btnPlayRef} className='relative w-[38px] h-[38px] rounded-full border-[1.5px] border-white' onClick={handlePlaySong}>
                         <IoIosPlay className='absolute top-1/2 left-1/2 -translate-x-[44%] -translate-y-1/2 text-md'/>
                      </div>)
                 }
-                {/* (<PiPauseCircleLight onClick={handlePauseSong} className='text-5xl' />) */}
-                {/* (<PiPlayCircleLight onClick={handlePlaySong} className='text-5xl' />) */}
             </BtnRadius>
             <BtnRadius onClick={handleNext}>
               <RxTrackNext />
             </BtnRadius>
-            <BtnRadius onClick={handleLoop} className='group'>
+            <BtnRadius title={activeLoop ? 'Tắt phát lại' : 'Bật phát lại một bài'} placement='top' onClick={handleLoop} className='group'>
               {
                 activeLoop 
                 ? (<div className='relative group'>
@@ -461,8 +558,8 @@ const ControlAudio = memo(() => {
                     type='range' 
                     step={0.1} 
                     ref={inputRangeSong}
-                    min={minValueInputSong} 
-                    max={maxValueInputSong} 
+                    // min={minValueInputSong} 
+                    // max={maxValueInputSong} 
                     value={valueInputSong} 
                     // onClick={handleStopPropagation}
                     onChange={handleTimeAudio}
@@ -476,13 +573,13 @@ const ControlAudio = memo(() => {
         </div>
         <div className='flex h-full items-center gap-10'>
           <div className='w-full flex relative justify-end items-center gap-3 text-xl after:w-px after:bg-slate-500 after:h-full after:-right-5 after:top-0 after:block after:absolute'>
-            <BtnRadius onClick={handleStopPropagation}>
+            <BtnRadius title='Xem MV' placement='top' onClick={handleStopPropagation}>
               <GoVideo className='flex-1' />
             </BtnRadius>
-            <BtnRadius onClick={handleStopPropagation}>
+            <BtnRadius title='Xem lời bài hát' placement='top' onClick={handleStopPropagation}>
               <LiaMicrophoneAltSolid className='flex-1' />
             </BtnRadius>
-            <BtnRadius onClick={handlePictureInPicture}>
+            <BtnRadius title='Thu nhỏ' placement='top' onClick={handlePictureInPicture}>
               <VscChromeRestore className={`${isPictureInPictureAvailable && 'text-red-300'} flex-1`} />
             </BtnRadius>
             <div className='flex items-center flex-1 gap-1'>
@@ -509,7 +606,7 @@ const ControlAudio = memo(() => {
               </div>
           </div>
           <span onClick={handleOpenSidebarRight}>
-            <BtnRadius classMore='bg-gray-700 rounded-sm p-1'>
+            <BtnRadius title='Danh sách phát' placement='top' classMore='bg-gray-700 rounded-sm p-1'>
               <BsMusicNoteList className='flex-1'/>
             </BtnRadius>
           </span>
@@ -522,5 +619,7 @@ const ControlAudio = memo(() => {
                
     </section>
   )
+  
+  
 })
 export default memo(ControlAudio)

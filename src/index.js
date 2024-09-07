@@ -12,11 +12,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <ReduxProvider store={store}>
-      <ContextProvider>
-        <Router>
-          <App />
-        </Router>
-      </ContextProvider>
+        <ContextProvider>
+          <Router>
+            <App />
+          </Router>
+        </ContextProvider>
     </ReduxProvider>
   </React.StrictMode>
 );

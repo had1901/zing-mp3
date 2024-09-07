@@ -123,7 +123,7 @@ function SearchBar() {
 
       <div ref={navRef} className={`fixed ${stateSidebar.isOpen ? 'pr-[calc(2.9%_+_330px)]' : 'pr-2%9'} ${checkScroll ? `${state.bgNavBar} backdrop-blur-[50px] shadow-navbar` : ''} pl-2%9 flex justify-between gap-x-4 xl:left-60 xs:left-0 right-0 z-30 items-center text-white select-none transition-all duration-300`}>       
               <div className=' flex w-full xs:justify-between'>
-              <BtnRadius classMore='xl:hidden sm:block flex items-center justify-center hover:bg-transparent' onClick={() => context.handleActiveSidebar()}>
+              <BtnRadius title='Cài đặt' placement='bottom' classMore='xl:hidden sm:block flex items-center justify-center hover:bg-transparent' onClick={() => context.handleActiveSidebar()}>
                 <SlSettings className={`${context.iconSetting} m-auto w-4 min-h-32 object-cover`}/>
               </BtnRadius>
                 <div className='flex items-center gap-4 '>
@@ -153,12 +153,12 @@ function SearchBar() {
                   </div>
                   <div className='relative group/popup flex items-center justify-center gap-1'>
                     <BtnRadius classMore='p-3'>
-                      <SlSettings className='w-4 h-4 object-cover'/>
+                      <SlSettings  className='w-4 h-4 object-cover'/>
                       <TogglePopup classNameAdd={`${state.backgroundPopupSetting} absolute group-hover/popup:block rounded-sm top-[120%] right-0 after:w-1/4 after:h-4 after:bg-transparent after:-top-4 after:absolute after:right-0`} />
                     </BtnRadius>
                   </div>
                   <div className=''>
-                    <BtnRadius classMore='hover:bg-transparent relative' >
+                    <BtnRadius title='Tài khoản' placement='bottom' classMore='hover:bg-transparent relative' >
                       <img 
                         src={avatarUrl ? avatarUrl : avatarPlaceholder} 
                         alt='avatar' 

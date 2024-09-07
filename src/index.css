@@ -260,3 +260,7 @@ input[type="range"]:hover::-webkit-slider-thumb{
   background-size: cover;
   background-attachment: fixed;
 }
+
+.ant-spin-dot-item {
+  background-color: white !important;
+}

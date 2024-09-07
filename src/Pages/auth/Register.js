@@ -18,7 +18,7 @@ function Register() {
     const handleSubmitRegister = async (e) => {
         e.preventDefault()
         try {
-          await registerUser('http://localhost:8888/auth/register', user)
+          await registerUser('https://be-zmp3.onrender.com/auth/register', user)
           alert('Register successfully')
           navigate('/login')
         } catch (err) {

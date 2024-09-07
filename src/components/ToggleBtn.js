@@ -1,15 +1,19 @@
 import { useState } from 'react'
 import { Switch } from '@headlessui/react'
 
-function ToggleBtn({ classNameParent }) {
+function ToggleBtn({ onToggleChange, classNameParent }) {
   const [enabled, setEnabled] = useState(false)
 
+  const handleChange = (newState) => {
+    setEnabled(newState);
+    onToggleChange(newState) 
+  }
   return (
     <div className={classNameParent}>
       <Switch
         checked={enabled}
-        onChange={setEnabled}
-        className={`${enabled ? 'bg-teal-900' : 'bg-teal-700'}
+        onChange={handleChange}
+        className={`${enabled ? ' bg-teal-700' : 'bg-gray-500'}
           relative inline-flex h-16px w-28px shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
       >
         <span className="sr-only">Use setting</span>

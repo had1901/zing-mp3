@@ -4,8 +4,12 @@
   "private": true,
   "homepage": "https://had1901.github.io/",
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "@headlessui/react": "^1.7.17",
+    "@mui/material": "^6.0.0",
     "@reduxjs/toolkit": "^2.2.5",
+    "@tanstack/react-query": "^5.52.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -41,7 +45,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "proxy": "http://localhost:8888",
+ 
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -61,6 +65,7 @@
     ]
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.52.0",
     "autoprefixer": "^10.4.19",
     "concurrently": "^8.2.2",
     "eslint": "^8.57.0",

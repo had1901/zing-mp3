@@ -10,6 +10,7 @@ const GET_SONG = 'GET_SONG'
 const SET_PLAYING = 'SET_PLAYING'
 const SET_USER = 'SET_USER'
 const SET_PATH = 'SET_PATH'
+const GET_LIST_SONG = 'GET_LIST_SONG'
 
 
 // Actions
@@ -67,6 +68,12 @@ const SET_PATH = 'SET_PATH'
         payload: payload
     }
   }
+  const getListSongAction= (payload) => {
+    return {
+        type: GET_LIST_SONG,
+        payload: payload
+    }
+  }
 
  
 
@@ -79,7 +86,8 @@ const SET_PATH = 'SET_PATH'
     autoPlaySongAction,
     openAccountPopupAction,
     userLoginAction,
-    pathAction
+    pathAction,
+    getListSongAction
   }
 
 
@@ -95,5 +103,6 @@ const SET_PATH = 'SET_PATH'
   SET_PLAYING,
   SET_OPEN_ACCOUNT,
   SET_USER,
-  SET_PATH
+  SET_PATH,
+  GET_LIST_SONG,
 }

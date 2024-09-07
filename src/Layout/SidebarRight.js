@@ -11,14 +11,20 @@ import { useCallback } from 'react';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { fetching, fetchingMusic } from '../service';
+import ToggleButton from '../components/ToggleButton';
+import ToggleBtn from '../components/ToggleBtn';
 
 function SidebarRight() {
   const context = useContext(Context)
   const [active, setActive] = useState(1)
   const [activeSongListen, setActiveSongListen] = useState(false)
-  const [data, setData] = useState([])
-  const [path, setPath] = useState('mp3')
   const state2 = useSelector(state => state.openSidebarRightReducer)
+  const songsSuggest = useSelector(state => state.getListSongReducer.listSong)
+  const [toggleState, setToggleState] = useState(false)
+
+  const handleToggleChange = (newState) => {
+    setToggleState(newState)
+  }
 
   const handleActive= (num) => {
     if(num === 2) {
@@ -29,21 +35,18 @@ function SidebarRight() {
     setActive(num)
   }
 
-  //  useEffect(() => {
-  //    fetching(fetchingMusic, path, setData)
-  //  },[path])
 
   return (
-    <div className={`${state2.isOpen ? 'translate-x-[0]' : 'translate-x-[100%]'} fixed top-0 right-0 z-40 transition-all duration-500 w-[330px] h-[100%] pb-[90px] bg-transparent border-l-[#ffffff1a] border-l-2 `}>
-      <section className='flex items-center justify-between text-gray-300 text-xs h-[65px] px-2'>
+    <div className={`${state2.isOpen ? 'px-3 translate-x-[0]' : 'translate-x-[100%]'} fixed top-0 right-0 z-40 transition-all duration-500 w-[330px] h-[100%] pb-[90px] bg-transparent border-l-[#ffffff1a] border-l-2 `}>
+      <section className='flex items-center justify-between text-gray-300 text-xs h-[65px] '>
         <div className='flex rounded-full bg-[#2f2739] h-[32px] p-[3px]'>
           <button onClick={() => handleActive(1)} className={`${active === 1 ? 'bg-[#6d6875] text-white' : ''} min-w-[100px] rounded-full px-2`}>Danh sách phát</button>
           <button onClick={() => handleActive(2)} className={`${active === 2 ? 'bg-[#6d6875] text-white' : ''} min-w-[100px] rounded-full px-2`}>Nghe gần đây</button>
         </div>
-        <BtnRadius classMore='bg-[#2f2739]'>
+        <BtnRadius title='Hẹn giờ' placement='bottom' classMore='bg-[#2f2739]'>
           <LuAlarmClock className='text-[16px] '/>
         </BtnRadius>
-        <BtnRadius classMore='bg-[#2f2739]'>
+        <BtnRadius title='Xem thêm' placement='bottom' classMore='bg-[#2f2739]'>
           <IoIosMore className='text-[16px]' />
         </BtnRadius>
       </section>
@@ -59,22 +62,26 @@ function SidebarRight() {
         </div>)
       :
         (<>
-          <section>
-            <div className='px-2'>
-              <ItemMusic song={context.listPlay} className='w-full rounded-[4px] hover:bg-searchRose' classWrap='flex justify-between rounded-[4px] bg-[#9b4de0]' classSinger='text-[12px]' classNameMore='w-10 h-10' classTitle='font-medium'/>
-            </div>
-            <div className='text-white text-sm px-2 pt-[18px] pb-[15px]'>
-              <h3>Tiếp theo</h3>
-              <p className='text-[#feffff99]'>Từ playlist <b className='text-[#c273ed]'>Acoustic V-Pop</b></p>
+          <section>  
+            <ItemMusic song={context.listPlay} className='w-full rounded-[4px] hover:bg-searchRose' classWrap='flex justify-between rounded-[4px] bg-[#9b4de0]' classSinger='text-[12px]' classNameMore='w-10 h-10' classTitle='font-medium'/>
+            <div className='flex items-center text-white text-sm pt-[18px] pb-[15px]'>
+              <div className='flex-1'>
+                <h3>{toggleState ? 'Tự động phát' : 'Đã tắt tự động phát'}</h3>
+                <p className='text-[#feffff99]'>{toggleState ? 'Danh sách bài hát gợi ý' : 'Bật lên để phát tiếp các bài hát gợi ý'}</p>
+              </div>
+              <ToggleBtn onToggleChange={handleToggleChange} classNameParent='ml-4 mr-2'/>
             </div>
           </section>
-          <section className='grid xl:grid-cols-1 h-[calc(100%_-_90px)] overflow-y-scroll px-2 '>
+          {
+            toggleState &&
+            <section className='h-[calc(100%_-_90px)] overflow-y-scroll '>
               {
-                data.map((item, index) => (
-                  <ItemMusic key={index} song={item} className='w-full rounded-[4px] hover:bg-searchRose py-[6px]' classWrap='flex justify-between' classSinger='text-[12px]' classNameMore='w-10 h-10' classTitle='font-medium'  />
+                songsSuggest?.map((song, index) => (
+                  <ItemMusic key={index} song={song} className='w-full rounded-[4px] hover:bg-searchRose py-[6px]' classWrap='flex justify-between' classSinger='text-[12px]' classNameMore='w-10 h-10' classTitle='font-medium'  />
                 ))
               }
-          </section>
+            </section>
+          }
         </>)
       }
     </div> 

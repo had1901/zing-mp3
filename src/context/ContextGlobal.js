@@ -1,8 +1,10 @@
-import { useState, useRef, useEffect, createContext, useCallback } from "react";
+import { useState, useRef, useEffect, createContext, useCallback, useContext } from "react";
 
 const Context = createContext()
 
 function ContextProvider({ children }) {
+  const audio = useRef(null)
+  
   const [songInitial, setSongInitial] = useState([])
   const [infoMusic, setInfoMusic] = useState([])
   const [isActive, setIsActive] = useState(false)
@@ -10,12 +12,25 @@ function ContextProvider({ children }) {
   const [activeAudio, setActiveAudio] = useState(false)
   const [isFocus, setIsFocus] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [isLoadMetaAudio, setIsLoadMetaAudio] = useState(true)
+  const [play, setPlay] = useState(false)
 
 
   const [listPlay, setListPlay] = useState(() => {
-    let songPlaying = JSON.parse(localStorage.getItem('listPlaying'))
-    return songPlaying || songInitial[0]
-  })
+    const songPlaying = localStorage.getItem('listPlaying');
+    
+    if (songPlaying) {
+        try {
+            const parseSongPlaying = JSON.parse(songPlaying);
+            return parseSongPlaying || songInitial[0];
+        } catch (error) {
+            console.error('Error parsing JSON from localStorage:', error);
+            return songInitial[0] // Trả về giá trị mặc định nếu có lỗi
+        }
+    } else {
+        return songInitial[0] // Trả về giá trị mặc định nếu `songPlaying` là `null`
+    }
+});
 
   const [songListen, setSongListen] = useState(() => {
     let stores = JSON.parse(localStorage.getItem('songListenNear'))
@@ -39,7 +54,7 @@ function ContextProvider({ children }) {
         if(!Array.isArray(prev)) {
           return prev = []
         }
-        const prevSong = prev.some(pre => pre.url === song.url && pre.title === song.title)
+        const prevSong = prev.some(pre => pre?.url === song?.url && pre?.title === song?.title)
         if(prev === undefined || null || !prevSong) {
           let songNew = [...prev, song]
           localStorage.setItem('songListenNear', JSON.stringify(songNew))
@@ -73,13 +88,18 @@ function ContextProvider({ children }) {
     songListen,
     isFocus,
     isLoading,
+    audio,
+    isLoadMetaAudio,
+    play,
 
     handleChangeThumb,
     handleActiveSidebar,
     handleListenNear,
     handleInputSearch,
     setActiveAudio,
-    setIsLoading
+    setIsLoading,
+    setIsLoadMetaAudio,
+    setPlay
   }
 
   
@@ -95,4 +115,7 @@ function ContextProvider({ children }) {
   )
 }
 
+export const useGlobalRef = () => {
+  return useContext(Context)
+}
 export { ContextProvider, Context } 

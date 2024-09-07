@@ -24,9 +24,16 @@ function TogglePopup({ classNameAdd, refElement, datatype }) {
   const context = useContext(Context)
   const state = useSelector(state => state.backgroundReducer)
   const dispatch = useDispatch()
+  const [toggleState, setToggleState] = useState(false)
+
+  const handleToggleChange = (newState) => {
+    setToggleState(newState)
+  }
+
   const handleOpenMThemeModal = () => {
     dispatch(actions.openThemeModalAction(true))
   }
+
   let subMenu1 = <div className={`right-[94%] top-0 absolute hidden shadow-white  w-320 h-auto rounded-xl after:w-4 after:bg-transparent after:absolute after:-right-3 after:top-0 after:bottom-0 ${state.backgroundPopupSetting} group-hover/btn:block`}>
                       <div className='px-3'>
                         <div className='flex items-center'>
@@ -35,7 +42,7 @@ function TogglePopup({ classNameAdd, refElement, datatype }) {
                         </div>
                         <div className='flex item-center justify-between'>
                           <Title title='Chuyển bài mượt mà (CrossFada)' classNameMore='text-sm text-zinc-300 font-medium text-left my-3'/>
-                          <ToggleBtn classNameParent='w-8 text-center flex flex-col justify-center' />
+                          <ToggleBtn onToggleChange={handleToggleChange} classNameParent='w-8 text-center flex flex-col justify-center' />
                         </div>
                         <div className='justify-between my-2'>
                           <InputRange />
@@ -44,7 +51,7 @@ function TogglePopup({ classNameAdd, refElement, datatype }) {
                         <div>
                           <div className='flex item-center justify-between'>
                             <Title title='Bỏ qua khoảng lặng (Gapless)' classNameMore='text-sm text-zinc-300 text-left my-1'/>
-                            <ToggleBtn classNameParent='w-8 text-center flex flex-col justify-center'/>
+                            <ToggleBtn onToggleChange={handleToggleChange} classNameParent='w-8 text-center flex flex-col justify-center'/>
                           </div>
                           <Description desc='Loại bỏ đoạn im lặng khi chuyển bài hát' classNameMore='text-xs text-zinc-400 text-left'/>
                         </div>
@@ -68,7 +75,7 @@ function TogglePopup({ classNameAdd, refElement, datatype }) {
                           <Title title='Phát nhạc' classNameMore='border-t-1 border-zinc-500 py-3 mt-6 text-left'/>
                           <div className='flex item-center justify-between'>
                             <Description desc='Luôn phát nhạc toàn màn hình' classNameMore='text-zinc-400 py-2 text-sm' />
-                            <ToggleBtn classNameParent='w-8 text-center flex flex-col justify-center' />
+                            <ToggleBtn onToggleChange={handleToggleChange} classNameParent='w-8 text-center flex flex-col justify-center' />
                           </div>
                         </div>
                        

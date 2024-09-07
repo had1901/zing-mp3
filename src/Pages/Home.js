@@ -28,7 +28,7 @@ import ItemImage from './../components/ItemImage';
 import ContainerMain from './../components/ContainerMain';
 
 import { GoChevronRight } from 'react-icons/go';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import 'react-loading-skeleton/dist/skeleton.css'
 import { fetching, fetchingMusic } from '../service';
 import SkeletonSwiper from '../components/Skeleton/SkeletonSwiper';
@@ -37,19 +37,27 @@ import SkeletonHomeMusic from '../components/Skeleton/SkeletonHomeMusic';
 import _ from 'lodash';
 import axios from 'axios';
 import instance from '../service/config';
-
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query'
+import { actions } from '../redux/actions';
 
 function Home() {
   const state = useSelector((state) => state.backgroundReducer.backgroundBody)
   const stateSidebar = useSelector((state) => state.openSidebarRightReducer)
   const [activeTab, setActiveTab] = useState('all')
   const [itemSlideScreen, setItemSlideScreen] = useState(3)
-  const [data, setData] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
+  // const [data, setData] = useState([])
+  const [isLoad, setIsLoad] = useState(true)
   const [isFetching, setIsFetching] = useState(false)
   const [songs, setSongs] = useState([])
+  const [listSong, setListSong] = useState([])
   const [images, setImages] = useState([])
-
+  const queryClient = useQueryClient()
+  const dispatch = useDispatch()
+  console.log('images', images)
   // Handle active tab
   const tabTitles = [
     {
@@ -102,44 +110,57 @@ function Home() {
     slidesToScroll: 7,
   }
   
-
-  
-
+  const debouceFetchImages = useCallback(async () => {
+    try {
+      const res = await instance.get('/images/image-slide')
+      setImages(res.dt)
+    } catch(e) {
+      console.log(e)
+    } 
+  }, [])
+    
   useEffect(() => {
-    const debouceFetchImages = 
-      _.debounce(async () => {
-        try {
-          const res = await instance.get('/images/image-slide')
-          setImages(res.data.dt)
-        } catch(e) {
-          console.log(e)
-        } 
-      }, 500)
     debouceFetchImages()
-    return () =>  debouceFetchImages.cancel()
-  },[])
+  },[debouceFetchImages])
+
+  const debouceFetchSongs = useCallback(_.debounce(async () => {
+    setIsFetching(true)
+    try {
+      const res = await instance.post('/music/songs', { genre: activeTab })
+      setSongs(res.dt)
+      setIsFetching(false)
+    } catch(e) {
+      console.log(e)
+    } 
+  }, 500), [activeTab])
+  
+  const getListSong = async () => {
+    try {
+      const res = await instance.get('/music/list-song')
+      return res.dt
+    } catch(e) {
+      console.log(e)
+    }
+  }
+  const { data, isLoading, error } = useQuery({ 
+        queryKey: ['list-song'],
+        queryFn: getListSong,
+      })
 
   useEffect(() => {
-    const debouceFetchSongs = 
-    _.debounce(async () => {
-      setIsFetching(true)
-      try {
-        const res = await instance.post('/music/songs', { genre: activeTab })
-        setSongs(res.data.dt)
-      } catch(e) {
-        console.log(e)
-      } finally {
-        setIsFetching(false)
-      }
-    }, 500)
+    dispatch(actions.getListSongAction(data))
+  }, [data])    
+
+  useEffect(() => {
     debouceFetchSongs()
     return () => debouceFetchSongs.cancel()
   }, [activeTab])
 
   
+
   useEffect(() => {
     setTimeout(() => {
-      setIsLoading(false)
+      setIsLoad(false)
     }, 800)
   }, [])
 
@@ -168,22 +189,23 @@ function Home() {
         <div className={`${state ? '' : 'bg-primary'}`}>  
                 <Swiper {...swiperProps}>
                     {
-                      images.map((image, index) => (
+                      images.length > 0 && images.map((image, index) => (
                         <SwiperSlide key={index} className='md:!h-fit sm:!h-fit xs:!h-fit' >
-                        {
-                          isLoading 
-                          ? (<SkeletonSwiper />)
-                          : (<SlideImage image={image}/>)
-                        }
+                          {
+                            isLoad 
+                            ? (<SkeletonSwiper />)
+                            : (<SlideImage image={image}/>)
+                          }
+                          {/* (<SlideImage image={image}/>) */}
                         </SwiperSlide>
                       ))
                     }
-                  </Swiper>
+                </Swiper>
                 
               <Title title='Gần đây' classNameMore='lg:mt-12 md:mt-8 xs:mt-4 xs:mb-3 sm:mb-5 mt-10 sm:text-xl xs:text-md capitalize'/>   
               <div className='flex sm:overscroll-x-none xs:overflow-x-auto scroll-home md:gap-x-6 xs:gap-x-2 ' >
                   {
-                    isLoading 
+                    isLoad 
                     ? (<SkeletonListenNear />)
                     : (Chills.map((item, index) => (
                         <Content key={index} description={item.card[0].desc} dataThumb={item.card[0].thumb} classNameChild='lazy-load ' classNameParent='lg:w-[199px] lg:h-[250px] xs:w-20 xs:h-20 shrink-0' classNameMore='line-clamp-2' classWrapImg='lg:px-3 xs:px-1 xs:first:pl-0 xs:last:pr-0 ' classOurImg='lg:max-h-[199px]'/>                
@@ -202,15 +224,10 @@ function Home() {
                 </div>
                 <section className='grid xl:grid-cols-3 lg:grid-cols-2 sm:grid-cols-1 mt-4'>
                   {
-                    isLoading || isFetching
+                    isLoad || isFetching
                     ? (<SkeletonHomeMusic listData={songs.length}/>)
-                    : 
-                    /* (data.map((item, index) => (
-                      <ItemMusic key={index} item={item} isDate className='w-full rounded-md hover:bg-searchRose' classWrap='flex justify-between' classSinger='text-sm' classNameMore='w-16 h-16' />
-                      ))) */
-
-                      (songs.length > 0 && songs.map((song, index) => (
-                      <ItemMusic key={index} song={song} isDate className='w-full rounded-md hover:bg-searchRose' classWrap='flex justify-between' classSinger='text-sm' classNameMore='w-16 h-16' />
+                    : (songs.length > 0 && songs.map((song, index) => (
+                        <ItemMusic key={index} song={song} isDate className='w-full rounded-md hover:bg-searchRose' classWrap='flex justify-between' classSinger='text-sm' classNameMore='w-16 h-16' />
                       )))
                   }
                 </section>
