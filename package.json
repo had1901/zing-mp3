@@ -62,6 +62,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@tanstack/eslint-plugin-query": "^5.52.0",
     "autoprefixer": "^10.4.19",
     "concurrently": "^8.2.2",
