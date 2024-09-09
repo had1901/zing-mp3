@@ -8,7 +8,6 @@ import BtnRadius from './../components/BtnRadius';
 import { GoHeart, GoHeartFill } from 'react-icons/go';
 import { useDispatch } from 'react-redux';
 import { actions } from '../redux/actions';
-import { fetching, fetchingMusic, handleLogout, refreshNewToken, verifyAccessToken } from '../service';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import SkeletonMusic from '../components/Skeleton/SkeletonMusic';
@@ -68,7 +67,6 @@ function Libraries() {
     setActiveTab2(btn)
   }
   useEffect(() => {
-    fetching(fetchingMusic, path, setDataMusic)
     setTimeout(() => {
       setIsLoading(false)
     },800)

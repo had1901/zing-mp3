@@ -1,31 +1,28 @@
 import { actions } from "../redux/actions"
 import { handleLogout, refreshNewToken } from "../service"
+import instance from "../service/config"
 
 
 const verifyUser = async (protectedRoute, ...rest) => {
       try {
+          const res = await instance.post(`${protectedRoute}`, {})
+          console.log('verify: ', res)
 
-          const res = await fetch(`${protectedRoute}`, {
-            method: 'POST'
-          })
-          let data = await res.json()
-          if(data.isHasExpired) {
-            const refreshToken = await refreshNewToken('/auth/refreshToken')
-            console.log('refresh-isHasExpired: ', refreshToken)
-            const res = await fetch(`${protectedRoute}`, {
-              method: 'POST',
-            })
-            data = await res.json()
+          
+          return res
+      } catch(err) {
+          console.log('libraries-error: ', err)
+          if(err.data.isHasExpired) {
+            const refreshToken = await instance.post('/auth/refreshToken', {})
+            console.log('verify-isHasExpired: ', refreshToken)
+            const res = await instance.post(`${protectedRoute}`, {})
+            console.log('verify-data-protected: ', res)
+
+            if(res.isValid === false || res.isToken === false) {
+              handleLogout(actions, ...rest)
+              return
+            }
           }
-          if(data.isValid === false || data.isToken === false) {
-            handleLogout(actions, ...rest)
-            return
-          }
-          console.log('libraries-isValid-isToken: ', data)
-          return data
-      } catch(e) {
-          console.log('libraries-error: ', e.response)
-  
       }
       
     }

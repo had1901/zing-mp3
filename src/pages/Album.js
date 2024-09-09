@@ -10,12 +10,10 @@ import { GoHeart, GoHeartFill } from 'react-icons/go';
 import { RiArrowUpDownFill, RiUserAddLine } from "react-icons/ri";
 import { LiaRandomSolid } from "react-icons/lia";
 
-import img1 from '../images/slider-1.jpg'
 import ItemMusic from './../components/ItemMusic';
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { fetching, fetchingMusic } from '../service'
 import instance from '../service/config'
 
 function Album() {

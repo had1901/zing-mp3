@@ -308,7 +308,7 @@ const ControlAudio = memo(() => {
   useEffect(() => {
     const fetchingAllSong = async () => {
       try {
-        const res = await instance.post('https://be-zmp3.onrender.com/music/songs', { genre: 'all' })
+        const res = await instance.post('/music/songs', { genre: 'all' })
         setData(res.dt)
       } catch (e) {
         console.log(e)
@@ -418,8 +418,6 @@ const ControlAudio = memo(() => {
               ...parseInitSong
             }
           }))
-          // setInitMusic(parseInitSong)
-          console.log('try music', parseInitSong)
         } else {
           throw new Error('Parsed initSong is not a valid object')
         }

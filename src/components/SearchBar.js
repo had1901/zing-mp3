@@ -17,8 +17,6 @@ import { useEffect } from 'react';
 import { actions } from '../redux/actions'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Account from './Account'
-import { fetching, getUser } from '../service'
-import { useGetLocalStorage } from '../pages/auth/Login'
 import avatarPlaceholder from '../images/avatar-default/avatar.png'
 
 

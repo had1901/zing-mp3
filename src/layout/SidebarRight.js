@@ -1,17 +1,12 @@
 import React, { useContext, useState } from 'react'
 import { Context } from '../context/ContextGlobal';
-import { Musics } from '../mp3/Music/Music';
 
 import ItemMusic from './../components/ItemMusic';
 import BtnRadius from './../components/BtnRadius';
 
 import { LuAlarmClock } from "react-icons/lu";
 import { IoIosMore } from 'react-icons/io';
-import { useCallback } from 'react';
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { fetching, fetchingMusic } from '../service';
-import ToggleButton from '../components/ToggleButton';
 import ToggleBtn from '../components/ToggleBtn';
 
 function SidebarRight() {

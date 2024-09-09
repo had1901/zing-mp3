@@ -6,6 +6,7 @@ import { actions } from '../../redux/actions'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { jwtDecode } from "jwt-decode"
 import { useForm } from "react-hook-form"
+import instance from '../../service/config'
 
 export const useGetLocalStorage = () => {
   const [user, setUser] = useState(null)
@@ -41,23 +42,22 @@ function Login() {
   const handleSubmitLogin = async (e) => {
     e.preventDefault()
     try {
-      const { data } = await login('https://be-zmp3.onrender.com/auth/login', user)
-      if(data) {
-        const userEncoded = jwtDecode(data.dt.access_token)
+      const res = await instance.post('/auth/login', user)
+      console.log('data', res)
+      if(res.ec === 0) {
+        const userEncoded = jwtDecode(res.dt.access_token)
         if(historyPathname === '/upload' && userEncoded.group.group_name !== 'admin') {
           alert('You don\'t access enter this page')
           navigate('/')
-          console.log('okkkk')
-
         } else { 
-          console.log('nottt')
-          localStorage.setItem('user', JSON.stringify(data.dt.access_token))
+          localStorage.setItem('user', JSON.stringify(res.dt.access_token))
           dispatch(actions.userLoginAction(userEncoded))
           alert('Login successfully')
           navigate(historyPathname, { replace: true })
         }
       }
     } catch (err) {
+      console.log('err-login', err)
       alert('Error login')
     }
   }

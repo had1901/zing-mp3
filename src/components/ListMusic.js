@@ -2,22 +2,17 @@ import React, { useState } from 'react'
 import ItemMusic from './ItemMusic'
 import Description from './Description'
 import Button from './Button'
-import { useEffect } from 'react'
-import { fetching, fetchingMusic } from '../service'
 import Skeleton from 'react-loading-skeleton'
 
 function ListMusic({ className }) {
   const [itemShow, setItemShow] = useState(10)
   const [data, setData] = useState([])
-  const [path, setPath] = useState('mp3')
 
   const showItem = () => {
     setItemShow(itemShow + 10)
   }
 
-  // useEffect(() => {
-  //   fetching(fetchingMusic, path, setData)
-  // },[path])
+
 
   return (
     <section className={className}>

@@ -13,7 +13,6 @@ import { IoCameraReverseOutline } from "react-icons/io5";
 function Account() {
     const state = useSelector(state => state.backgroundReducer)
     const user = useSelector(state => state.setUserReducer)
-    console.log('Account user', user)
     const navigate = useNavigate()
     const dispatch = useDispatch()
 

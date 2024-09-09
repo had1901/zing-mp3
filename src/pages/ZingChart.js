@@ -7,7 +7,6 @@ import { FaCirclePlay } from "react-icons/fa6";
 import ItemMusic from './../components/ItemMusic';
 import Button from './../components/Button';
 import ContainerMain from './../components/ContainerMain';
-import { fetching, fetchingMusic } from '../service';
 import SkeletonMusic from '../components/Skeleton/SkeletonMusic';
 import SkeletonHomeMusic from './../components/Skeleton/SkeletonHomeMusic';
 import Skeleton from 'react-loading-skeleton';
@@ -37,12 +36,7 @@ function ZingChart() {
     setShowMusicKpop(showMusicKpop + 5)
   }
   
-  // useEffect(() => {
-  //   fetching(fetchingMusic, path, setData)
-  //   setTimeout(() => {
-  //     setIsLoading(false)
-  //   },800)
-  // },[path])
+
 
   useEffect(() => {
     verifyUser('/auth/zing-chart', dispatch, navigate)

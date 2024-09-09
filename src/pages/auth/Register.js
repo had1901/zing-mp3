@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { registerUser } from '../../service'
 import { useNavigate } from 'react-router-dom'
 import ContainerMain from '../../components/ContainerMain'
+import instance from '../../service/config'
 
 function Register() {
     const [user, setUser] = useState({ username: '', password: '' })
@@ -18,7 +19,7 @@ function Register() {
     const handleSubmitRegister = async (e) => {
         e.preventDefault()
         try {
-          await registerUser('https://be-zmp3.onrender.com/auth/register', user)
+          await instance.post('/auth/register', user)
           alert('Register successfully')
           navigate('/login')
         } catch (err) {

@@ -30,7 +30,6 @@ import ContainerMain from './../components/ContainerMain';
 import { GoChevronRight } from 'react-icons/go';
 import { useDispatch, useSelector } from 'react-redux';
 import 'react-loading-skeleton/dist/skeleton.css'
-import { fetching, fetchingMusic } from '../service';
 import SkeletonSwiper from '../components/Skeleton/SkeletonSwiper';
 import SkeletonListenNear from '../components/Skeleton/SkeletonListenNear';
 import SkeletonHomeMusic from '../components/Skeleton/SkeletonHomeMusic';
@@ -57,7 +56,6 @@ function Home() {
   const [images, setImages] = useState([])
   const queryClient = useQueryClient()
   const dispatch = useDispatch()
-  console.log('images', images)
   // Handle active tab
   const tabTitles = [
     {

@@ -24,6 +24,7 @@ import Register from './pages/auth/Register'
 import { Spin } from "antd"
 import { Context } from './context/ContextGlobal'
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query'
+import instance from './service/config'
 
 // const usePreviousRoute = () => {
 //     const location = useLocation()
@@ -46,35 +47,25 @@ function App() {
     useEffect(() => { 
         const start = async () => {
             try {
-                const refreshToken = await fetch('/auth/refreshToken', {
-                    method: 'POST',
-                })
-                if(refreshToken.status === 403 || !refreshToken.ok) {
+                const refreshToken = await instance.post('/auth/refreshToken', {})
+                console.log('refreshToken', refreshToken)
+
+                if(refreshToken.ec === 0) {
+                    console.log('runnn-home')
+                    const user = JSON.parse(localStorage.getItem('user'))
+                    if(user) {
+                        const userEncoded = jwtDecode(user)
+                        dispatch(actions.userLoginAction(userEncoded))
+                    }
+                    setIsLoading(false)
+                }
+            } catch(err) {
+                console.log('refresh-token-error: ', err)
+                if(err.data?.ec === 1) {
                     handleLogout(actions, navigate, dispatch)
                     setIsLoading(false)
                     return
-                } else {
-                    const res = await fetch('/auth/home', { method: 'POST' })
-                    const data = await res.json()
-
-                    if(data.isValid === false || data.isToken === false) {
-                        handleLogout(actions, navigate, dispatch)
-                        setIsLoading(false)
-                        return
-                    } else {
-                        const user = JSON.parse(localStorage.getItem('user'))
-                        if(user) {
-                            const userEncoded = jwtDecode(user)
-                            dispatch(actions.userLoginAction(userEncoded))
-                        }
-                        setIsLoading(false)
-                    }
                 }
-
-            } catch(e) {
-                console.log('refresh-token-error: ', e)
-                setIsLoading(false)
-
             }
         }
         start()

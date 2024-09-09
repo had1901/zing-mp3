@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { fetching, fetchingMusic } from '../service'
 import _ from 'lodash'
 import SearchBox from './SearchBox'
 import { Context } from '../context/ContextGlobal'
