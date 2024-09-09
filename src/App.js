@@ -71,8 +71,6 @@ function App() {
                     }
                 }
 
-                
-                
             } catch(e) {
                 console.log('refresh-token-error: ', e)
                 setIsLoading(false)

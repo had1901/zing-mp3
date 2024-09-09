@@ -47,7 +47,10 @@ function Login() {
         if(historyPathname === '/upload' && userEncoded.group.group_name !== 'admin') {
           alert('You don\'t access enter this page')
           navigate('/')
+          console.log('okkkk')
+
         } else { 
+          console.log('nottt')
           localStorage.setItem('user', JSON.stringify(data.dt.access_token))
           dispatch(actions.userLoginAction(userEncoded))
           alert('Login successfully')

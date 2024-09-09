@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL: 'https://be-zmp3.onrender.com',
+    baseURL: process.env.REACT_APP_BASE_URL,
     withCredentials: true,
 })
 
-
+console.log('env', process.env.REACT_APP_BASE_URL)
 
 
 instance.interceptors.response.use(function (res) {
