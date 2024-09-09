@@ -61,11 +61,15 @@ function App() {
                 }
             } catch(err) {
                 console.log('refresh-token-error: ', err)
+                if(err.data?.isToken === false) {
+                    return false
+                }
                 if(err.data?.ec === 1) {
                     handleLogout(actions, navigate, dispatch)
                     setIsLoading(false)
-                    return
+                    return false
                 }
+                
             }
         }
         start()
