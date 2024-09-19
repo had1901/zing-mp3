@@ -18,7 +18,7 @@ const handleLogout = async (dispatch, actions, navigate) => {
             return new Error('Login failed')
         }
         localStorage.removeItem('user')
-        localStorage.removeItem('listPlaying')
+        localStorage.removeItem('playing')
         dispatch(actions.userLoginAction({
             isLogging: false
         }))

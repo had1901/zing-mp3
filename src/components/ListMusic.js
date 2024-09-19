@@ -4,9 +4,9 @@ import Description from './Description'
 import Button from './Button'
 import Skeleton from 'react-loading-skeleton'
 
-function ListMusic({ className }) {
+function ListMusic({ data, className }) {
   const [itemShow, setItemShow] = useState(10)
-  const [data, setData] = useState([])
+  // const [data, setData] = useState([])
 
   const showItem = () => {
     setItemShow(itemShow + 10)
@@ -23,7 +23,7 @@ function ListMusic({ className }) {
                 <ItemMusic 
                   key={index} 
                   number={index} 
-                  item={item || <Skeleton />}
+                  song={item || <Skeleton />}
                   isIcon 
                   isNumberRank 
                   isTimeString 
@@ -33,7 +33,7 @@ function ListMusic({ className }) {
                   classNameMore='w-10 h-10'
                 >
                 <div className='flex flex-1 text-textZingchart'>
-                  <Description desc={item.name.song || <Skeleton />} classNameMore='text-xs font-normal hover:text-violet hover:underline cursor-pointer'/>
+                  <Description desc={item.title || <Skeleton />} classNameMore='text-xs font-normal hover:text-violet hover:underline cursor-pointer'/>
                 </div>
                 </ItemMusic>              
             ))

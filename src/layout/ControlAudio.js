@@ -27,9 +27,7 @@ const ControlAudio = memo(() => {
 
   const inputVolume = useRef()
   const inputRangeSong = useRef()
-  const clickSetTimeAudioRef = useRef()
   const ref = useRef()
-  const videoRef = useRef()
   const btnPlayRef = useRef()
   const context = useContext(Context)
   const step = 0.01
@@ -43,7 +41,14 @@ const ControlAudio = memo(() => {
   const [minVolume, setMinVolume] = useState(0)
   const [maxVolume, setMaxVolume] = useState(1)
   const [mutedVolume, setMutedVolume] = useState(null)
-
+  const [storeRange, setStoreRange] = useState(() => {
+    const songInit = localStorage.getItem('playing')
+      if(songInit) {
+        return JSON.parse(songInit)
+      } else {
+        return null
+      }
+    })
   const [activeHeart, setActiveHeart] = useState(false)
   const [activeLoop, setActiveLoop] = useState(false)
   const [curTime, setCurTime] = useState(0)
@@ -56,8 +61,8 @@ const ControlAudio = memo(() => {
   const thumb = useSelector((state) => state.backgroundReducer.backgroundBody)
   const stateSong = useSelector(state => state.getInfoSongReducer)
   const songsSuggest = useSelector(state => state.getListSongReducer.listSong)
+  const openSidebarRight = useSelector(state => state.openSidebarRightReducer.isOpen)
   const dispatch = useDispatch()
-
   const {isPictureInPictureActive, isPictureInPictureAvailable, togglePictureInPicture} = usePictureInPicture(audio, {
     onEnterPictureInPicture: (e) => {
       console.log('enter-pip: ',e)
@@ -66,9 +71,6 @@ const ControlAudio = memo(() => {
       console.log('leave-pip: ',e)
     }
   })
-
-  
-
 
   // Hàm update thời lượng khi bài hát đang phát
   const handleTimeUpdateAudio = useCallback(() => {
@@ -183,8 +185,9 @@ const ControlAudio = memo(() => {
   // Đóng mở menu bên phải
   const handleOpenSidebarRight = useCallback((e) => {
     e.stopPropagation()
-    dispatch(actions.openSidebarRightAction(false))
-  },[dispatch])
+    console.log(111)
+    dispatch(actions.openSidebarRightAction(!openSidebarRight))
+  },[])
 
   // Phát bài hát
   const handlePlaySong = useCallback(async (e) => {
@@ -211,15 +214,6 @@ const ControlAudio = memo(() => {
       console.log('Audio pause', err)
     }
   },[dispatch, handleTimeUpdateAudio])
-
-  // Click set time audio
-  const handleClickSetTimeAudio = useCallback((e) => {
-    let width = clickSetTimeAudioRef.current.clientWidth
-    const timeDuration = audio.current.duration
-    const offset = e.nativeEvent.offsetX
-    const progress = (offset / width) * 100
-    audio.current.currentTime = (progress / 100) * timeDuration
-  },[])
   
   // Ngăn chặn sự kiện nổi bọt
   const onStopNavigate = useCallback((e) => {
@@ -227,12 +221,24 @@ const ControlAudio = memo(() => {
     handleDetailSong(e)
   },[handleDetailSong])
 
+  // Hàm event change value input
+  const handleInputAudio = (e) => {
+    e.stopPropagation()
+    if(audio.current) {
+      let percentValue = (inputRangeSong.current.value / parseInt(audio.current.duration)) * 100
+      let color = `linear-gradient(90deg, rgb(255,255,255) ${percentValue}%, rgb(130,130,130) ${percentValue}%)`
+      inputRangeSong.current.style.background = color
+      audio.current.currentTime = inputRangeSong.current.value
+      setValueInputSong(parseFloat(inputRangeSong.current.value))
+    }
+  }
+
   // Hàm tính toán auto update thanh line chạy cho thời lượng bài hát
-  const handleTimeAudio = (currentTime, durationTime) => {   
+  const handleTimeAudio = (currentTime, durationTime) => {
     let percentValue = (currentTime / durationTime) * 100
     let color = `linear-gradient(90deg, rgb(255,255,255) ${percentValue}%, rgb(130,130,130) ${percentValue}%)`
-    setValueInputSong(percentValue)
     inputRangeSong.current.style.background = color
+    setValueInputSong(parseFloat(audio.current.currentTime))
   }
 
   // PiP
@@ -257,13 +263,15 @@ const ControlAudio = memo(() => {
   // Xử lý nút bật - tắt âm lượng -> làm thay đổi input range
   const handleMutedVolume = useCallback((e) => {
     e.stopPropagation()
-    if(mutedVolume === false) {
-      setPrevVolume(valueVolume)
-      setValueVolume(audio.current.volume = 0)
-      setMutedVolume(true)
-    } else {
-      setValueVolume(prevVolume !== null ? (audio.current.volume = prevVolume) : 0.5)
-      setMutedVolume(false)
+    if(audio){
+      if(mutedVolume === false) {
+        setPrevVolume(valueVolume)
+        setValueVolume(audio.current.volume = 0)
+        setMutedVolume(true)
+      } else {
+        setValueVolume(prevVolume !== null ? (audio.current.volume = prevVolume) : 0.5)
+        setMutedVolume(false)
+      }
     }
   },[mutedVolume, valueVolume])
 
@@ -337,18 +345,21 @@ const ControlAudio = memo(() => {
   // Thêm CSS styles cho change theme
   useEffect(() => {
     const element = ref.current
-    if(thumb) {
-      element.classList.add(state.backgroundControlAudio)
-      element.classList.add('body-animate')
+    if(element) {
+      if(thumb) {
+        element.classList.add(state.backgroundControlAudio)
+        element.classList.add('body-animate')
+  
+      } else {
+        element.classList.remove(state.backgroundControlAudio)
+        element.classList.remove('body-animate')
+      }
+      return () => {
+        element.classList.remove(state.backgroundControlAudio)
+        element.classList.remove('body-animate')
+      }
+    }
 
-    } else {
-      element.classList.remove(state.backgroundControlAudio)
-      element.classList.remove('body-animate')
-    }
-    return () => {
-      element.classList.remove(state.backgroundControlAudio)
-      element.classList.remove('body-animate')
-    }
   },[thumb, state])
   
   // Xử lý volume khi kéo
@@ -357,9 +368,11 @@ const ControlAudio = memo(() => {
       const handlePercent = (num) => {
         return (num * 100)
       }
-      let volumeInputValue = inputVolume.current.value
-      let color = `linear-gradient(90deg, rgb(255,255,255) ${handlePercent(volumeInputValue)}%, rgb(130,130,130) ${handlePercent(volumeInputValue)}%)`
-      inputVolume.current.style.background = color
+      if(inputVolume.current) {
+        let volumeInputValue = inputVolume?.current.value
+        let color = `linear-gradient(90deg, rgb(255,255,255) ${handlePercent(volumeInputValue)}%, rgb(130,130,130) ${handlePercent(volumeInputValue)}%)`
+        inputVolume.current.style.background = color
+      }
     }
     changeVolume()
   },[valueVolume])
@@ -371,7 +384,9 @@ const ControlAudio = memo(() => {
       setPlay(true)
       audio.current.play()
     }
-    audio.current.currentTime = 0
+    if(audio.current) {
+      audio.current.currentTime = 0
+    }
     if(isChangeSong) {
       if(audio.current) {
         setIsLoadMetaAudio(true)
@@ -396,26 +411,17 @@ const ControlAudio = memo(() => {
 
   // Lấy ra bài hát nghe trước đó trong LocalStorange khi truy cập lại App
   useEffect(() => {
-    const initSong = localStorage.getItem('listPlaying')
-    if(initSong === 'undefined' || initSong === null) {
-      if(songsSuggest) {
-        dispatch(actions.getInfoSongAction({
-          ...stateSong,
-          song: {
-            ...songsSuggest[0]
-          }
-        }))
-      
-      }
-      console.log('songsSuggest music')
+    const songInit = localStorage.getItem('playing')
+    if(songInit === 'undefined' || songInit === null) {
+      return 
     } else {
       try {
-        const parseInitSong = JSON.parse(initSong) 
-        if(parseInitSong && typeof parseInitSong === 'object' && parseInitSong !== null) {
+        const parseSongInit = JSON.parse(songInit) 
+        if(parseSongInit && typeof parseSongInit === 'object' && parseSongInit !== null) {
           dispatch(actions.getInfoSongAction({
             ...stateSong,
             song: {
-              ...parseInitSong
+              ...parseSongInit
             }
           }))
         } else {
@@ -425,198 +431,147 @@ const ControlAudio = memo(() => {
         console.log('catch music', e)
       }
     }
-    
   },[])
 
-  // useEffect(() => {
-  //   if(audio.current) {
-  //     audio.current.autoplay = false
-  //     audio.current.pause()
+    if(context.player || storeRange){
+      return (
+          <section ref={ref} className={` ${state.textColor} ${state.backgroundControlAudio ? state.backgroundControlAudio : 'bg-primary'} h-91 fixed bottom-0 flex justify-center w-full xs:hidden lg:block  text-white border-t-1 border-zinc-700 z-50`} >
+            <div className='w-full h-full text-white pr-5 pl-7 mx-auto flex justify-between items-center cursor-pointer' onClick={handleDetailSong}>
+              <div className='flex items-center h-full'>
+                <div className='flex items-center min-w-235 max-w-235'>
+                  <div className='relative shrink-0'>
+                    <img 
+                      src={stateSong.song.thumbnail && stateSong.song.thumbnail}
+                      alt='img'
+                      className={`w-16 h-16 block object-cover rounded-full 
+                        ${audio.current && audio.current.currentTime > 0 && !audio.current.paused && !audio.current.ended && audio.current.readyState > audio.current.HAVE_CURRENT_DATA && 'animate-spin-rotate'}`}
+                    />    
+                  </div>
+                  <div className='mx-3 flex flex-col '>
+                    <h3 className='text-sm font-semibold line-clamp-2'>{stateSong.song.title && stateSong.song.title}</h3>
+                    <span className='text-xs text-zinc-500 font-medium'>{stateSong.song.artist && stateSong.song.artist}</span>
+                  </div>
+                </div>
+                <div className='flex items-center mx-4 gap-1 text-white'> 
+                
+                <audio 
+                  ref={audio} 
+                  src={stateSong.song.url && stateSong.song.url} 
+                  volume={valueVolume} 
+                  loop={activeLoop ? true : false} 
+                  hidden 
+                  controls 
+                  autoPlay={false}
+                  onTimeUpdate={handleTimeUpdateAudio}
+                />     
+                  <BtnRadius title={activeHeart ? 'Xóa yêu thích' : 'Yêu thích'} placement='top' onClick={handleHeart}> 
+                    { activeHeart ? (<GoHeartFill />) : (<GoHeart />) }
+                  </BtnRadius>
 
-  //     const promise = audio.current.play()
-  //     if(promise !== undefined) {
-  //         promise.catch(() => {
-  //             console.log('Bị chặn autoPlay')
-  //             setIsLoadMetaAudio(false)
-  //             setPlay(false)
-  //             audio.current.pause()
-  //             audio.current.currentTime = 0
-  //         })
-  //     }
-  //   }
-  // }, [])
-
-  // useEffect(() => {
-  //   audio.current.addEventListener('play', () => {
-      
-  //   })
-  // }, [])
-
-
-    return (
-    <section ref={ref} className={` ${state.textColor} h-91 fixed bottom-0 flex justify-center w-full xs:hidden lg:block text-white border-t-1 border-zinc-700 z-50`} >
-      <div className='w-full h-full text-white pr-5 pl-7 mx-auto flex justify-between items-center cursor-pointer' onClick={handleDetailSong}>
-        <div className='flex items-center h-full'>
-          <div className='flex items-center min-w-235 max-w-235'>
-            <div className='relative shrink-0'>
-              <img 
-                src={stateSong.song.thumbnail && stateSong.song.thumbnail}
-                alt='img'
-                className={`w-16 h-16 block object-cover rounded-full 
-                  ${audio.current && audio.current.currentTime > 0 && !audio.current.paused && !audio.current.ended && audio.current.readyState > audio.current.HAVE_CURRENT_DATA && 'animate-spin-rotate'}`}
-              />    
-                  
-            </div>
-            <div className='mx-3 flex flex-col '>
-              <h3 className='text-sm font-semibold line-clamp-2'>{stateSong.song.title && stateSong.song.title}</h3>
-              <span className='text-xs text-zinc-500 font-medium'>{stateSong.song.artist && stateSong.song.artist}</span>
-            </div>
-          </div>
-          <div className='flex items-center mx-4 gap-1 text-white'> 
-          
-          {/* <audio 
-            // pip={pipMode}
-            ref={audio} 
-            // src={`${stateSong.nextSong || stateSong.prevSong ? (data[currentSongIndex].url) : (stateSong.song.url)}`} 
-            // volume={valueVolume} 
-            // loop={activeLoop ? true : false} 
-            hidden 
-            // autoPlay={stateSong.song && stateSong.autoPlay ? true : false}
-            // controls 
-            // onTimeUpdate={handleTimeUpdateAudio}
-          />      */}
-          <video 
-            hidden 
-            ref={audio} 
-            src={stateSong.song.url_mp4 && stateSong.song.url_mp4} 
-            volume={valueVolume} 
-            loop={activeLoop ? true : false} 
-            controls 
-            autoPlay={false}
-            onTimeUpdate={handleTimeUpdateAudio}
-            poster={stateSong.song.thumbnail} 
-            // ref={videoRef}
-            // autoPlay={stateSong.song && stateSong.autoPlay ? true : false}
-            // onPause={onPauseSong}
-            // onPlay={onPlaySong}
-
-          />
-          
-            <BtnRadius title={activeHeart ? 'Xóa yêu thích' : 'Yêu thích'} placement='top' onClick={handleHeart}> 
-              { activeHeart ? (<GoHeartFill />) : (<GoHeart />) }
-            </BtnRadius>
-
-            <BtnRadius title='Xem thêm' placement='top'>
-              <IoIosMore />
-            </BtnRadius>
-          </div>
-        </div>
-        <div className='min-w-[800px] text-xl mx-auto flex-col items-center justify-center h-full'>
-          <div className='flex items-center text-xl justify-center gap-3 h-12 mt-2'>
-            <BtnRadius title='Phát ngẫu nhiên' placement='top' onClick={handleRandomSong}>
-              <LiaRandomSolid className={`${isRandom && 'text-main'}`} />
-            </BtnRadius>
-            <BtnRadius onClick={handlePrevious}>
-              <RxTrackPrevious />
-            </BtnRadius>
-            <BtnRadius title={play ? 'Tạm dừng' : 'Phát bài hát'} placement='top' classMore='hover:bg-transparent'>
-                {
-                  play
-                  ?  (<div className='relative w-[38px] h-[38px] rounded-full border-[1.5px] border-white' onClick={handlePauseSong}>
-                        {
-                          isLoadMetaAudio
-                          ? <Spin size='small' className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-md' />
-                          : <IoIosPause  className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-md'/>
-                        }
-                     </div>)
-                  :  (<div ref={btnPlayRef} className='relative w-[38px] h-[38px] rounded-full border-[1.5px] border-white' onClick={handlePlaySong}>
-                        <IoIosPlay className='absolute top-1/2 left-1/2 -translate-x-[44%] -translate-y-1/2 text-md'/>
-                     </div>)
-                }
-            </BtnRadius>
-            <BtnRadius onClick={handleNext}>
-              <RxTrackNext />
-            </BtnRadius>
-            <BtnRadius title={activeLoop ? 'Tắt phát lại' : 'Bật phát lại một bài'} placement='top' onClick={handleLoop} className='group'>
-              {
-                activeLoop 
-                ? (<div className='relative group'>
-                    <RxLoop className=' text-violet ' />
-                    <span className='absolute top-0 left-[60%] text-ss group-hover:bg-gray-700 text-violet bg-navBar text-center rounded-full w-9px h-10px leading-3'>1</span>
-                  </div>)
-                : (<RxLoop />)                            
-              }
-            </BtnRadius>
-          </div>
-          <div className='flex items-center justify-center gap-2 h-6'>
-            <span id='time-line' className='text-xs text-center min-w-[44px] font-medium text-zinc-400 shrink-0 select-none tracking-widest'>{curTime ? curTime : '0'}</span>
-            <div ref={clickSetTimeAudioRef} className='control flex flex-1 items-center cursor-pointer group/parent w-3/4 py-1 ' onMouseDown={handleClickSetTimeAudio}>
-              <input 
-                    className='w-full' 
-                    type='range' 
-                    step={0.1} 
-                    ref={inputRangeSong}
-                    // min={minValueInputSong} 
-                    // max={maxValueInputSong} 
-                    value={valueInputSong} 
-                    // onClick={handleStopPropagation}
-                    onChange={handleTimeAudio}
-                  />    
-            </div>
-            <span id='time-total' className='text-xs text-center min-w-[44px] text-zinc-200 font-medium shrink-0 select-none tracking-widest'>{totalTime ? totalTime : '00:00'}</span>
-          </div>
-          <div>
-            
-          </div>
-        </div>
-        <div className='flex h-full items-center gap-10'>
-          <div className='w-full flex relative justify-end items-center gap-3 text-xl after:w-px after:bg-slate-500 after:h-full after:-right-5 after:top-0 after:block after:absolute'>
-            <BtnRadius title='Xem MV' placement='top' onClick={handleStopPropagation}>
-              <GoVideo className='flex-1' />
-            </BtnRadius>
-            <BtnRadius title='Xem lời bài hát' placement='top' onClick={handleStopPropagation}>
-              <LiaMicrophoneAltSolid className='flex-1' />
-            </BtnRadius>
-            <BtnRadius title='Thu nhỏ' placement='top' onClick={handlePictureInPicture}>
-              <VscChromeRestore className={`${isPictureInPictureAvailable && 'text-red-300'} flex-1`} />
-            </BtnRadius>
-            <div className='flex items-center flex-1 gap-1'>
-                <BtnRadius>
-                {
-                  mutedVolume 
-                  ? (<BiVolumeMute className='flex-1' onClick={handleMutedVolume} />)
-                  : (<HiOutlineVolumeUp className='flex-1' onClick={handleMutedVolume} />)
-                }
-                </BtnRadius>
-                <div className='w-[90px] control flex items-center flex-1 cursor-pointer transition-all group/parent' onClick={onStopNavigate} >         
-                  <input 
-                    className='w-full' 
-                    type='range' 
-                    ref={inputVolume} 
-                    min={minVolume} 
-                    max={maxVolume} 
-                    step={step} 
-                    value={valueVolume} 
-                    onClick={handleStopPropagation}
-                    onChange={handleChangeInputRangeVolume}
-                  />          
+                  <BtnRadius title='Xem thêm' placement='top'>
+                    <IoIosMore />
+                  </BtnRadius>
                 </div>
               </div>
-          </div>
-          <span onClick={handleOpenSidebarRight}>
-            <BtnRadius title='Danh sách phát' placement='top' classMore='bg-gray-700 rounded-sm p-1'>
-              <BsMusicNoteList className='flex-1'/>
-            </BtnRadius>
-          </span>
-        </div>
-      </div>
-      <div className={`absolute bottom-[101%] left-0 w-240 flex items-center xl:translate-x-0 ${state.backgroundControlAudio || 'bg-main'} ${context.isActiveSidebar === true ? 'sm:translate-x-0' : 'xs:-translate-x-full'} transition-all flex-shrink-0 z-10 mt-auto px-6 gap-2 text-colo font-semibold h-12 cursor-pointer border-solid hover:text-white border-t-1 border-zinc-700`}>
-          <BiPlus/> 
-          <span className={`${state.textColor} flex-1`}>Tạo playlist mới</span>
-      </div>    
-               
-    </section>
-  )
+              <div className='min-w-[800px] text-xl mx-auto flex-col items-center justify-center h-full'>
+                <div className='flex items-center text-xl justify-center gap-3 h-12 mt-2'>
+                  <BtnRadius title='Phát ngẫu nhiên' placement='top' onClick={handleRandomSong}>
+                    <LiaRandomSolid className={`${isRandom && 'text-main'}`} />
+                  </BtnRadius>
+                  <BtnRadius onClick={handlePrevious}>
+                    <RxTrackPrevious />
+                  </BtnRadius>
+                  <BtnRadius title={play ? 'Tạm dừng' : 'Phát bài hát'} placement='top' classMore='hover:bg-transparent'>
+                      {play
+                        ?  (<div className='relative w-[38px] h-[38px] rounded-full border-[1.5px] border-white' onClick={handlePauseSong}>
+                              {isLoadMetaAudio
+                                ? <Spin size='small' className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-md' />
+                                : <IoIosPause  className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-md'/>
+                              }
+                          </div>)
+                        :  (<div ref={btnPlayRef} className='relative w-[38px] h-[38px] rounded-full border-[1.5px] border-white' onClick={handlePlaySong}>
+                              <IoIosPlay className='absolute top-1/2 left-1/2 -translate-x-[44%] -translate-y-1/2 text-md'/>
+                          </div>)
+                      }
+                  </BtnRadius>
+                  <BtnRadius onClick={handleNext}>
+                    <RxTrackNext />
+                  </BtnRadius>
+                  <BtnRadius title={activeLoop ? 'Tắt phát lại' : 'Bật phát lại một bài'} placement='top' onClick={handleLoop} className='group'>
+                    {activeLoop 
+                      ? (<div className='relative group'>
+                          <RxLoop className=' text-violet ' />
+                          <span className='absolute top-0 left-[60%] text-ss group-hover:bg-gray-700 text-violet bg-navBar text-center rounded-full w-9px h-10px leading-3'>1</span>
+                        </div>)
+                      : (<RxLoop />)                            
+                    }
+                  </BtnRadius>
+                </div>
+                <div className='flex items-center justify-center gap-2 h-6'>
+                  <span id='time-line' className='text-xs text-center min-w-[44px] font-medium text-zinc-400 shrink-0 select-none tracking-widest'>{curTime ? curTime : '0'}</span>
+                  <div className='control flex flex-1 items-center cursor-pointer group/parent w-3/4 py-1 ' >
+                    <input 
+                      className='input-range-song w-full' 
+                      type='range' 
+                      step={0.1} 
+                      ref={inputRangeSong}
+                      min={0} 
+                      max={audio?.current?.duration || 100} 
+                      value={valueInputSong} 
+                      onInput={handleInputAudio}
+                    />    
+                  </div>
+                  <span id='time-total' className='text-xs text-center min-w-[44px] text-zinc-200 font-medium shrink-0 select-none tracking-widest'>{totalTime ? totalTime : '00:00'}</span>
+                </div>
+              </div>
+              <div className='flex h-full items-center gap-10'>
+                <div className='w-full flex relative justify-end items-center gap-3 text-xl after:w-px after:bg-slate-500 after:h-full after:-right-5 after:top-0 after:block after:absolute'>
+                  <BtnRadius title='Xem MV' placement='top' onClick={handleStopPropagation}>
+                    <GoVideo className='flex-1' />
+                  </BtnRadius>
+                  <BtnRadius title='Xem lời bài hát' placement='top' onClick={handleStopPropagation}>
+                    <LiaMicrophoneAltSolid className='flex-1' />
+                  </BtnRadius>
+                  <BtnRadius title='Thu nhỏ' placement='top' onClick={handlePictureInPicture}>
+                    <VscChromeRestore className={`${isPictureInPictureAvailable && 'text-red-300'} flex-1`} />
+                  </BtnRadius>
+                  <div className='flex items-center flex-1 gap-1'>
+                      <BtnRadius>
+                      {mutedVolume 
+                        ? (<BiVolumeMute className='flex-1' onClick={handleMutedVolume} />)
+                        : (<HiOutlineVolumeUp className='flex-1' onClick={handleMutedVolume} />)
+                      }
+                      </BtnRadius>
+                      <div className='w-[90px] control flex items-center flex-1 cursor-pointer transition-all group/parent' onClick={onStopNavigate} >         
+                        <input 
+                          className='w-full' 
+                          type='range' 
+                          ref={inputVolume} 
+                          min={minVolume} 
+                          max={maxVolume} 
+                          step={step} 
+                          value={valueVolume} 
+                          onClick={handleStopPropagation}
+                          onChange={handleChangeInputRangeVolume}
+                        />          
+                      </div>
+                    </div>
+                </div> 
+                <BtnRadius onClick={handleOpenSidebarRight} title='Danh sách phát' placement='top' classMore='bg-gray-700 rounded-sm p-1'>
+                  <BsMusicNoteList className='flex-1'/>
+                </BtnRadius>
+              </div>
+            </div>
+            <div className={`absolute bottom-[101%] left-0 w-240 flex items-center xl:translate-x-0 ${state.backgroundControlAudio || 'bg-main'} ${context.isActiveSidebar === true ? 'sm:translate-x-0' : 'xs:-translate-x-full'} transition-all flex-shrink-0 z-10 mt-auto px-6 gap-2 text-colo font-semibold h-12 cursor-pointer border-solid hover:text-white border-t-1 border-zinc-700`}>
+              <BiPlus/> 
+              <span className={`${state.textColor} flex-1`}>Tạo playlist mới</span>
+            </div>    
+          </section>
+      )
+    } else {
+      return <></>
+    }
+    
   
   
 })

@@ -7,6 +7,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { jwtDecode } from "jwt-decode"
 import { useForm } from "react-hook-form"
 import instance from '../../service/config'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export const useGetLocalStorage = () => {
   const [user, setUser] = useState(null)
@@ -46,13 +48,12 @@ function Login() {
       console.log('data', res)
       if(res.ec === 0) {
         const userEncoded = jwtDecode(res.dt.access_token)
-        if(historyPathname === '/upload' && userEncoded.group.group_name !== 'admin') {
-          alert('You don\'t access enter this page')
-          navigate('/')
-        } else { 
-          localStorage.setItem('user', JSON.stringify(res.dt.access_token))
-          dispatch(actions.userLoginAction(userEncoded))
-          alert('Login successfully')
+        localStorage.setItem('user', JSON.stringify(res.dt.access_token))
+        dispatch(actions.userLoginAction(userEncoded))
+        alert('Login successfully')
+        if(res.dt.group.group_name === 'admin'){
+          navigate('/auth/admin')
+        } else {
           navigate(historyPathname, { replace: true })
         }
       }

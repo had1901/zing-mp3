@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { BiDisc, BiBone } from "react-icons/bi";
+import { BiDisc, BiBone, BiPlus } from "react-icons/bi";
 import { AiOutlinePieChart, AiOutlineStar } from "react-icons/ai";
 import { SiYoutubemusic } from "react-icons/si";
 import { RiFolderMusicLine } from "react-icons/ri";
@@ -59,6 +59,8 @@ function Sidebar() {
   const context = useContext(Context)
   const state = useSelector(state => state.activeNavigateReducer)
   const state2 = useSelector(state => state.backgroundReducer)
+  const stateThumb = useSelector(state => state.backgroundReducer)
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
@@ -126,10 +128,10 @@ function Sidebar() {
   }, [dispatch, location.pathname]);
 
   return (
-    <section className={`h-90 xl:translate-x-0 ${context.isActiveSidebar === true ? 'sm:translate-x-0 xs:bg-main shadow-sidebarShadow' : 'xs:-translate-x-full'}  transition-all fixed z-50 ${state2.bgSidebarLeft} `}>
+    <section className={`h-full xl:translate-x-0 ${context.isActiveSidebar === true ? 'sm:translate-x-0 xs:bg-main shadow-sidebarShadow' : 'xs:-translate-x-full'}  transition-all fixed z-50 ${state2.bgSidebarLeft} `}>
       <BsArrowLeft className={`${state2.textColor} absolute right-5 top-6 text-xl`} onClick={() => context.handleActiveSidebar() }/>
       <div className='w-60 flex flex-col h-full'>
-        <div className='flex-1 pb-32'>
+        <div className='flex-1'>
           <div className='w-full h-70 px-7'>
             <div className='h-full py-3'>
               <img 
@@ -169,7 +171,12 @@ function Sidebar() {
             </div>
           </div>
         </div>
+        <div className={`w-full flex items-center transition-all flex-shrink-0 z-10 px-6 gap-2 text-colo font-semibold h-12 cursor-pointer border-solid hover:text-white border-t-1 border-zinc-700`}>
+          <BiPlus /> 
+        <span className={`${stateThumb.textColor} flex-1`}>Tạo playlist mới</span>
+      </div>
       </div> 
+      
     </section>
   )
 }

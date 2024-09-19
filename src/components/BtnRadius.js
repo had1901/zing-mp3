@@ -7,7 +7,7 @@ const BtnRadius =  memo(function BtnRadius({children, classMore, title, placemen
       <div 
         onClick={
           onClick
-          ? onclick
+          ? onClick
           : (e) => {
             e.stopPropagation()
           }

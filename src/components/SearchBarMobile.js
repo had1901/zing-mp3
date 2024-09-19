@@ -16,7 +16,7 @@ function SearchBarMobile() {
   }
 
   return (
-    <div className={`fixed pl-3%3 pr-2%9 flex justify-between gap-x-4 xl:left-60 xs:left-0 right-0 bottom-0 z-30 items-center text-white bg-[#231b2e] select-none`}>       
+    <div className={`fixed pl-3%3 pr-2%9 flex justify-between gap-x-4 xl:left-60 lg:hidden xs:left-0 right-0 bottom-0 z-30 items-center text-white bg-[#231b2e] select-none`}>       
               <div className=' flex w-full xs:justify-between'>
 
                 <BtnRadius classMore='xl:hidden sm:block flex items-center justify-center hover:bg-transparent' onClick={() => handleActiveSidebarContext()}>

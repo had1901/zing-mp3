@@ -14,10 +14,11 @@ function ContextProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true)
   const [isLoadMetaAudio, setIsLoadMetaAudio] = useState(true)
   const [play, setPlay] = useState(false)
+  const [player, setPlayer] = useState(false)
 
 
   const [listPlay, setListPlay] = useState(() => {
-    const songPlaying = localStorage.getItem('listPlaying');
+    const songPlaying = localStorage.getItem('playing');
     
     if (songPlaying) {
         try {
@@ -49,7 +50,7 @@ function ContextProvider({ children }) {
   const handleListenNear = (song) => {
     console.log('song-context', song)
     setListPlay(song) 
-    localStorage.setItem('listPlaying', JSON.stringify(song))
+    localStorage.setItem('playing', JSON.stringify(song))
     setSongListen(prev => {
         if(!Array.isArray(prev)) {
           return prev = []
@@ -91,7 +92,8 @@ function ContextProvider({ children }) {
     audio,
     isLoadMetaAudio,
     play,
-
+    player,
+    
     handleChangeThumb,
     handleActiveSidebar,
     handleListenNear,
@@ -99,7 +101,8 @@ function ContextProvider({ children }) {
     setActiveAudio,
     setIsLoading,
     setIsLoadMetaAudio,
-    setPlay
+    setPlay,
+    setPlayer
   }
 
   

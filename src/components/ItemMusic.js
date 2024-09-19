@@ -40,22 +40,7 @@ function ItemMusic({ onClick, ...props }) {
       activeAudio: true, 
       isChanged: false
     }))
-    let isPlaying = 
-      audio.current.currentTime > 0 
-      && !audio.current.paused 
-      && !audio.current.ended 
-      && audio.current.readyState > audio.current.HAVE_CURRENT_DATA
-
-    audio.current.currentTime = 0
-    setIsLoadMetaAudio(true)
-    setPlay(true)
-    // if (!isPlaying) {
-      audio.current.load()
-      audio.current.addEventListener('canplay', () => {
-          setIsLoadMetaAudio(false)
-          audio.current.play()
-      })
-    // }
+    context.setPlayer(true)
     context.handleListenNear(song)
   }
 
@@ -74,6 +59,21 @@ function ItemMusic({ onClick, ...props }) {
         return
     }   
   },[])
+
+  useEffect(() => {
+    if(context.player) {
+      if(audio.current){
+        audio.current.currentTime = 0
+        setIsLoadMetaAudio(true)
+        setPlay(true)
+        audio.current.load()
+        audio.current.addEventListener('canplay', () => {
+          setIsLoadMetaAudio(false)
+          audio.current.play()
+        })
+      }
+    }
+  },[context.player])
 
   useEffect(() => {
     setRandom(Math.floor(Math.random() * 100))
@@ -119,22 +119,19 @@ function ItemMusic({ onClick, ...props }) {
                 }
                 <div className={`relative group/parent cursor-pointer ${props.classNameMore}`} onClick={() => handleGetInfoMusic(props.song)}>
                   <img 
-                    // src={`/mp3/imgMusic/${props.song?.information?.thumb || <Skeleton />}`} 
                     src={`${props.song?.thumbnail || 'https://res.cloudinary.com/mp3-img/image/upload/v1723920725/img13_liunio.webp'}`} 
                     alt={props.song?.title} 
                     className='w-full h-full group-hover/item:bg-[#00000080] group-hover/item:opacity-50 block rounded-md object-cover border-black'                
                   />
-                  {
-                    state.song === props.song 
-                    ?(<div className='w-full h-full flex items-center justify-center text-center absolute z-10 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-musicBgColor shadow-musicShadow rounded-md'>                      
+                  {state.song === props.song 
+                    ? (<div className='w-full h-full flex items-center justify-center text-center absolute z-10 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-musicBgColor shadow-musicShadow rounded-md'>                      
                           {
                             play
                             ? (<img src='./mp3/gifWaveMusic/icon-playing.gif' alt='gif' className='w-1/3 inline-block ' />)
                             : (<FaPlay className='w-1/3 text-xl' />)
                           }                      
                       </div>)
-                    :
-                      null
+                    : null
                   }
                   <FaPlay className={`absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 hidden ${state2.textColor} ${!props.noBtnPlay ? 'text-xl' : 'text-md'} group-hover/item:block group-hover/item:opacity-90`}/>
                 </div>
@@ -149,9 +146,7 @@ function ItemMusic({ onClick, ...props }) {
                   {props.isDate && <span className={`text-xs ${state2.textColor}`}>{props.song?.releaseDate || <Skeleton />}</span>}
                 </div>
                 <div className={`${props.isAlbum ? 'flex-2 text-xs text-[#ffffff80]' : '' }`}>
-                  {
-                    props.isAlbum && (<p>{props.song?.album}</p>)
-                  }
+                  {props.isAlbum && (<p>{props.song?.album}</p>)}
                 </div>
                 {props.children}
                 <div className={props.classIcon}>

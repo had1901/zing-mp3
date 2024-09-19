@@ -6,7 +6,7 @@ import axios from 'axios';
 import { LuMusic } from 'react-icons/lu';
 import BtnRadius from './../components/BtnRadius';
 import { GoHeart, GoHeartFill } from 'react-icons/go';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../redux/actions';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -16,6 +16,7 @@ import { motion } from "framer-motion"
 import { useNavigate } from 'react-router-dom';
 import { verifyUser } from '../api/verifyToken';
 import { useGlobalRef } from '../context/ContextGlobal';
+import { useQuery } from '@tanstack/react-query';
 
 
 function Libraries() {
@@ -30,7 +31,8 @@ function Libraries() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
-  
+  const listSong = useSelector(state => state.getListSongReducer.listSong)
+  console.log(listSong)
   const buttons1 = [
     'Bài hát',
     'Album',
@@ -66,6 +68,15 @@ function Libraries() {
   const handleActive2 = (btn) => {
     setActiveTab2(btn)
   }
+  // const { data, error } = useQuery({ 
+  //   queryKey: ['list-song'],
+  //   queryFn: getListSong,
+  // })
+
+  // useEffect(() => {
+  //   dispatch(actions.getListSongAction(data))
+  // }, [data]) 
+
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false)
@@ -94,18 +105,18 @@ function Libraries() {
           className='flex item-center justify-between text-white mt-5'
         >
           {
-            isLoading && dataMusic.length > 0
+            isLoading && listSong.length > 0
             ? (<SkeletonImages listMusic={5} />)
-            : (dataMusic.slice(0,5).map((item, index) => (
-                <motion.li key={index} className='w-[290px] h-[290px] flex-shrink-0'
+            : (listSong.slice(0,5).map((item, index) => (
+                <motion.li key={item.id} className='w-[290px] h-[290px] flex-shrink-0'
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1}}
                   transition={{ duration: 0.5 }}
                   >
                     <a href='/' className='block h-full'>
-                      <img src={`/mp3/imgMusic/${item.information.thumb}`} alt='img' className='w-full h-full object-cover rounded-md' />
-                      <h3 className='text-sm font-medium mt-2'>{item.name.song || <Skeleton />}</h3>
-                      <p className='text-xs text-[#ffffff80] mt-1'>{item.name.singer || <Skeleton />}</p>
+                      <img src={item.thumbnail} alt={item.title} className='w-full h-full object-cover rounded-md' />
+                      <h3 className='text-sm font-medium mt-2'>{item.title || <Skeleton />}</h3>
+                      <p className='text-xs text-[#ffffff80] mt-1'>{item.artist || <Skeleton />}</p>
                     </a>
                 </motion.li>
               ))) 
@@ -145,23 +156,23 @@ function Libraries() {
           </div>
           <ul className='text-white mt-4 -mx-3'>
             {
-              isLoading && dataMusic.length > 0
-              ? (<SkeletonMusic listMusic={dataMusic.length} time />)
-              : (dataMusic.map(song => (
+              isLoading && listSong.length > 0
+              ? (<SkeletonMusic listMusic={listSong.length} time />)
+              : (listSong.map(song => (
                   <li key={song.id} className='px-2 py-2 hover:bg-sidebarRose hover:border-transparent rounded-sm border-t-1 border-b-1 border-[#ffffff0d]' onClick={() => handleGetInfoMusic(song)}>
                     <a href='/' className='flex items-center' onClick={handleClick}>
                       <div className='flex items-center gap-3 w-1/2'>
                         <LuMusic />
                         <div className='w-10 h-10 overflow-hidden rounded-md'>
-                          <img src={`/mp3/imgMusic/${song.information.thumb}`} alt='img' className='w-full h-full object-cover' />
+                          <img src={song.thumbnail} alt='img' className='w-full h-full object-cover' />
                         </div>
                         <div className='capitalize'>
-                          <h3 className='text-sm font-medium'>{song.name.song || <Skeleton />}</h3>
-                          <p className='text-xs text-[#ffffff80]'>{song.name.singer || <Skeleton />}</p>
+                          <h3 className='text-sm font-medium'>{song.title || <Skeleton />}</h3>
+                          <p className='text-xs text-[#ffffff80]'>{song.artist || <Skeleton />}</p>
                         </div>
                       </div>
                       <div className='flex-1 capitalize text-xs text-[#ffffff80]'>
-                        <p>{song.information.album || <Skeleton />}</p>
+                        <p>{song.album || <Skeleton />}</p>
                       </div>
                       <div className='flex items-center gap-4 text-xs text-[#ffffff80]'>
                         <div onClick={(e) => handleHeart(e, song.id)}> 
@@ -169,7 +180,7 @@ function Libraries() {
                             activeHeart && activeId === song.id ? (<GoHeartFill />) : (<GoHeart />)
                           }
                         </div>
-                        <span>05:02</span>
+                        <span>{song.duration}</span>
                       </div>
                     </a>
                   </li>)

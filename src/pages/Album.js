@@ -19,7 +19,6 @@ import instance from '../service/config'
 function Album() {
   const context = useContext(Context)
   const { categoryAlbum } = useParams()
-  console.log('categoryAlbum', categoryAlbum)
   const [activeHeart, setActiveHeart] = useState(false)
   const [album, setAlbum] = useState([])
   const state = useSelector(state => state.getInfoSongReducer)
@@ -37,7 +36,6 @@ function Album() {
           if(res && res.ec !== 0) {
             throw new Error('Can not get album')
           }
-          console.log(res.dt)
           setAlbum(res.dt)
       } catch (e) {
           console.log(e)

@@ -14,7 +14,17 @@ instance.interceptors.response.use(function (res) {
 
   return res.data
 }, async function (error) {
-  
+  const originalRequest = error.config;
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        // Gọi refreshToken để lấy token mới
+        await instance.post('/auth/refreshToken');
+        return instance(originalRequest); // Gửi lại request ban đầu với token mới
+      } catch (err) {
+        return Promise.reject(err); // Xử lý lỗi nếu refresh token không thành công
+      }
+    }
   return Promise.reject(error.response);
 })
 

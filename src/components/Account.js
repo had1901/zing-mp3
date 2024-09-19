@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import avatarPlaceholder from '../images/avatar-default/avatar.png'
 import { MdBlockFlipped } from "react-icons/md";
 import { HiOutlineUpload } from "react-icons/hi";
@@ -9,8 +9,10 @@ import { motion, AnimatePresence } from "framer-motion"
 import { handleLogout, logout } from '../service';
 import { actions } from '../redux/actions';
 import { IoCameraReverseOutline } from "react-icons/io5";
+import { Context } from '../context/ContextGlobal';
 
 function Account() {
+    const { isLoading, setIsLoading } = useContext(Context)
     const state = useSelector(state => state.backgroundReducer)
     const user = useSelector(state => state.setUserReducer)
     const navigate = useNavigate()
@@ -67,7 +69,7 @@ function Account() {
                             </div>
                             {   
                                 user.isLogging && user.group.group_name === 'admin' &&
-                                <Link to='/upload' className='flex items-center gap-3 p-2 hover:bg-[#ffffff1a] rounded-md cursor-pointer'>
+                                <Link to='/auth/admin' className='flex items-center gap-3 p-2 hover:bg-[#ffffff1a] rounded-md cursor-pointer'>
                                     <HiOutlineUpload className='text-xl'/>
                                     <span>Tải lên</span>
                                 </Link>
@@ -76,9 +78,12 @@ function Account() {
                     </div>
     
                     <div className=' before:block before:w-4/5 before:h-[1px] before:bg-[#ffffff1a]'>
-                        <div onClick={() => handleLogout(dispatch, actions, navigate)} className='flex items-center gap-3 p-2 mt-2 hover:bg-[#ffffff1a] rounded-md cursor-pointer'>
-                            <MdLogout className='text-xl'/>
-                            <span>Đăng xuất</span>
+                        <div onClick={() => {
+                                handleLogout(dispatch, actions, navigate)
+                                setIsLoading(false)
+                            }} className='flex items-center gap-3 p-2 mt-2 hover:bg-[#ffffff1a] rounded-md cursor-pointer'>
+                                <MdLogout className='text-xl'/>
+                                <span>Đăng xuất</span>
                         </div>
                     </div>
         

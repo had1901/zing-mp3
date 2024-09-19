@@ -1,14 +1,11 @@
 import { actions } from "../redux/actions"
-import { handleLogout, refreshNewToken } from "../service"
+import { handleLogout } from "../service"
 import instance from "../service/config"
 
 
 const verifyUser = async (protectedRoute, ...rest) => {
       try {
           const res = await instance.post(`${protectedRoute}`, {})
-          console.log('verify: ', res)
-
-          
           return res
       } catch(err) {
           console.log('libraries-error: ', err)

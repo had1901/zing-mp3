@@ -12,20 +12,23 @@ import SkeletonHomeMusic from './../components/Skeleton/SkeletonHomeMusic';
 import Skeleton from 'react-loading-skeleton';
 import { motion, AnimatePresence } from "framer-motion"
 import { verifyUser } from '../api/verifyToken';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import instance from '../service/config';
+import { actions } from '../redux/actions';
 
 
 function ZingChart() {
   const [showMusicVN, setShowMusicVN] = useState(5)
   const [showMusicUSUK, setShowMusicUSUK] = useState(5)
   const [showMusicKpop, setShowMusicKpop] = useState(5)
-  const [data, setData] = useState([])
-  const [path, setPath] = useState('mp3')
+  // const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
+  const data = useSelector(state => state.getListSongReducer.listSong)
+  console.log(data)
   const handleShowMusicVN = () => {
     setShowMusicVN(showMusicVN + 5)
   }
@@ -36,11 +39,32 @@ function ZingChart() {
     setShowMusicKpop(showMusicKpop + 5)
   }
   
+  // const getListSong = async () => {
+  //   try {
+  //     const res = await instance.get('/music/list-song')
+  //     return res.dt
+  //   } catch(e) {
+  //     console.log(e)
+  //   }
+  // }
+  // const { data, isLoading, error } = useQuery({ 
+  //   queryKey: ['list-song'],
+  //   queryFn: getListSong,
+  // })
 
+  // useEffect(() => {
+  //   dispatch(actions.getListSongAction(data))
+  // }, [data, dispatch])  
 
   useEffect(() => {
     verifyUser('/auth/zing-chart', dispatch, navigate)
   }, [dispatch, navigate])
+
+  useEffect(() => {
+    if(data && data.length > 0) {
+      setIsLoading(false)
+    }
+  },[data])
 
   return (
     <ContainerMain>
@@ -80,7 +104,19 @@ function ZingChart() {
                       isLoading
                       ? (<SkeletonHomeMusic listMusic={5} />)
                       : data.slice(0, showMusicVN).map((item, index) => (
-                        <ItemMusic key={index} song={item} number={index} isIcon isNumberRank isTimeString classTitle='line-clamp-1' classWrap='flex item-center border-b-1 border-sidebarRose rounded-lg hover:bg-searchRose cursor-pointer' className='w-full justify-between cursor-pointer p-3 ' classSinger='text-xs font-normal' classIcon='flex flex-1 justify-end' classNameMore='w-10 h-10' />
+                        <ItemMusic 
+                          key={index} 
+                          song={item} 
+                          number={index} 
+                          isIcon 
+                          isNumberRank 
+                          isTimeString 
+                          classTitle='line-clamp-1' 
+                          classWrap='flex item-center border-b-1 border-sidebarRose rounded-lg hover:bg-searchRose cursor-pointer' 
+                          className='w-full justify-between cursor-pointer p-3 ' 
+                          classSinger='text-xs font-normal' 
+                          classIcon='flex flex-1 justify-end' 
+                          classNameMore='w-10 h-10' />
                       ))
                     }
                     <div className='flex justify-center text-center mt-4'>

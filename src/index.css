@@ -213,31 +213,35 @@ html::-webkit-scrollbar{
   display: none;
 }
 input[type="range"] {
-  -webkit-appearance: none; /* Tắt kiểu dáng mặc định của thanh trượt trong WebKit */
-  width: 100%; /* Đặt chiều rộng của thanh trượt */
-  height: 4px; /* Đặt chiều cao của thanh trượt */ /* Đặt màu nền cho đường trượt */
-  border-radius: 5px; /* Đặt bo góc cho đường trượt */
-  outline: none; /* Tắt viền ngoài */
+  appearance: none;
+  -webkit-appearance: none; 
+  width: 100%; 
+  height: 4px; 
+  border-radius: 5px; 
+  outline: none; 
   opacity: 0.7;
   cursor: pointer;
+  background: linear-gradient(to right, #fff 0%, #ccc 0%);
 }
 input[type="range"]::-webkit-slider-thumb{
   -webkit-appearance: none;
-  display: none;
   width:0;
   height:0;
   border-radius: 999px;
   background-color: #fff;
-  margin-left: -4px;
+  /* margin-left: -4px; */
 }
 input[type="range"]:hover{
   height: 6px;
 }
 input[type="range"]:hover::-webkit-slider-thumb{
-  display: block;
   width:14px;
   height:14px;
 }
+
+
+
+
 .bg-pink{
   background-color: pink;
 }
@@ -261,6 +265,6 @@ input[type="range"]:hover::-webkit-slider-thumb{
   background-attachment: fixed;
 }
 
-.ant-spin-dot-item {
+/* .ant-spin-dot-item {
   background-color: white !important;
-}
+} */
