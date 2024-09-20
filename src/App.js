@@ -53,15 +53,16 @@ function App() {
                     setIsLoading(false)
                 }
             } catch(err) {
-                if(err.data?.isToken === false) {
-                    setIsLoading(false)
-                    return false
-                }
-                if(err.data?.ec === 1) {
+                if(err.data?.isToken === false || err.data?.ec === 1) {
                     handleLogout(actions, navigate, dispatch)
                     setIsLoading(false)
                     return false
                 }
+                // if(err.data?.ec === 1) {
+                //     handleLogout(actions, navigate, dispatch)
+                //     setIsLoading(false)
+                //     return false
+                // }
             }
         }
         start()
