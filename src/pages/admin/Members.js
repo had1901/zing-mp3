@@ -1,33 +1,45 @@
 import React, { useEffect, useState } from 'react'
-import { Space, Table, Tag, Modal, Button  } from 'antd';
+import { Space, Table, Modal, Button  } from 'antd';
 import instance from '../../service/config';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
-import { useLocation, useParams } from 'react-router-dom';
-import { Alert, Flex, Spin, Switch, Skeleton } from 'antd';
 import UserFormController from '../../components/admin/UserFormController';
-
+import { Pagination } from 'antd'
 
 
 
 function Members() {
   const [user, setUser] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
+
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false)
+  const [isLoadingCreate, setIsLoadingCreate] = useState(false)
+  const [isLoadingEdit, setIsLoadingEdit] = useState(false)
+  const [isLoadingTable, setIsLoadingTable] = useState(true)
+
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
-  const [openModelCreate, setOpenModelCreate] = useState(false)
-  const [openFormUpdate, setOpenFormUpdate] = useState(false)
+  const [openModelFormCreate, setOpenModelFormCreate] = useState(false)
+  const [openModelFormEdit, setOpenModelFormEdit] = useState(false)
+
   const [userId, setUserId] = useState(null)
-  
-  const handleOk = async (userId) => {
+  const [dataForm, setDataForm] = useState({})
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalCount, setTotalCount] = useState(0)
+  const [pageSize, setPageSize] = useState(10)
+
+  const handleDeleteUser = async (userId) => {
     if(userId) {
-      setIsLoading(true)
+      setIsLoadingTable(true)
+      setIsLoadingDelete(true)
       try{
         const deletedUser = await instance.delete(`/auth/admin/delete-user/${userId}`)
         console.log('deletedUser', deletedUser)
         if(deletedUser.ec === 0) {
-          fetchUsers()
           toast.info('Deleted successfully')
+          fetchUsers()
           setOpenConfirmDelete(false)
-          setIsLoading(false)
+          setIsLoadingTable(false)
+          setIsLoadingDelete(true)
+
         }
       } catch(e){
         console.error(e)
@@ -35,6 +47,46 @@ function Members() {
       }
     }
   }
+
+  const handleEditUser = async (userId) => {
+    if(userId) {
+      try{
+        const updateUser = await instance.delete(`/auth/admin/update-user/${userId}`, )
+        console.log('updateUser', updateUser)
+        if(updateUser.ec === 0) {
+          fetchUsers()
+          toast.info('Update successfully')
+          setIsLoadingTable(false)
+          // setOpenModelFormEdit(false)
+        }
+      } catch(e){
+        console.error(e)
+      }
+    }
+  }
+
+  const handleCreateUser = async (dataForm) => {
+    setIsLoadingCreate(true)
+    try{
+      const createUser = await instance.post(`/auth/admin/create-user/`, dataForm)
+      console.log('create-user', user)
+      if(createUser.ec === 0) {
+        toast.success('Created successfully')
+        fetchUsers()
+        setIsLoadingTable(false)
+        setIsLoadingCreate(false)
+        setOpenModelFormCreate(false)
+      }
+    } catch(e){
+      console.log(e)
+      if(e.data.ec === 1) {
+        toast.warning('User exist')
+        setIsLoadingTable(false)
+        setIsLoadingCreate(false)
+      }
+    }
+  }
+
   
   const columns = [
     {
@@ -100,8 +152,9 @@ function Members() {
                   className={`${btn === 'Delete' ? 'border-red-500 text-red-500 hover:bg-red-500' : 'border-purple-500 text-purple-500 hover:bg-purple-500'} border py-1 px-3 rounded-md hover:text-white`}>{btn}</button>
                 : <button 
                   onClick={() => {
-                    setOpenFormUpdate(true)
+                    setOpenModelFormEdit(true)
                     setUserId(record.id)
+                    setDataForm(record)
                   }} 
                   className={`${btn === 'Delete' ? 'border-red-500 text-red-500 hover:bg-red-500' : 'border-purple-500 text-purple-500 hover:bg-purple-500'} border py-1 px-3 rounded-md hover:text-white`}>{btn}</button>
               ))
@@ -126,20 +179,17 @@ function Members() {
     return data
   }
 
-  // const renderSkeleton = (num) => {
-  //   console.log(num)
-  //   const skeletons = num.map((_, index) => {
-  //     return <Skeleton.Button className='mt-2' active block={true} loading={isLoading} size={'large'} />
-  //   })
-  //   return skeletons
-  // }
   const fetchUsers = async () => {
-    setIsLoading(true)
+    setIsLoadingTable(true)
     try{
       const res = await instance.get('/auth/admin/get-users')
+      console.log('res', res)
       if(res.ec === 0){
         setUser(res.dt)
-        setIsLoading(false)
+        setTotalCount(res.count?.count)
+        // setCurrentPage(res.count?.)
+        setIsLoadingTable(false)
+
       }
     } catch(e){
       console.log(e)
@@ -151,43 +201,43 @@ function Members() {
   }, [])
 
   return (
-      // isLoading 
-      // ? <>
-      //     {renderSkeleton(Array(10).fill(14))}
-      //   </>
-      // // <div className='flex items-center justify-center h-[400px] w-ful'>
-      // //     <Flex align='center' justify='center'>
-      // //       <Spin tip="Loading" />
-      // //     </Flex>
-      // //   </div>
-      // : 
       <>
         <Modal
           title="Confirm"
           open={openConfirmDelete}
-          onOk={() => handleOk(userId)}
-          confirmLoading={isLoading}
+          onOk={() => handleDeleteUser(userId)}
+          confirmLoading={isLoadingDelete}
           onCancel={() => setOpenConfirmDelete(false)}
         >
           <p>Xác nhận xóa người dùng này?</p>
         </Modal>
-        <Modal
-          title="Confirm"
-          open={openFormUpdate}
-          // onOk={() => handleOk(userId)}
-          // confirmLoading={isLoading}
-          onCancel={() => setOpenFormUpdate(false)}
-        >
-          <p>Xác nhận update người dùng này?</p>
-        </Modal>
-        <Button type="primary" onClick={() => setOpenModelCreate(true)}>Create New Account +</Button>
+
+        <Button type="primary" onClick={() => setOpenModelFormCreate(true)}>Create New Account +</Button>
         <Table 
+          sortDirections
           className='border border-gray-200 mt-4'
           bordered={true} 
-          loading={isLoading} 
+          loading={isLoadingTable} 
           columns={columns && columns} 
           dataSource={user && renderData(user)} 
+          pagination={{
+            current: currentPage,
+            pageSize: pageSize,
+            onChange: (page, size) => {
+              setCurrentPage(page)
+              setPageSize(size)
+            },
+          }}
         />
+        {/* <Pagination 
+            current={currentPage}
+            align="center" 
+            defaultCurrent={currentPage} 
+            total={totalCount} 
+            pageSize={10}
+            defaultPageSize={10}
+            onChange={(page, pageSize) => console.log(page, pageSize) }
+        /> */}
         <ToastContainer
           position="top-right"
           autoClose={5000}
@@ -201,8 +251,26 @@ function Members() {
           theme="light"
           transition={Bounce}
         />
-        <UserFormController openModelCreate={openModelCreate} setOpenModelCreate={setOpenModelCreate}/>
+        
+        <UserFormController 
+            isUpdate 
+            openModelForm={openModelFormEdit} 
+            setOpenModelForm={setOpenModelFormEdit} 
+            onSubmit={handleEditUser} 
+            dataForm={dataForm} 
+            setDataForm={setDataForm}
+            loadingBtn={isLoadingEdit}
+        />
+        <UserFormController 
+            openModelForm={openModelFormCreate} 
+            setOpenModelForm={setOpenModelFormCreate} 
+            dataForm={dataForm} 
+            onSubmit={handleCreateUser} 
+            loadingBtn={isLoadingCreate}
+        />
+            
       </>
+      
    
   )
 }

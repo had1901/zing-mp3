@@ -74,7 +74,10 @@ function App() {
     return (
         isLoading 
         ? 
-        <Spin fullscreen={true}/>
+            <div className='flex flex-col gap-4 items-center justify-center h-screen'>
+                <Spin />
+                <h1 className='text-white font-semibold text-lg'>Server đang khởi động lại, vui lòng đợi hoặc nhấn F5 để tải lại!</h1>
+            </div>
         :
         <QueryClientProvider client={queryClient}>
             <SkeletonTheme baseColor="#6464643d" highlightColor="#0000" duration={2.5}>
@@ -105,7 +108,7 @@ function App() {
                     </Route>
                     <Route element={<PrivateRoute allowRole={['admin']}/>}>
                         <Route path='/auth/admin' element={<AdminLayout />}>
-                            <Route index element={<Dashboard />}/>
+                            <Route index path='dashboard' element={<Dashboard />}/>
                             <Route path='upload' element={<UploadMusic />}/>
                             <Route path='music' element={<Musics />}/>
                             <Route path='members' element={<Members />}/>
