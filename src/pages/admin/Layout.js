@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     DesktopOutlined,
     FileOutlined,
@@ -8,7 +8,7 @@ import {
   } from '@ant-design/icons'
 import { Breadcrumb, Layout, Menu, theme } from 'antd'
 import { Button, Flex } from 'antd'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { handleLogout } from '../../service'
 import { useDispatch } from 'react-redux'
 import { actions } from '../../redux/actions'
@@ -37,6 +37,7 @@ function AdminLayout() {
     const [breadCrumb, setBreadCrumb] = useState('')
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const location = useLocation()
     const { token: { colorBgContainer, borderRadiusLG },} = theme.useToken()
 
     const item = [
@@ -60,6 +61,10 @@ function AdminLayout() {
     }
   }
 
+  useEffect(() => {
+    navigate(location.pathname)
+  }, [navigate, location.pathname])
+
   return (
     <>
       <Layout style={{minHeight: '100vh',}}>
@@ -68,7 +73,7 @@ function AdminLayout() {
             {/* <img src='' alt='' /> */}
             Logo
           </div>
-          <Menu theme="dark" defaultSelectedKeys={['dashboard']} mode="inline" items={items} onClick={handleMenuClick}  />
+          <Menu theme="dark" defaultSelectedKeys={['dashboard']} mode="inline" items={items} onSelect={handleMenuClick}  />
         </Sider>
         <Layout>
           <Header style={{padding: 0,background: colorBgContainer,}}>

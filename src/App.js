@@ -108,7 +108,7 @@ function App() {
                     </Route>
                     <Route element={<PrivateRoute allowRole={['admin']}/>}>
                         <Route path='/auth/admin' element={<AdminLayout />}>
-                            <Route index path='dashboard' element={<Dashboard />}/>
+                            <Route path='dashboard' element={<Dashboard />}/>
                             <Route path='upload' element={<UploadMusic />}/>
                             <Route path='music' element={<Musics />}/>
                             <Route path='members' element={<Members />}/>

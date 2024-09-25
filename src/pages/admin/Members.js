@@ -21,11 +21,10 @@ function Members() {
 
   const [userId, setUserId] = useState(null)
   const [dataForm, setDataForm] = useState({})
-
   const [currentPage, setCurrentPage] = useState(1)
-  const [totalCount, setTotalCount] = useState(0)
   const [pageSize, setPageSize] = useState(10)
 
+  // delete user
   const handleDeleteUser = async (userId) => {
     if(userId) {
       setIsLoadingTable(true)
@@ -38,8 +37,7 @@ function Members() {
           fetchUsers()
           setOpenConfirmDelete(false)
           setIsLoadingTable(false)
-          setIsLoadingDelete(true)
-
+          setIsLoadingDelete(false)
         }
       } catch(e){
         console.error(e)
@@ -48,27 +46,33 @@ function Members() {
     }
   }
 
-  const handleEditUser = async (userId) => {
+  // update user
+  const onSubmitEdit = async (data, userId) => {
+    console.log('userId', userId)
     if(userId) {
       try{
-        const updateUser = await instance.delete(`/auth/admin/update-user/${userId}`, )
+        const updateUser = await instance.put(`/auth/admin/update-user/${userId}`, data)
         console.log('updateUser', updateUser)
         if(updateUser.ec === 0) {
           fetchUsers()
-          toast.info('Update successfully')
+          toast.success('Update successfully')
           setIsLoadingTable(false)
-          // setOpenModelFormEdit(false)
+          setOpenModelFormEdit(false)
         }
       } catch(e){
         console.error(e)
       }
     }
   }
+  const handleEditUser = async (data) => {
+    await onSubmitEdit(data,userId)
+  }
 
-  const handleCreateUser = async (dataForm) => {
+  // create user
+  const handleCreateUser = async (data) => {
     setIsLoadingCreate(true)
     try{
-      const createUser = await instance.post(`/auth/admin/create-user/`, dataForm)
+      const createUser = await instance.post(`/auth/admin/create-user/`, data)
       console.log('create-user', user)
       if(createUser.ec === 0) {
         toast.success('Created successfully')
@@ -87,7 +91,21 @@ function Members() {
     }
   }
 
-  
+  // get all user
+  const fetchUsers = async () => {
+    setIsLoadingTable(true)
+    try{
+      const res = await instance.get('/auth/admin/get-users')
+      if(res.ec === 0){
+        setUser(res.dt)
+        setIsLoadingTable(false)
+      }
+    } catch(e){
+      console.log(e)
+    }
+  }
+
+  // render columns table and data table
   const columns = [
     {
       title: 'ID',
@@ -96,8 +114,8 @@ function Members() {
       render: (_, record) => (
         <Space size="middle">
           {record.permission && record.permission === 'admin' 
-            ? <span className=' font-semibold'>{record.id}</span>
-            : <span className=''>{record.id}</span>
+            ? <span className=' font-semibold'>{record.key}</span>
+            : <span className=''>{record.key}</span>
           }
         </Space>
       ),
@@ -134,12 +152,13 @@ function Members() {
           }
         </Space>
       ),
+      width: 80,
     },
     {
       title: 'Actions',      
       key: 'actions',
       render: (_, record) => {
-        return <Space key={record.id} size="middle">
+        return <Space key={record.key} size="middle">
           {record.permission === 'admin' 
             ? null 
             : record.actions.length > 0 && record.actions.map(btn => (
@@ -164,14 +183,13 @@ function Members() {
       width: 80
     },
   ]
-
   const renderData = (listUser) => {
-    const data =  listUser.map(item => {
+    const data =  listUser.map((item, index )=> {
       return {
-          key: item.id,
+          key: index,
           id: item.id,
           username: item.username,
-          password: item.password && '*'.repeat(10),
+          password: item.password && '*'.repeat(16),
           permission: item.Group.group_name,
           actions: ['Edit', 'Delete'],
         }
@@ -179,23 +197,6 @@ function Members() {
     return data
   }
 
-  const fetchUsers = async () => {
-    setIsLoadingTable(true)
-    try{
-      const res = await instance.get('/auth/admin/get-users')
-      console.log('res', res)
-      if(res.ec === 0){
-        setUser(res.dt)
-        setTotalCount(res.count?.count)
-        // setCurrentPage(res.count?.)
-        setIsLoadingTable(false)
-
-      }
-    } catch(e){
-      console.log(e)
-    }
-  }
-  
   useEffect(() => {
     fetchUsers()
   }, [])
@@ -229,15 +230,6 @@ function Members() {
             },
           }}
         />
-        {/* <Pagination 
-            current={currentPage}
-            align="center" 
-            defaultCurrent={currentPage} 
-            total={totalCount} 
-            pageSize={10}
-            defaultPageSize={10}
-            onChange={(page, pageSize) => console.log(page, pageSize) }
-        /> */}
         <ToastContainer
           position="top-right"
           autoClose={5000}
@@ -252,23 +244,27 @@ function Members() {
           transition={Bounce}
         />
         
+        
         <UserFormController 
-            isUpdate 
+            isForm='User' 
+            title="Create"
+            openModelForm={openModelFormCreate} 
+            setOpenModelForm={setOpenModelFormCreate} 
+            dataForm={dataForm} 
+            setDataForm={setDataForm}
+            handle={handleCreateUser} 
+            loadingBtn={isLoadingCreate}
+        /> 
+        <UserFormController 
+            isForm='User' 
+            title="Update"
             openModelForm={openModelFormEdit} 
             setOpenModelForm={setOpenModelFormEdit} 
-            onSubmit={handleEditUser} 
+            handle={handleEditUser} 
             dataForm={dataForm} 
             setDataForm={setDataForm}
             loadingBtn={isLoadingEdit}
         />
-        <UserFormController 
-            openModelForm={openModelFormCreate} 
-            setOpenModelForm={setOpenModelFormCreate} 
-            dataForm={dataForm} 
-            onSubmit={handleCreateUser} 
-            loadingBtn={isLoadingCreate}
-        />
-            
       </>
       
    
