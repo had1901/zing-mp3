@@ -23,7 +23,7 @@ function SidebarItem({item, props, className, classNameMore, active, elementAfte
       <Link ref={linkRef} to={linkBtn} className={controlActive} onClick={onClick}>
         <div className='flex flex-1 gap-x-3'>
           {<item.icon className='text-xl'/> || <props.icon className='text-xl jus'/>}
-          <span className='flex-1'>{item.title || props.title}</span>
+          <span className='flex-1 xs:hidden xl:block'>{item.title || props.title}</span>
         </div>
         <div className={active ? `${state.backgroundUpdateAccount} absolute w-1 h-full left-0 top-0` : 'hidden'}></div>
         {element}

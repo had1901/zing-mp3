@@ -25,17 +25,17 @@ function Music() {
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
 
-  // delete song
+  // delete 
   const handleDelete = async (musicId) => {
     if(musicId) {
       setIsLoadingTable(true)
       setIsLoadingDelete(true)
       try{
-        const deletedMusic = await instance.delete(`/music/delete-song/${musicId}`)
+        const deletedMusic = await instance.delete(`/music/delete/${musicId}`)
         console.log('deletedMusic', deletedMusic)
         if(deletedMusic.ec === 0) {
           toast.info('Deleted successfully')
-          fetchListMusic()
+          fetchList()
           setOpenConfirmDelete(false)
           setIsLoadingTable(false)
           setIsLoadingDelete(false)
@@ -47,15 +47,15 @@ function Music() {
     }
   }
 
-  // update song
+  // update 
   const onSubmitEdit = async (data, musicId) => {
     console.log('musicId', musicId)
     if(musicId) {
       try{
-        const updateMusic = await instance.put(`/music/update-song/${musicId}`, data)
+        const updateMusic = await instance.put(`/music/update/${musicId}`, data)
         console.log('updateMusic', updateMusic)
         if(updateMusic.ec === 0) {
-          fetchListMusic()
+          fetchList()
           toast.success('Update successfully')
           setIsLoadingTable(false)
           setOpenModelFormEdit(false)
@@ -65,19 +65,19 @@ function Music() {
       }
     }
   }
-  const handleEditSong = async (data) => {
+  const handleEdit = async (data) => {
     await onSubmitEdit(data,musicId)
   }
 
-  // create new song
-  const handleCreateSong = async (data) => {
+  // create new 
+  const handleCreate = async (data) => {
     setIsLoadingCreate(true)
     try{
-      const createMusic = await instance.post(`/music/create-song/`, data)
+      const createMusic = await instance.post(`/music/create/`, data)
       console.log('create-music', createMusic)
       if(createMusic.ec === 0) {
         toast.success('Created successfully')
-        fetchListMusic()
+        fetchList()
         setIsLoadingTable(false)
         setIsLoadingCreate(false)
         setOpenModelFormCreate(false)
@@ -92,11 +92,11 @@ function Music() {
     }
   }
 
-  // get all song
-  const fetchListMusic = async () => {
+  // get all 
+  const fetchList = async () => {
     setIsLoadingTable(true)
     try{
-      const res = await instance.get('/music/list-song')
+      const res = await instance.get('/music/list')
       if(res.ec === 0){
         setListMusic(res.dt)
         setIsLoadingTable(false)
@@ -107,7 +107,7 @@ function Music() {
   }
 
 
-  // render column table and list song
+  // render column table and list 
   const columns = [
     {
       title: 'ID',
@@ -246,7 +246,7 @@ function Music() {
   }
 
   useEffect(() => {
-    fetchListMusic()
+    fetchList()
   }, [])
 
   return (
@@ -258,10 +258,10 @@ function Music() {
           confirmLoading={isLoadingDelete}
           onCancel={() => setOpenConfirmDelete(false)}
         >
-          <p>Xác nhận xóa người dùng này?</p>
+          <p>Xác nhận xóa bài hát này?</p>
         </Modal>
 
-        <Button type="primary" onClick={() => setOpenModelFormCreate(true)}>Create New Account +</Button>
+        <Button type="primary" onClick={() => setOpenModelFormCreate(true)}>Create New</Button>
         <Table 
           sortDirections
           className='border border-gray-200 mt-4'
@@ -297,7 +297,7 @@ function Music() {
             title='Update'
             openModelForm={openModelFormEdit} 
             setOpenModelForm={setOpenModelFormEdit} 
-            handle={handleEditSong} 
+            handle={handleEdit} 
             dataForm={dataForm} 
             setDataForm={setDataForm}
             loadingBtn={isLoadingEdit}
@@ -308,7 +308,7 @@ function Music() {
             openModelForm={openModelFormCreate} 
             setOpenModelForm={setOpenModelFormCreate} 
             dataForm={dataForm} 
-            handle={handleCreateSong} 
+            handle={handleCreate} 
             loadingBtn={isLoadingCreate}
         /> 
       </>

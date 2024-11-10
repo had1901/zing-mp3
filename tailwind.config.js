@@ -165,6 +165,9 @@ module.exports = {
         controlAudioEiffel: '#181818',
 
         textZingchart: 'hsla(0,0%,100%,0.5)',
+
+        primaryAdmin: '#f5f5f5',
+        bgAdmin: '#f4f5f7',
       },
       boxShadow: {
         musicShadow: '0px 0px 7px 3px inset',

@@ -8,10 +8,13 @@ import { PiMusicNotesPlusDuotone } from "react-icons/pi";
 import SidebarItem from './../components/SidebarItem';
 import Button from './../components/Button';
 import { Context } from '../context/ContextGlobal';
-import { BsArrowLeft } from 'react-icons/bs';
+import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../redux/actions';
 import { useLocation, useNavigate } from 'react-router-dom';
+import logo from '../images/zingmp3-thumbnail.png'
+
+
 
 
 const menuSidebar1 = [
@@ -128,12 +131,14 @@ function Sidebar() {
   }, [dispatch, location.pathname]);
 
   return (
-    <section className={`h-full xl:translate-x-0 ${context.isActiveSidebar === true ? 'sm:translate-x-0 xs:bg-main shadow-sidebarShadow' : 'xs:-translate-x-full'}  transition-all fixed z-50 ${state2.bgSidebarLeft} `}>
-      <BsArrowLeft className={`${state2.textColor} absolute right-5 top-6 text-xl`} onClick={() => context.handleActiveSidebar() }/>
-      <div className='w-60 flex flex-col h-full'>
+    <section className={`xs:w-[70px] xl:w-60 h-full ${context.isActiveSidebar === true ? ' xs:bg-main shadow-sidebarShadow' : ''}  transition-all fixed mx-auto z-50 ${state2.bgSidebarLeft} `}>
+      <div className='w-full p-2'>
+        <img src={logo} alt='logo' className=' xs:block xl:hidden' />
+      </div>
+      <div className='flex flex-col h-full'>
         <div className='flex-1'>
-          <div className='w-full h-70 px-7'>
-            <div className='h-full py-3'>
+          <div className='xs:hidden xl:block w-full h-70 px-7'>
+            <div className=' h-full py-3'>
               <img 
                 src='https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/backgrounds/logo-dark.svg' 
                 alt='logo' 
@@ -160,13 +165,15 @@ function Sidebar() {
                     </div>
                   </div>
                 </ul>
-                <div className={`${state2.textColor} bg-violet text-white rounded-xl w-52 mx-auto p-3 mt-5 text-sm flex flex-col items-center font-semibold`}>
+                <div className={`${state2.textColor} xs:hidden xl:flex bg-violet text-white rounded-xl w-52 mx-auto p-3 mt-5 text-sm flex-col items-center font-semibold`}>
                   <p className='text-center'>Đăng nhập để khám phá playlist dành riêng cho bạn</p>
                   <Button 
                     title='Đăng nhập' 
                     className='bg-transparent mt-2 border rounded-2xl w-36 text-center py-1 hover:text-colo hover:border-colo cursor-pointer'
                   />
                 </div>
+                <BsArrowRight className={`${state2.textColor} hidden absolute right-5 bottom-6 text-xl`} onClick={() => context.handleActiveSidebar() }/>
+
               </div>        
             </div>
           </div>

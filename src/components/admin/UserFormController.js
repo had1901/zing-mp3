@@ -3,8 +3,7 @@ import { useForm ,Controller } from "react-hook-form"
 import instance from '../../service/config'
 import { Button, Form, Input, Select, Space, Spin } from 'antd'
 import { CloseOutlined } from '@ant-design/icons'
-import { jwtDecode } from 'jwt-decode'
-import { inputMusicFormControl, inputUserFormControl } from './Form'
+import { inputMusicFormControl, inputThemeFormControl, inputUserFormControl } from './Form'
 import { Option } from 'antd/es/mentions'
 
 const optionItem = [
@@ -54,7 +53,7 @@ function UserFormController({openModelForm, setOpenModelForm, handle, title, isF
     }
   })
   const [disable, setDisable] = useState(false)
-
+  
   // const renderForm = (itemFormControl) => {
   //   let element = null
   //   let valueInput = dataForm[itemFormControl.name]
@@ -160,6 +159,17 @@ function UserFormController({openModelForm, setOpenModelForm, handle, title, isF
         setValue('url_mp4',  '')
       }
     }
+    if(isForm === 'Theme') {
+      if(title === 'Update'){
+        setValue('name', dataForm.name)
+        setValue('genre', dataForm.genre)
+        setValue('url', dataForm.url)
+      } else {
+        setValue('name', '')
+        setValue('genre', '')
+        setValue('url', '')
+      }
+    }
   }, [title, isForm, dataForm, setValue])
 
 
@@ -173,285 +183,102 @@ function UserFormController({openModelForm, setOpenModelForm, handle, title, isF
           </div>
          
           <div className='flex flex-col gap-3'>
-          {isForm === 'User'
-            ? <Fragment>
-               <div>
-                <label className='block font-semibold mb-1'>Username</label>
-                <Controller
-                  name="username"
-                  control={control}
-                  rules={{
-                    required: "Username is required", 
-                    minLength: { value: 3, message: "Username must be at least 3 characters" },
-                    maxLength: { value: 20, message: "Username not over 20 characters" }
-                  }}
-                  render={({ field }) => {
-                    return <Input       
-                             disabled={disable}
-                             placeholder="Username"
-                             value={field.value}
-                             style={{height: 40, }} 
-                             onChange={(e) => {
-                              field.onChange(e)
-                             }}
-  
-                            />  
-                  }}
-                />
-                <span className={`${errors.username ? 'block text-red-500' : 'hidden'}`}>{errors.username && errors.username.message}</span>
-                </div>
-  
-                <dic>
-                  <label className='block font-semibold mb-1'>Password</label>
+            {isForm === 'User' && 
+              inputUserFormControl.length > 0 && inputUserFormControl.map((inputItem) => (
+                <div key={inputItem.name}>
+                  <label className='block font-semibold mb-1'>{inputItem.label}</label>
                   <Controller
-                    name="password"
+                    name={inputItem.name}
                     control={control}
-                    rules={{
-                      required: "Password is required", 
-                      minLength: { value: 3, message: "Password must be at least 3 characters" },
-                      maxLength: { value: 20, message: "Password not over 20 characters" }
-                    }}
+                    rules={
+                      inputItem.componentType === 'Select'
+                      ? null
+                      : {
+                          required: `${inputItem.label} is required`, 
+                          minLength: { value: 3, message: `${inputItem.label} must be at least 3 characters` },
+                        }
+                    }
                     render={({ field }) => {
-                      return <Input 
-                                placeholder="Password" 
-                                value={field.value}
-                                style={{height: 40, }} 
-                                onChange={(e) => {
-                                  field.onChange(e)
+                      if(inputItem.componentType === 'Select') {
+                        return <Select 
+                                  placeholder={inputItem.label}
+                                  value={field.value}
+                                  options={inputItem.options}
+                                  style={{height: 40, }} 
+                                  onChange={(e) => {
+                                    field.onChange(e)
                                 }}/>
-                    }}
-                  />
-                  <span className={`${errors.password ? 'block text-red-500' : 'hidden'}`}>{errors.password && errors.password.message}</span>
-                </dic>
-                
-                <dic className='flex flex-col'>
-                  <label className='block font-semibold mb-1'>Group</label>
-                  <Controller
-                    name="role"
-                    control={control}
-                    render={({ field }) => {
-                      return <Select 
-                                defaultValue="1"
-                                value={field.value}
-                                style={{width: 120, }} 
-                                options={optionItem} 
-                                onChange={(e) => {
-                                  field.onChange(e)
-                                }} 
-  
-                              />
-                    }}
-                  />
-                  <span className={`${errors.role ? 'block text-red-500' : 'hidden'}`}>{errors.role && errors.role.message}</span>
-                </dic>
-              </Fragment>
-            : <Fragment>
-               <div>
-                <label className='block font-semibold mb-1'>Title</label>
-                <Controller
-                  name="title"
-                  control={control}
-                  rules={{
-                    required: "Title is required", 
-                    minLength: { value: 3, message: "Title must be at least 3 characters" },
-                    maxLength: { value: 20, message: "Title not over 20 characters" }
-                  }}
-                  render={({ field }) => {
-                    return <Input       
-                             placeholder="Title"
-                             value={field.value}
-                             style={{height: 40, }} 
-                             onChange={(e) => {
-                              field.onChange(e)
-                             }}
-  
-                            />  
-                  }}
-                />
-                <span className={`${errors.title ? 'block text-red-500' : 'hidden'}`}>{errors.title && errors.title.message}</span>
-                </div>
-  
-                <dic>
-                  <label className='block font-semibold mb-1'>Artist</label>
-                  <Controller
-                    name="artist"
-                    control={control}
-                    rules={{
-                      required: "Artist is required", 
-                      minLength: { value: 3, message: "Artist must be at least 3 characters" },
-                      maxLength: { value: 20, message: "Artist not over 20 characters" }
-                    }}
-                    render={({ field }) => {
-                      return <Input 
-                                placeholder="Artist" 
-                                value={field.value}
-                                style={{height: 40, }} 
-                                onChange={(e) => {
-                                  field.onChange(e)
+                      } else {
+                        return <Input 
+                                  placeholder={inputItem.label}
+                                  value={field.value}
+                                  style={{height: 40, }} 
+                                  onChange={(e) => {
+                                    field.onChange(e)
                                 }}/>
+                      }
                     }}
                   />
-                  <span className={`${errors.artist ? 'block text-red-500' : 'hidden'}`}>{errors.artist && errors.artist.message}</span>
-                </dic>
-
-                <dic>
-                  <label className='block font-semibold mb-1'>Genre</label>
-                  <Controller
-                    name="genre"
-                    control={control}
-                    rules={{
-                      required: "Genre is required", 
-                      minLength: { value: 3, message: "Genre must be at least 3 characters" },
-                      maxLength: { value: 20, message: "Genre not over 20 characters" }
-                    }}
-                    render={({ field }) => {
-                      return <Input 
-                                placeholder="Genre" 
-                                value={field.value}
-                                style={{height: 40, }} 
-                                onChange={(e) => {
-                                  field.onChange(e)
-                                }}/>
-                    }}
-                  />
-                  <span className={`${errors.genre ? 'block text-red-500' : 'hidden'}`}>{errors.genre && errors.genre.message}</span>
-                </dic>
-
-                <dic>
-                  <label className='block font-semibold mb-1'>Duration</label>
-                  <Controller
-                    name="duration"
-                    control={control}
-                    rules={{
-                      required: "Duration is required", 
-                      minLength: { value: 3, message: "Duration must be at least 3 characters" },
-                      maxLength: { value: 20, message: "Duration not over 20 characters" }
-                    }}
-                    render={({ field }) => {
-                      return <Input 
-                                placeholder="Duration" 
-                                value={field.value}
-                                style={{height: 40, }} 
-                                onChange={(e) => {
-                                  field.onChange(e)
-                                }}/>
-                    }}
-                  />
-                  <span className={`${errors.duration ? 'block text-red-500' : 'hidden'}`}>{errors.duration && errors.duration.message}</span>
-                </dic>
-
-                <dic>
-                  <label className='block font-semibold mb-1'>Thumbnail</label>
-                  <Controller
-                    name="thumbnail"
-                    control={control}
-                    rules={{
-                      required: "Thumbnail is required", 
-                      minLength: { value: 3, message: "Thumbnail must be at least 3 characters" },
-                    }}
-                    render={({ field }) => {
-                      return <Input 
-                                placeholder="Thumbnail" 
-                                value={field.value}
-                                style={{height: 40, }} 
-                                onChange={(e) => {
-                                  field.onChange(e)
-                                }}/>
-                    }}
-                  />
-                  <span className={`${errors.thumbnail ? 'block text-red-500' : 'hidden'}`}>{errors.thumbnail && errors.thumbnail.message}</span>
-                </dic>
-
-                <dic>
-                  <label className='block font-semibold mb-1'>Release Date</label>
-                  <Controller
-                    name="releaseDate"
-                    control={control}
-                    rules={{
-                      required: "ReleaseDate is required", 
-                      minLength: { value: 3, message: "ReleaseDate must be at least 3 characters" },
-                    }}
-                    render={({ field }) => {
-                      return <Input 
-                                placeholder="ReleaseDate" 
-                                value={field.value}
-                                style={{height: 40, }} 
-                                onChange={(e) => {
-                                  field.onChange(e)
-                                }}/>
-                    }}
-                  />
-                  <span className={`${errors.releaseDate ? 'block text-red-500' : 'hidden'}`}>{errors.releaseDate && errors.releaseDate.message}</span>
-                </dic>
-                
-                <dic>
-                  <label className='block font-semibold mb-1'>URL</label>
-                  <Controller
-                    name="url"
-                    control={control}
-                    rules={{
-                      required: "Url is required", 
-                      minLength: { value: 3, message: "Url must be at least 3 characters" },
-                    }}
-                    render={({ field }) => {
-                      return <Input 
-                                placeholder="URL" 
-                                value={field.value}
-                                style={{height: 40, }} 
-                                onChange={(e) => {
-                                  field.onChange(e)
-                                }}/>
-                    }}
-                  />
-                  <span className={`${errors.url ? 'block text-red-500' : 'hidden'}`}>{errors.url && errors.url.message}</span>
-                </dic>
-
-                <dic>
-                  <label className='block font-semibold mb-1'>URL MP4</label>
-                  <Controller
-                    name="url_mp4"
-                    control={control}
-                    rules={{
-                      required: "Url mp4 is required", 
-                      minLength: { value: 3, message: "Url mp4 must be at least 3 characters" },
-                    }}
-                    render={({ field }) => {
-                      return <Input 
-                                placeholder="URL mp4" 
-                                value={field.value}
-                                style={{height: 40, }} 
-                                onChange={(e) => {
-                                  field.onChange(e)
-                                }}/>
-                    }}
-                  />
-                  <span className={`${errors.url_mp4 ? 'block text-red-500' : 'hidden'}`}>{errors.url_mp4 && errors.url_mp4.message}</span>
-                </dic>
-              </Fragment>
-          }
-            
-
-
-            {/* {isForm === 'User' 
-              ? inputUserFormControl.length > 0 && inputUserFormControl.map(itemFormControl => (
-                  <div key={itemFormControl.name}>
-                    <label className='block font-semibold mb-1'>{itemFormControl.label}</label>
-                    {renderForm(itemFormControl)}
-                  </div>
-                ))
-              : inputMusicFormControl.length > 0 && inputMusicFormControl.map(itemFormControl => (
-                <div key={itemFormControl.name}>
-                  <label className='block font-semibold mb-1'>{itemFormControl.label}</label>
-                  {renderForm(itemFormControl)}
-                  {console.log(itemFormControl)}
+                  <span className={`${errors[inputItem.name] ? 'block text-red-500' : 'hidden'}`}>{errors[inputItem.name] && errors[inputItem.name].message}</span>
                 </div>
               ))
-            } */}
+            }
 
+            {isForm === 'Music' &&
+              inputMusicFormControl.length > 0 && inputMusicFormControl.map((inputItem) => (
+                <div key={inputItem.name}>
+                    <label className='block font-semibold mb-1'>{inputItem.label}</label>
+                    <Controller
+                      name={inputItem.name}
+                      control={control}
+                      rules={{
+                        required: `${inputItem.label} is required`, 
+                        minLength: { value: 3, message: `${inputItem.label} must be at least 3 characters` },
+                      }}
+                      render={({ field }) => {
+                        return <Input 
+                                  placeholder={inputItem.label}
+                                  value={field.value}
+                                  style={{height: 40, }} 
+                                  onChange={(e) => {
+                                    field.onChange(e)
+                                  }}/>
+                      }}
+                    />
+                    <span className={`${errors[inputItem.name] ? 'block text-red-500' : 'hidden'}`}>{errors[inputItem.name] && errors[inputItem.name].message}</span>
+                </div>
+            ))}
+
+            {isForm === 'Theme' &&
+              inputThemeFormControl.length > 0 && inputThemeFormControl.map((inputItem) => (
+                <div key={inputItem.name}>
+                    <label className='block font-semibold mb-1'>{inputItem.label}</label>
+                    <Controller
+                      name={inputItem.name}
+                      control={control}
+                      rules={{
+                        required: `${inputItem.label} is required`, 
+                        minLength: { value: 3, message: `${inputItem.label} must be at least 3 characters` },
+                      }}
+                      render={({ field }) => {
+                        return <Input 
+                                  placeholder={inputItem.label}
+                                  value={field.value}
+                                  style={{height: 40, }} 
+                                  onChange={(e) => {
+                                    field.onChange(e)
+                                  }}/>
+                      }}
+                    />
+                    <span className={`${errors[inputItem.name] ? 'block text-red-500' : 'hidden'}`}>{errors[inputItem.name] && errors[inputItem.name].message}</span>
+                </div>
+            ))}
+            
             <div className='flex items-center justify-center'>
               {loadingBtn
-              ? <div className='text-center w-full h-10 px3 py-1 rounded bg-green-200 hover:cursor-progress '><Spin /></div>
-              : <input type="submit" placeholder='Tạo aaa' className='bg-green-400 text-white font-semibold w-full h-10  px-3 py-1 mt-auto rounded hover:bg-green-500 cursor-pointer'  />}
+                ? (<div className='text-center w-full h-10 px3 py-1 rounded bg-green-200 hover:cursor-progress '><Spin /></div>)
+                : (<input type="submit" placeholder='Tạo aaa' className='bg-green-400 text-white font-semibold w-full h-10  px-3 py-1 mt-auto rounded hover:bg-green-500 cursor-pointer'  />)
+              }
             </div>
           </div>
         </form>

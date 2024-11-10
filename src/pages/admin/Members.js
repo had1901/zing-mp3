@@ -24,8 +24,8 @@ function Members() {
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
 
-  // delete user
-  const handleDeleteUser = async (userId) => {
+  // delete 
+  const handleDelete = async (userId) => {
     if(userId) {
       setIsLoadingTable(true)
       setIsLoadingDelete(true)
@@ -34,7 +34,7 @@ function Members() {
         console.log('deletedUser', deletedUser)
         if(deletedUser.ec === 0) {
           toast.info('Deleted successfully')
-          fetchUsers()
+          fetchList()
           setOpenConfirmDelete(false)
           setIsLoadingTable(false)
           setIsLoadingDelete(false)
@@ -46,7 +46,7 @@ function Members() {
     }
   }
 
-  // update user
+  // update 
   const onSubmitEdit = async (data, userId) => {
     console.log('userId', userId)
     if(userId) {
@@ -54,7 +54,7 @@ function Members() {
         const updateUser = await instance.put(`/auth/admin/update-user/${userId}`, data)
         console.log('updateUser', updateUser)
         if(updateUser.ec === 0) {
-          fetchUsers()
+          fetchList()
           toast.success('Update successfully')
           setIsLoadingTable(false)
           setOpenModelFormEdit(false)
@@ -64,19 +64,19 @@ function Members() {
       }
     }
   }
-  const handleEditUser = async (data) => {
+  const handleEdit = async (data) => {
     await onSubmitEdit(data,userId)
   }
 
-  // create user
-  const handleCreateUser = async (data) => {
+  // create 
+  const handleCreate = async (data) => {
     setIsLoadingCreate(true)
     try{
       const createUser = await instance.post(`/auth/admin/create-user/`, data)
       console.log('create-user', user)
       if(createUser.ec === 0) {
         toast.success('Created successfully')
-        fetchUsers()
+        fetchList()
         setIsLoadingTable(false)
         setIsLoadingCreate(false)
         setOpenModelFormCreate(false)
@@ -91,8 +91,8 @@ function Members() {
     }
   }
 
-  // get all user
-  const fetchUsers = async () => {
+  // get all 
+  const fetchList = async () => {
     setIsLoadingTable(true)
     try{
       const res = await instance.get('/auth/admin/get-users')
@@ -161,21 +161,22 @@ function Members() {
         return <Space key={record.key} size="middle">
           {record.permission === 'admin' 
             ? null 
-            : record.actions.length > 0 && record.actions.map(btn => (
+            : record.actions.length > 0 && record.actions.map((btn,index) => (
                 btn === 'Delete'
                 ? <button 
-                  onClick={() => {
-                    setOpenConfirmDelete(true)
-                    setUserId(record.id)
-                  }} 
-                  className={`${btn === 'Delete' ? 'border-red-500 text-red-500 hover:bg-red-500' : 'border-purple-500 text-purple-500 hover:bg-purple-500'} border py-1 px-3 rounded-md hover:text-white`}>{btn}</button>
+                    key={index}
+                    onClick={() => {
+                      setOpenConfirmDelete(true)
+                      setUserId(record.id)
+                    }} 
+                    className={`${btn === 'Delete' ? 'border-red-500 text-red-500 hover:bg-red-500' : 'border-purple-500 text-purple-500 hover:bg-purple-500'} border py-1 px-3 rounded-md hover:text-white`}>{btn}</button>
                 : <button 
-                  onClick={() => {
-                    setOpenModelFormEdit(true)
-                    setUserId(record.id)
-                    setDataForm(record)
-                  }} 
-                  className={`${btn === 'Delete' ? 'border-red-500 text-red-500 hover:bg-red-500' : 'border-purple-500 text-purple-500 hover:bg-purple-500'} border py-1 px-3 rounded-md hover:text-white`}>{btn}</button>
+                    onClick={() => {
+                      setOpenModelFormEdit(true)
+                      setUserId(record.id)
+                      setDataForm(record)
+                    }} 
+                    className={`${btn === 'Delete' ? 'border-red-500 text-red-500 hover:bg-red-500' : 'border-purple-500 text-purple-500 hover:bg-purple-500'} border py-1 px-3 rounded-md hover:text-white`}>{btn}</button>
               ))
           }
         </Space>
@@ -198,7 +199,7 @@ function Members() {
   }
 
   useEffect(() => {
-    fetchUsers()
+    fetchList()
   }, [])
 
   return (
@@ -206,14 +207,14 @@ function Members() {
         <Modal
           title="Confirm"
           open={openConfirmDelete}
-          onOk={() => handleDeleteUser(userId)}
+          onOk={() => handleDelete(userId)}
           confirmLoading={isLoadingDelete}
           onCancel={() => setOpenConfirmDelete(false)}
         >
           <p>Xác nhận xóa người dùng này?</p>
         </Modal>
 
-        <Button type="primary" onClick={() => setOpenModelFormCreate(true)}>Create New Account +</Button>
+        <Button type="primary" onClick={() => setOpenModelFormCreate(true)}>Create New</Button>
         <Table 
           sortDirections
           className='border border-gray-200 mt-4'
@@ -252,7 +253,7 @@ function Members() {
             setOpenModelForm={setOpenModelFormCreate} 
             dataForm={dataForm} 
             setDataForm={setDataForm}
-            handle={handleCreateUser} 
+            handle={handleCreate} 
             loadingBtn={isLoadingCreate}
         /> 
         <UserFormController 
@@ -260,7 +261,7 @@ function Members() {
             title="Update"
             openModelForm={openModelFormEdit} 
             setOpenModelForm={setOpenModelFormEdit} 
-            handle={handleEditUser} 
+            handle={handleEdit} 
             dataForm={dataForm} 
             setDataForm={setDataForm}
             loadingBtn={isLoadingEdit}

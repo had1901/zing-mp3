@@ -1,6 +1,5 @@
 
 
-
 export const inputUserFormControl = [
     {
         name: 'username',
@@ -94,3 +93,32 @@ export const inputMusicFormControl = [
         type: 'text',
     },
 ]
+
+export const inputThemeFormControl = [
+    {
+        name: 'name',
+        label: 'Name',
+        placeHolder: 'Enter name',
+        componentType: 'Input',
+        type: 'text',
+    },
+    {
+        name: 'genre',
+        label: 'genre',
+        placeHolder: 'Enter genre',
+        componentType: 'Input',
+        type: 'text',
+    },
+    {
+        name: 'url',
+        label: 'URL',
+        placeHolder: 'Enter URL',
+        componentType: 'Input',
+        type: 'text',
+    },
+   
+]
+
+
+
+

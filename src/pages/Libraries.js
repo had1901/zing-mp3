@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { verifyUser } from '../api/verifyToken';
 import { useGlobalRef } from '../context/ContextGlobal';
 import { useQuery } from '@tanstack/react-query';
+import instance from '../service/config';
 
 
 function Libraries() {
@@ -31,7 +32,9 @@ function Libraries() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
-  const listSong = useSelector(state => state.getListSongReducer.listSong)
+  const [listSong, setListSong] = useState([])
+  // const listSong = useSelector(state => state.getListSongReducer.listSong)
+
   console.log(listSong)
   const buttons1 = [
     'Bài hát',
@@ -68,14 +71,27 @@ function Libraries() {
   const handleActive2 = (btn) => {
     setActiveTab2(btn)
   }
+
+  
   // const { data, error } = useQuery({ 
   //   queryKey: ['list-song'],
   //   queryFn: getListSong,
   // })
+  // console.log('data-lib', data)
 
-  // useEffect(() => {
-  //   dispatch(actions.getListSongAction(data))
-  // }, [data]) 
+  useEffect(() => {
+    const getListSong = async () => {
+      try {
+        const res = await instance.get('/music/list')
+        dispatch(actions.getListSongAction(res.dt))
+        setListSong(res.dt)
+        // return res.dt
+      } catch(e) {
+        console.log(e)
+      }
+    }
+    getListSong()
+  }, [dispatch]) 
 
   useEffect(() => {
     setTimeout(() => {
@@ -102,12 +118,12 @@ function Libraries() {
           </BtnRadius>
         </h2>
         <motion.ul 
-          className='flex item-center justify-between text-white mt-5'
+          className='flex item-center gap-3 text-white mt-5'
         >
           {
-            isLoading && listSong.length > 0
+            isLoading 
             ? (<SkeletonImages listMusic={5} />)
-            : (listSong.slice(0,5).map((item, index) => (
+            : listSong && listSong.length > 0 && (listSong.slice(0,5).map((item, index) => (
                 <motion.li key={item.id} className='w-[290px] h-[290px] flex-shrink-0'
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1}}
@@ -157,8 +173,8 @@ function Libraries() {
           <ul className='text-white mt-4 -mx-3'>
             {
               isLoading && listSong.length > 0
-              ? (<SkeletonMusic listMusic={listSong.length} time />)
-              : (listSong.map(song => (
+              ? (<SkeletonMusic listMusic={listSong && listSong.length > 0 && listSong.length} time />)
+              : listSong && listSong.length > 0 && (listSong.map(song => (
                   <li key={song.id} className='px-2 py-2 hover:bg-sidebarRose hover:border-transparent rounded-sm border-t-1 border-b-1 border-[#ffffff0d]' onClick={() => handleGetInfoMusic(song)}>
                     <a href='/' className='flex items-center' onClick={handleClick}>
                       <div className='flex items-center gap-3 w-1/2'>

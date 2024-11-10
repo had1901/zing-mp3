@@ -11,13 +11,14 @@ import Title from './Title'
 import { ImgBackGround } from '../images/images'
 import ItemImage from './ItemImage'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
-import SearchBarMobile from './SearchBarMobile'
+// import SearchBarMobile from './SearchBarMobile'
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { actions } from '../redux/actions'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Account from './Account'
 import avatarPlaceholder from '../images/avatar-default/avatar.png'
+import instance from '../service/config'
 
 
 
@@ -36,6 +37,7 @@ function SearchBar() {
   const [history, setHistory] = useState([location.pathname])
   const [toggle, setToggle] = useState(false)
   const [checkScroll, setCheckScroll] = useState()
+  const [themes, setThemes] = useState([])
 
 
   const handleBack = (e) => {
@@ -90,7 +92,21 @@ function SearchBar() {
       return () => window.removeEventListener('scroll', handleScroll )
   }, [])
 
-
+  useEffect(() => {
+    const fetchTheme = async () => {
+      try{
+        const res = await instance.get('/theme/list')
+        setThemes(res.dt)
+      } catch(e){
+        console.error(e.message)
+        if(e.data.ec === 1) {
+          setThemes([])
+          return
+        }
+      }
+    }
+    fetchTheme()
+  }, [])
 
   return (
     <div className='w-full'>
@@ -100,9 +116,9 @@ function SearchBar() {
             <Title title='Nghệ sĩ'/>
             <div className='flex flex-wrap items-center gap-y-4 -mx-2 pt-3 '>
               {
-                ImgBackGround.map((item, index) => (
+                ImgBackGround.map((item, _) => (
                   <ItemImage
-                    key={index} 
+                    key={item.id} 
                     thumb={item.src} 
                     description={item.desc} 
                     classNameParent='w-1/6 px-2'  
@@ -119,9 +135,9 @@ function SearchBar() {
           </span>
       </Modal> 
 
-      <div ref={navRef} className={`fixed ${stateSidebar.isOpen ? 'pr-[calc(2.9%_+_330px)]' : 'pr-2%9'} ${checkScroll ? `${state.bgNavBar} backdrop-blur-[50px] shadow-navbar` : ''} pl-2%9 flex justify-between gap-x-4 xl:left-60 xs:left-0 right-0 z-30 items-center text-white select-none transition-all duration-300`}>       
+      <div ref={navRef} className={`fixed ${stateSidebar.isOpen ? 'pr-[calc(2.9%_+_330px)]' : 'pr-2%9 ]'} ${checkScroll ? `${state.bgNavBar} backdrop-blur-[50px] shadow-navbar` : ''} xl:pl-2%9 sm:pl-[calc(2.9%_+_70px)] flex justify-between gap-x-4 xl:left-60 xs:left-0 right-0 z-30 items-center text-white select-none transition-all duration-300`}>       
               <div className=' flex w-full xs:justify-between'>
-              <BtnRadius title='Cài đặt' placement='bottom' classMore='xl:hidden sm:block flex items-center justify-center hover:bg-transparent' onClick={() => context.handleActiveSidebar()}>
+              <BtnRadius title='Cài đặt' placement='bottom' classMore='sm:hidden xs:block flex items-center justify-center hover:bg-transparent' onClick={() => context.handleActiveSidebar()}>
                 <SlSettings className={`${context.iconSetting} m-auto w-4 min-h-32 object-cover`}/>
               </BtnRadius>
                 <div className='flex items-center gap-4 '>
@@ -170,7 +186,7 @@ function SearchBar() {
               </div>   
       </div>
 
-      <SearchBarMobile />
+      {/* <SearchBarMobile /> */}
     </div>
   )
 }

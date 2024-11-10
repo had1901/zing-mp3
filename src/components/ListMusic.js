@@ -1,18 +1,33 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ItemMusic from './ItemMusic'
 import Description from './Description'
 import Button from './Button'
 import Skeleton from 'react-loading-skeleton'
+import instance from '../service/config'
+import { useDispatch } from 'react-redux'
 
-function ListMusic({ data, className }) {
+function ListMusic({ className }) {
   const [itemShow, setItemShow] = useState(10)
-  // const [data, setData] = useState([])
-
+  const [data, setData] = useState([])
+  const dispatch = useDispatch()
+  
+  console.log('data-list', data)
   const showItem = () => {
     setItemShow(itemShow + 10)
   }
 
-
+  useEffect(() => {
+    const getListSong = async () => {
+      try {
+        const res = await instance.get('/music/list')
+        setData(res.dt)
+        console.log('res', res)
+      } catch(e) {
+        console.log(e)
+      }
+    }
+    getListSong()
+  }, [dispatch]) 
 
   return (
     <section className={className}>
@@ -41,7 +56,7 @@ function ListMusic({ data, className }) {
         </div>
       </div>
       {
-        itemShow < data.length && 
+        itemShow < data?.length && 
         <div className='text-center flex justify-center pt-5 '>
           <Button title='Xem top 100' onClick={showItem} className='w-28 px-3 py-2 border border-searchRose text-textZingchart text-sm rounded-full hover:bg-violet hover:text-white transition-all '/>
         </div>      

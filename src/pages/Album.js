@@ -21,8 +21,9 @@ function Album() {
   const { categoryAlbum } = useParams()
   const [activeHeart, setActiveHeart] = useState(false)
   const [album, setAlbum] = useState([])
-  const state = useSelector(state => state.getInfoSongReducer)
+  const state = useSelector(state => state.getInfoSongReducer.song)
 
+  console.log('state', state)
   
   const handleHeart = (e) => {
     e.stopPropagation()
@@ -30,18 +31,18 @@ function Album() {
   }
 
   useEffect(() => {
-    const fetchAlbum = async () => {
-      try {
-          const res = await instance.post(`/album/${categoryAlbum}`)
-          if(res && res.ec !== 0) {
-            throw new Error('Can not get album')
-          }
-          setAlbum(res.dt)
-      } catch (e) {
-          console.log(e)
-      }
-    }
-    fetchAlbum()
+    // const fetchAlbum = async () => {
+    //   try {
+    //       const res = await instance.post(`/album/${categoryAlbum}`)
+    //       if(res && res.ec !== 0) {
+    //         throw new Error('Can not get album')
+    //       }
+    //       setAlbum(res.dt)
+    //   } catch (e) {
+    //       console.log(e)
+    //   }
+    // }
+    // fetchAlbum()
   },[categoryAlbum])
 
   
@@ -50,11 +51,11 @@ function Album() {
         <section className='flex gap-5 text-white'>
           <div className='w-[300px] text-center'> 
             <div className='rounded-2xl h-[300px] overflow-hidden'>
-              <img src={album?.coverUrl} alt='img' className='w-full h-full object-cover mx-auto block hover:scale-[1.1] transition duration-500 cursor-pointer'/>
+              <img src={state?.thumbnail} alt='img' className='w-full h-full object-cover mx-auto block hover:scale-[1.1] transition duration-500 cursor-pointer'/>
             </div>
             <h2 className='mt-3 px-[6px] text-[20px] font-bold leading-[30px]'>Acoustic</h2>
             <p className='px-[6px] text-xs text-[#ffffff80] leading-[21px]'>Cập nhật: 28/03/2024</p>
-            <p className='px-[6px] text-xs text-[#ffffff80] leading-[21px]'>{album?.title}</p>
+            <p className='px-[6px] text-xs text-[#ffffff80] leading-[21px]'>{state?.album}</p>
             <p className='px-[6px] text-xs text-[#ffffff80] leading-[21px]'>22k người yêu thích</p>
             <BtnRadius classMore={`min-h-40 items-center gap-2 px-5 mt-4 text-sm text-zinc-400 hover:bg-transparent`}>
               <span className={`flex justify-center items-center gap-3 min-w-[200px] h-[40px] uppercase rounded-full bg-[#ffffff0d] ${context.iconDownLoad}`}>

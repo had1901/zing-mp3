@@ -23,9 +23,9 @@ function GlobalPage() {
 
   return (
     <div ref={ref}>
-        <GlobalLayout>
-          <Outlet/>
-        </GlobalLayout>
+          <GlobalLayout>
+            <Outlet/>
+          </GlobalLayout>
     </div>
   )
 }

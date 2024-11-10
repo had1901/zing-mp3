@@ -134,7 +134,7 @@ function Home() {
   
   const getListSong = async () => {
     try {
-      const res = await instance.get('/music/list-song')
+      const res = await instance.get('/music/list')
       return res.dt
     } catch(e) {
       console.log(e)
@@ -221,11 +221,11 @@ function Home() {
                       ))
                     }
                 </div>
-                <section className='grid xl:grid-cols-3 lg:grid-cols-2 sm:grid-cols-1 mt-4'>
+                <section className='m-h-[340px] grid xl:grid-cols-3 lg:grid-cols-2 sm:grid-cols-1 grid-rows-4 mt-4'>
                   {
                     isLoad || isFetching
-                    ? (<SkeletonHomeMusic listData={songs.length}/>)
-                    : (songs.length > 0 && songs.map((song, index) => (
+                    ? (<SkeletonHomeMusic listData={12}/>)
+                    : (songs.length > 0 && songs.slice(0, 12).map((song, index) => (
                         <ItemMusic key={index} song={song} isDate className='w-full rounded-md hover:bg-searchRose' classWrap='flex justify-between' classSinger='text-sm' classNameMore='w-16 h-16' />
                       )))
                   }
@@ -310,27 +310,64 @@ function Home() {
                 }
               </Content>
 
-              <div className='xs:hidden xl:block'>
+              <div className=''>
                 <Title title='Radio Nổi Bật' classNameMore='text-xl mb-5 mt-14 capitalize ' />
                 <Content classNameParent='slider-container '>
-                  <Slider {...settings2} >
-                    {
-                      Musics.slice(0, 14).map((music, index) => (
-                        <ItemImage key={index} classNameParent='flex flex-col'>
-                          <div className={`${stateSidebar.isOpen ? 'h-[167px]' : 'h-full'} flex-shrink-0 relative transition-all duration-300 rounded-full`}>
-                            <img src={`../../mp3/${music.thumb}`} alt={music.name} className='w-full h-full rounded-full object-cover border-4 border-red-600'/>
-                            <img src={`../../mp3/${music.thumb}`} alt={music.name} className='absolute bottom-0 right-0 w-16 h-16 rounded-full border-black object-cover border-2' />
-                            <span className='absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-6 text-center rounded-md text-white bg-red-500 capitalize '>Live</span>
-                          </div>
-                          <h2 className='mt-4 text-center font-semibold'>{music.singer}</h2>
-                          <p className='text-center text-xs text-gray-400 font-medium'>
-                            {music.listening}
-                            <span className='ml-1 '>đang nghe</span>
-                          </p>
-                        </ItemImage>
-                      ))
-                    }
-                  </Slider>
+                  <Swiper
+                      slidesPerView={1}
+                      spaceBetween={18}
+                      pagination={{
+                        clickable: true,
+                      }}
+                      breakpoints={{
+                        0: {
+                          slidesPerView: 1,
+                          spaceBetween: 8,
+                        },
+                        400: {
+                          slidesPerView: 2,
+                          spaceBetween: 10,
+                        },
+                        639: {
+                          slidesPerView: 3,
+                          spaceBetween: 14,
+                        },
+                        865: {
+                          slidesPerView: 4,
+                          spaceBetween: 18,
+                        },
+                        1000: {
+                          slidesPerView: 5,
+                          spaceBetween: 22,
+                        },
+                        1500: {
+                          slidesPerView: 6,
+                          spaceBetween: 24,
+                        },
+                        1700: {
+                          slidesPerView: 7,
+                          spaceBetween: 24,
+                        },
+                      }}
+                      modules={[Pagination]}
+                      onSlideChange={() => console.log('slide change')}
+                      onSwiper={(swiper) => console.log(swiper)}
+                    >
+                       {Musics.slice(0, 14).map((music, index) => (
+                            <SwiperSlide>
+                                  <div className={`${stateSidebar.isOpen ? 'h-[167px]' : 'h-full'} flex-shrink-0 relative transition-all duration-300 rounded-full`}>
+                                    <img src={`../../mp3/${music.thumb}`} alt={music.name} className='xl:min-w-[200px] xl:min-h-[200px] lg:min-w-[180px] lg:min-h-[180px] md:min-w-[160px] md:min-h-[160px] sm:min-w-[150px] sm:min-h-[150px] rounded-full object-cover border-4 border-red-600'/>
+                                    <img src={`../../mp3/${music.thumb}`} alt={music.name} className='absolute bottom-0 right-0 w-16 h-16 rounded-full border-black object-cover border-2' />
+                                    <span className='absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-6 text-center rounded-md text-white bg-red-500 capitalize '>Live</span>
+                                  </div>
+                                  <h2 className='mt-4 text-center font-semibold'>{music.singer}</h2>
+                                  <p className='text-center text-xs text-gray-400 font-medium'>
+                                    {music.listening}
+                                    <span className='ml-1 '>đang nghe</span>
+                                  </p>
+                            </SwiperSlide>
+                          ))}
+                    </Swiper>
                 </Content>
               </div>
 

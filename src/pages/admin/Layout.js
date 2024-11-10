@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import {
+  BellOutlined,
     DesktopOutlined,
     FileOutlined,
+    MoonOutlined,
     PieChartOutlined,
+    SearchOutlined,
     TeamOutlined,
     UserOutlined,
   } from '@ant-design/icons'
-import { Breadcrumb, Layout, Menu, theme } from 'antd'
-import { Button, Flex } from 'antd'
+import { Breadcrumb, Layout, Menu, theme, Avatar, Badge, Button, Flex, Space, Col, Divider, Row} from 'antd'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { handleLogout } from '../../service'
 import { useDispatch } from 'react-redux'
@@ -60,7 +62,7 @@ function AdminLayout() {
 
     }
   }
-
+const url = 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg'
   useEffect(() => {
     navigate(location.pathname)
   }, [navigate, location.pathname])
@@ -76,8 +78,18 @@ function AdminLayout() {
           <Menu theme="dark" defaultSelectedKeys={['dashboard']} mode="inline" items={items} onSelect={handleMenuClick}  />
         </Sider>
         <Layout>
-          <Header style={{padding: 0,background: colorBgContainer,}}>
-            <h1 className='text-2xl font-semibold mt-4 ml-5'>{title.slice(0,1).toUpperCase() + title.slice(1)}</h1>
+          <Header style={{background: colorBgContainer, height: 60}} className='flex items-center justify-between p-4 font'>
+            <h1 className='text-2xl font-semibold'>{title.slice(0,1).toUpperCase() + title.slice(1)}</h1>
+            
+            <Space size={16} wrap className='flex text-xl'>
+                <SearchOutlined />
+                <MoonOutlined />
+                <Badge count={99} overflowCount={99}>
+                    <BellOutlined className='text-lg'/>
+                </Badge>
+                <Avatar style={{ backgroundColor: '#ccc' }} icon={<UserOutlined />} src={<img src={url} alt="avatar" />}  
+                />
+            </Space>
           </Header>
           <Content style={{margin: '0 16px',}}>
             <div className='flex items-center justify-between'>

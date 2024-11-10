@@ -13,6 +13,8 @@ function InputSearch({ className }) {
   const [newData, setNewData] = useState([])
   const [title, setTitle] = useState('')
   const songsSuggest = useSelector(state => state.getListSongReducer.listSong)
+  console.log('newData:', newData)
+  console.log('songsSuggest:', songsSuggest)
 
   const handleChange = (e) => {
     const value = e.target.value
@@ -21,7 +23,8 @@ function InputSearch({ className }) {
   
   const handleFocusInputSearch = () => {
     context.handleInputSearch(true)
-  }  
+  }
+    
   const handleBlurInputSearch = () => {
     context.handleInputSearch(false)
   }
@@ -34,6 +37,7 @@ function InputSearch({ className }) {
   const debounceSearch = useCallback(
     _.debounce((value) => {
       if(value && value.length > 0) {
+        console.log('search-debounce')
         const newDataFilter = _.filter(songsSuggest, (item) => {
           const songs = item.title.toLowerCase() 
           return _.includes(songs, value.toLowerCase()) 

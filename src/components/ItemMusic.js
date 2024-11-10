@@ -86,9 +86,9 @@ function ItemMusic({ onClick, ...props }) {
 
   return (
         <motion.section id={props.song?.id} className={props.classWrap}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          // initial={{ opacity: 0 }}
+          // animate={{ opacity: 1 }}
+          // transition={{ duration: 0.5 }}
         >
           {
             props.isNumberRank 

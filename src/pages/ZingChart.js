@@ -47,7 +47,7 @@ function ZingChart() {
   //     console.log(e)
   //   }
   // }
-  // const { data, isLoading, error } = useQuery({ 
+  // const { data, error } = useQuery({ 
   //   queryKey: ['list-song'],
   //   queryFn: getListSong,
   // })

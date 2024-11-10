@@ -14,10 +14,10 @@ const GET_LIST_SONG = 'GET_LIST_SONG'
 
 
 // Actions
- const setThumbAction = (thumb) => {
+ const setThumbAction = (theme) => {
     return {
         type: SET_BACKGROUND,
-        payload: thumb
+        payload: theme
     }
  }
  const openThemeModalAction = (payload) => {
